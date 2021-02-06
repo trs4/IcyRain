@@ -79,6 +79,7 @@ public sealed class DeserializeOptions
 Performance
 ---
 Deep clone = serialize + deserialize
+
 Serialization use IBufferWriter<byte> and ReadOnlySequence<byte>
 
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.14393.4169 (1607/AnniversaryUpdate/Redstone1)
