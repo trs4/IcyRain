@@ -173,11 +173,11 @@ on net5.0:
 |        Method |        Job |       Runtime |    Toolchain | Categories |       Mean |    Error |  StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |-------------- |------------- |----------- |-----------:|---------:|--------:|------:|--------:|-------:|------:|------:|----------:|
 |       IcyRain | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 |  Serialize |   157.7 ns |  0.49 ns | 0.46 ns |  0.73 |    0.00 | 0.0248 |     - |     - |     104 B |
-|       IcyRain | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 | Deep clone |   383.6 ns |  1.23 ns | 1.09 ns |  0.67 |    0.00 | 0.0744 |     - |     - |     312 B |
-|   MessagePack | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 |  Serialize |   866.7 ns |  2.53 ns | 2.11 ns |  0.84 |    0.01 | 1.9684 |     - |     - |    8248 B |
-|   MessagePack | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 | Deep clone | 1,166.0 ns |  4.41 ns | 3.68 ns |  0.73 |    0.00 | 1.9875 |     - |     - |    8328 B |
 |  protobuf-net | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 |  Serialize |   432.0 ns |  1.60 ns | 1.50 ns |  0.76 |    0.00 | 0.0439 |     - |     - |     184 B |
+|   MessagePack | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 |  Serialize |   866.7 ns |  2.53 ns | 2.11 ns |  0.84 |    0.01 | 1.9684 |     - |     - |    8248 B |
+|       IcyRain | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 | Deep clone |   383.6 ns |  1.23 ns | 1.09 ns |  0.67 |    0.00 | 0.0744 |     - |     - |     312 B |
 |  protobuf-net | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 | Deep clone |   944.4 ns |  3.41 ns | 3.02 ns |  0.65 |    0.00 | 0.0629 |     - |     - |     264 B |
+|   MessagePack | Job-SKJJXH | .NET Core 5.0 | netcoreapp50 | Deep clone | 1,166.0 ns |  4.41 ns | 3.68 ns |  0.73 |    0.00 | 1.9875 |     - |     - |    8328 B |
 
 on net472:
 |        Method | Categories |       Mean |    Error |   StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
