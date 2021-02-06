@@ -107,7 +107,7 @@ Runtime=.NET Core 5.0  Toolchain=netcoreapp50
 |     MessagePack | Deep clone | 1,034.78 ns | 5.574 ns | 5.214 ns | 1.9379 |     - |     - |    8120 B |
 ```
 
-* **List<int>:**
+* **List of int:**
 ```csharp
 |        Method | Categories |        Mean |     Error |    StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |------------:|----------:|----------:|-------:|------:|------:|----------:|
@@ -122,7 +122,7 @@ Runtime=.NET Core 5.0  Toolchain=netcoreapp50
 |   MessagePack | Deep clone | 29,403.0 ns | 158.36 ns | 140.38 ns | 2.9297 |     - |     - |  12.02 KB |
 ```
 
-* **List<string>:**
+* **List of string:**
 ```csharp
 |        Method | Categories |      Mean |     Error |    StdDev |   Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |----------:|----------:|----------:|--------:|-------:|------:|----------:|
@@ -137,7 +137,7 @@ Runtime=.NET Core 5.0  Toolchain=netcoreapp50
 | ZeroFormatter | Deep clone | 51.441 μs | 0.4688 μs | 0.3915 μs | 19.5313 |      - |     - |   81744 B |
 ```
 
-* **List<DateTime>:**
+* **List of DateTime:**
 ```csharp
 |        Method | Categories |      Mean |     Error |    StdDev |    Median |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |----------:|----------:|----------:|----------:|-------:|------:|------:|----------:|
@@ -152,7 +152,7 @@ Runtime=.NET Core 5.0  Toolchain=netcoreapp50
 |   MessagePack | Deep clone | 21.686 μs | 0.0701 μs | 0.0621 μs | 21.673 μs | 2.9297 |     - |     - |   12304 B |
 ```
 
-* **List<Double>:**
+* **List of Double:**
 ```csharp
 |        Method | Categories |        Mean |     Error |    StdDev |      Median |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |------------:|----------:|----------:|------------:|-------:|------:|------:|----------:|
@@ -193,7 +193,7 @@ on net472:
 |  protobuf-net | Deep clone | 1,593.7 ns | 31.19 ns | 34.67 ns | 0.0648 |     - |     - |     273 B |
 ```
 
-* **HashSet<int>:**
+* **HashSet of int:**
 ```csharp
 |        Method | Categories |      Mean |     Error |    StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |----------:|----------:|----------:|-------:|------:|------:|----------:|
@@ -208,7 +208,7 @@ on net472:
 |   MessagePack | Deep clone | 12.236 μs | 0.0399 μs | 0.0354 μs | 5.0659 |     - |     - |   21208 B |
 ```
 
-* **Dictionary<int, string>:**
+* **Dictionary wit int key and string value:**
 ```csharp
 |        Method |        Job |       Runtime |    Toolchain | Categories |      Mean |     Error |    StdDev | Ratio | RatioSD |   Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |-------------- |------------- |----------- |----------:|----------:|----------:|------:|--------:|--------:|-------:|------:|----------:|
@@ -254,7 +254,7 @@ on net472:
 |     MessagePack | Deep clone | 1,035.23 ns |  9.534 ns |  7.961 ns | 1.9379 |     - |     - |    8120 B |
 ```
 
-* **Byte[]:**
+* **Byte array:**
 ```csharp
 |          Method | Categories |       Mean |    Error |   StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |---------------- |----------- |-----------:|---------:|---------:|-------:|------:|------:|----------:|
