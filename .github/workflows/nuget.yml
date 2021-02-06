@@ -13,7 +13,11 @@ env:
 jobs:
   deploy:
     name: 'Deploy'
+<<<<<<< HEAD
+    runs-on: 'ubuntu-latest'
+=======
     runs-on: 'windows-latest'
+>>>>>>> f48f130ea799219e1cdafcc9bd318cb93c2029ce
     steps:
     - name: 'Checkout'
       uses: actions/checkout@v2
