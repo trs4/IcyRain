@@ -13,12 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		global.json = global.json
+		NuGet.Config = NuGet.Config
+		.github\workflows\nuget.yml = .github\workflows\nuget.yml
 		RuleSet.ruleset = RuleSet.ruleset
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcyRain.Data", "IcyRain.Data\IcyRain.Data.csproj", "{711287E8-1260-47D2-94D9-ED1F4F78E3AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IcyRain.Console", "IcyRain.Console\IcyRain.Console.csproj", "{D07BF0FC-45BC-4DBB-BF64-10DC0350DDB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcyRain.Console", "IcyRain.Console\IcyRain.Console.csproj", "{D07BF0FC-45BC-4DBB-BF64-10DC0350DDB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
