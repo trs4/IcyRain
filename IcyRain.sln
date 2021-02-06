@@ -15,11 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.targets = Directory.Build.targets
 		global.json = global.json
 		NuGet.Config = NuGet.Config
-		.github\workflows\nuget.yml = .github\workflows\nuget.yml
-<<<<<<< HEAD
 		.github\workflows\publish.yml = .github\workflows\publish.yml
-=======
->>>>>>> f48f130ea799219e1cdafcc9bd318cb93c2029ce
 		RuleSet.ruleset = RuleSet.ruleset
 	EndProjectSection
 EndProject
