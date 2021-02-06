@@ -131,10 +131,10 @@ Runtime=.NET Core 5.0  Toolchain=netcoreapp50
 | ZeroFormatter |  Serialize | 25.112 μs | 0.3311 μs | 0.3097 μs | 12.8174 |      - |     - |   53640 B |
 |  protobuf-net |  Serialize | 47.067 μs | 0.4627 μs | 0.4102 μs |  2.9907 |      - |     - |   12648 B |
 |               |            |           |           |           |         |        |       |           |
-|   MessagePack | Deep clone |        NA |        NA |        NA |       - |      - |     - |         - |
 |       IcyRain | Deep clone | 22.053 μs | 0.4278 μs | 0.6270 μs | 17.7002 | 1.7700 |     - |   74304 B |
 |  protobuf-net | Deep clone | 50.857 μs | 0.9976 μs | 1.8980 μs |  3.0518 |      - |     - |   12864 B |
 | ZeroFormatter | Deep clone | 51.441 μs | 0.4688 μs | 0.3915 μs | 19.5313 |      - |     - |   81744 B |
+|   MessagePack | Deep clone |        NA |        NA |        NA |       - |      - |     - |         - |
 ```
 
 * **List of DateTime:**
@@ -146,10 +146,10 @@ Runtime=.NET Core 5.0  Toolchain=netcoreapp50
 |   MessagePack |  Serialize |  7.279 μs | 0.0153 μs | 0.0143 μs |  7.280 μs | 1.9684 |     - |     - |    8248 B |
 |  protobuf-net |  Serialize | 83.675 μs | 1.6433 μs | 2.9632 μs | 81.573 μs | 1.4648 |     - |     - |    6416 B |
 |               |            |           |           |           |           |        |       |       |           |
-|  protobuf-net | Deep clone |        NA |        NA |        NA |        NA |      - |     - |     - |         - |
 |       IcyRain | Deep clone |  8.117 μs | 0.0343 μs | 0.0321 μs |  8.110 μs | 5.0964 |     - |     - |   21360 B |
 | ZeroFormatter | Deep clone | 15.392 μs | 0.0495 μs | 0.0413 μs | 15.374 μs | 3.8452 |     - |     - |   16152 B |
 |   MessagePack | Deep clone | 21.686 μs | 0.0701 μs | 0.0621 μs | 21.673 μs | 2.9297 |     - |     - |   12304 B |
+|  protobuf-net | Deep clone |        NA |        NA |        NA |        NA |      - |     - |     - |         - |
 ```
 
 * **List of Double:**
