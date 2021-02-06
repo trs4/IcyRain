@@ -208,7 +208,7 @@ on net472:
 |   MessagePack | Deep clone | 12.236 μs | 0.0399 μs | 0.0354 μs | 5.0659 |     - |     - |   21208 B |
 ```
 
-* **Dictionary wit int key and string value:**
+* **Dictionary with int key and string value:**
 ```csharp
 |        Method |        Job |       Runtime |    Toolchain | Categories |      Mean |     Error |    StdDev | Ratio | RatioSD |   Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |-------------- |----------- |-------------- |------------- |----------- |----------:|----------:|----------:|------:|--------:|--------:|-------:|------:|----------:|
