@@ -21,8 +21,15 @@ namespace IcyRain.Switchers
         [MethodImpl(Flags.HotPath)]
         public sealed override T Deserialize(ArraySegment<byte> segment, DeserializeOptions options)
         {
-            var reader = new Reader(segment);
-            return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader, options ?? DeserializeOptions.Default);
+            try
+            {
+                var reader = new Reader(segment);
+                return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader, options ?? DeserializeOptions.Default);
+            }
+            finally
+            {
+                Buffers.Return(segment.Array);
+            }
         }
 
     }

@@ -18,7 +18,7 @@ namespace IcyRain.Internal
         [MethodImpl(Flags.HotPath)]
         public Span<byte> GetSpan(int sizeHint = 0)
         {
-            _buffer = Buffers.MinArrayLength > sizeHint ? new byte[sizeHint] : ArrayPool<byte>.Shared.Rent(sizeHint);
+            _buffer = Buffers.Rent(sizeHint);
             return _buffer.AsSpan();
         }
 
@@ -43,11 +43,6 @@ namespace IcyRain.Internal
         public ReadOnlySequence<byte> ToSequence()
             => _buffer is null ? default : new ReadOnlySequence<byte>(_buffer, 0, _count);
 
-        public void Dispose()
-        {
-            if (_buffer is not null && _buffer.Length >= Buffers.MinArrayLength)
-                ArrayPool<byte>.Shared.Return(_buffer);
-        }
-
+        public void Dispose() => Buffers.Return(_buffer);
     }
 }
