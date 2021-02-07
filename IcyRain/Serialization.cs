@@ -7,7 +7,7 @@ using IcyRain.Switchers;
 namespace IcyRain
 {
     /// <summary>Buffer fast serialization for concrete types</summary>
-    public static class Serialization
+    public static partial class Serialization
     {
         #region Common
 
@@ -82,21 +82,6 @@ namespace IcyRain
         [MethodImpl(Flags.HotPath)]
         public static T DeserializeSegment<T>(ArraySegment<byte> segment, DeserializeOptions options = null)
             => SegmentSwitcher<T>.Instance.Deserialize(segment, options);
-
-        #endregion
-        #region Tests
-
-        /// <summary>Serialize and deserialize via buffer</summary>
-        /// <typeparam name="T">Concrete type</typeparam>
-        /// <param name="value">Serializable object</param>
-        /// <returns>Deserialized object</returns>
-        [MethodImpl(Flags.HotPath)]
-        public static T DeepClone<T>(T value)
-        {
-            using var buffer = new ArrayBufferWriter();
-            Serialize(buffer, value);
-            return Deserialize<T>(buffer.ToSequence());
-        }
 
         #endregion
     }

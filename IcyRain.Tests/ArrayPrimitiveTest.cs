@@ -12,8 +12,12 @@ namespace IcyRain.Tests
         public void BoolArray()
         {
             bool[] value = new bool[] { true, false, true, true };
-            bool[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<bool[]>.Functions)
+            {
+                bool[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -23,8 +27,12 @@ namespace IcyRain.Tests
         public void CharArray()
         {
             char[] value = new char[] { 't', 'r', '9', 'ц' };
-            char[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<char[]>.Functions)
+            {
+                char[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -34,8 +42,12 @@ namespace IcyRain.Tests
         public void SByteArray()
         {
             sbyte[] value = new sbyte[] { 0, 34, 3, 7 };
-            sbyte[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<sbyte[]>.Functions)
+            {
+                sbyte[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -45,8 +57,12 @@ namespace IcyRain.Tests
         public void ByteArray()
         {
             byte[] value = new byte[] { 25, 34, 3, 7 };
-            byte[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<byte[]>.Functions)
+            {
+                byte[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -56,8 +72,12 @@ namespace IcyRain.Tests
         public void ShortArray()
         {
             short[] value = new short[] { 25, 34, 3, 7 };
-            short[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<short[]>.Functions)
+            {
+                short[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -67,8 +87,12 @@ namespace IcyRain.Tests
         public void UShortArray()
         {
             ushort[] value = new ushort[] { 25, 34, 3, 7 };
-            ushort[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<ushort[]>.Functions)
+            {
+                ushort[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -78,8 +102,12 @@ namespace IcyRain.Tests
         public void IntArray()
         {
             int[] value = new int[] { 25, 34, 3, 7 };
-            int[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<int[]>.Functions)
+            {
+                int[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -89,8 +117,12 @@ namespace IcyRain.Tests
         public void UIntArray()
         {
             uint[] value = new uint[] { 25, 34, 3, 7 };
-            uint[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<uint[]>.Functions)
+            {
+                uint[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -100,8 +132,12 @@ namespace IcyRain.Tests
         public void LongArray()
         {
             long[] value = new long[] { 25, 34, 3, 7 };
-            long[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<long[]>.Functions)
+            {
+                long[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -111,8 +147,12 @@ namespace IcyRain.Tests
         public void ULongArray()
         {
             ulong[] value = new ulong[] { 25, 34, 3, 7 };
-            ulong[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<ulong[]>.Functions)
+            {
+                ulong[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -122,8 +162,12 @@ namespace IcyRain.Tests
         public void FloatArray()
         {
             float[] value = new float[] { 25, 34, 3, 7 };
-            float[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<float[]>.Functions)
+            {
+                float[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -133,8 +177,12 @@ namespace IcyRain.Tests
         public void DoubleArray()
         {
             double[] value = new double[] { 25, 34, 3, 7 };
-            double[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<double[]>.Functions)
+            {
+                double[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -144,8 +192,12 @@ namespace IcyRain.Tests
         public void DecimalArray()
         {
             decimal[] value = new decimal[] { 25, 34, 3, 7 };
-            decimal[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<decimal[]>.Functions)
+            {
+                decimal[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -160,8 +212,11 @@ namespace IcyRain.Tests
                 new DateTime(2000, 1, 4, 10, 7, 0, DateTimeKind.Utc),
             };
 
-            DateTime[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            foreach (var deepClone in Tests<DateTime[]>.Functions)
+            {
+                DateTime[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -175,8 +230,11 @@ namespace IcyRain.Tests
                 new DateTime(2021, 1, 26, 23, 1, 0, DateTimeKind.Utc),
             };
 
-            DateTimeOffset[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            foreach (var deepClone in Tests<DateTimeOffset[]>.Functions)
+            {
+                DateTimeOffset[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -186,8 +244,12 @@ namespace IcyRain.Tests
         public void StringArray()
         {
             string[] value = new string[] { "25тестtest", null, string.Empty, "t34" };
-            string[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<string[]>.Functions)
+            {
+                string[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -197,8 +259,12 @@ namespace IcyRain.Tests
         public void GuidArray()
         {
             Guid[] value = new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
-            Guid[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<Guid[]>.Functions)
+            {
+                Guid[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -208,8 +274,12 @@ namespace IcyRain.Tests
         public void TimeSpanArray()
         {
             TimeSpan[] value = new TimeSpan[] { new TimeSpan(23, 12, 8), new TimeSpan(10, 4, 8) };
-            TimeSpan[] result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<TimeSpan[]>.Functions)
+            {
+                TimeSpan[] result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion

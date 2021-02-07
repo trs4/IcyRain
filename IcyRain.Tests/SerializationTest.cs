@@ -18,14 +18,17 @@ namespace IcyRain.Tests
                 Property5 = "test",
             };
 
-            var clone = Serialization.DeepClone(data);
+            foreach (var deepClone in Tests<SealedData>.Functions)
+            {
+                var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Property1, clone.Property1);
-            Assert.AreEqual(data.Property2, clone.Property2);
-            Assert.AreEqual(data.Property3, clone.Property3);
-            Assert.AreEqual(data.Property4, clone.Property4);
-            Assert.AreEqual(data.Property5, clone.Property5);
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Property1, clone.Property1);
+                Assert.AreEqual(data.Property2, clone.Property2);
+                Assert.AreEqual(data.Property3, clone.Property3);
+                Assert.AreEqual(data.Property4, clone.Property4);
+                Assert.AreEqual(data.Property5, clone.Property5);
+            }
         }
 
         [Test]
@@ -40,14 +43,17 @@ namespace IcyRain.Tests
                 Property5 = "test",
             };
 
-            var clone = Serialization.DeepClone(data);
+            foreach (var deepClone in Tests<TestData>.Functions)
+            {
+                var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Property1, clone.Property1);
-            Assert.AreEqual(data.Property2, clone.Property2);
-            Assert.AreEqual(data.Property3, clone.Property3);
-            Assert.AreEqual(data.Property4, clone.Property4);
-            Assert.AreEqual(data.Property5, clone.Property5);
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Property1, clone.Property1);
+                Assert.AreEqual(data.Property2, clone.Property2);
+                Assert.AreEqual(data.Property3, clone.Property3);
+                Assert.AreEqual(data.Property4, clone.Property4);
+                Assert.AreEqual(data.Property5, clone.Property5);
+            }
         }
 
         [Test]
@@ -60,12 +66,15 @@ namespace IcyRain.Tests
                 Property32 = new DateTime(2010, 5, 1, 5, 8, 7),
             };
 
-            var clone = Serialization.DeepClone<TestB1>(data) as TestB3;
+            foreach (var deepClone in Tests<TestB1>.Functions)
+            {
+                var clone = deepClone(data) as TestB3;
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Property11, clone.Property11);
-            Assert.AreEqual(data.Property31, clone.Property31);
-            Assert.AreEqual(data.Property32, clone.Property32);
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Property11, clone.Property11);
+                Assert.AreEqual(data.Property31, clone.Property31);
+                Assert.AreEqual(data.Property32, clone.Property32);
+            }
         }
 
         [Test]
@@ -85,19 +94,22 @@ namespace IcyRain.Tests
                 },
             };
 
-            var clone = Serialization.DeepClone<TestA1>(data) as TestA25;
+            foreach (var deepClone in Tests<TestA1>.Functions)
+            {
+                var clone = deepClone(data) as TestA25;
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Property11, clone.Property11);
-            Assert.AreEqual(data.Property31, clone.Property31);
-            Assert.AreEqual(data.Property32, clone.Property32);
-            Assert.AreEqual(data.Property33, clone.Property33);
-            Assert.AreEqual(data.Property34, clone.Property34);
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Property11, clone.Property11);
+                Assert.AreEqual(data.Property31, clone.Property31);
+                Assert.AreEqual(data.Property32, clone.Property32);
+                Assert.AreEqual(data.Property33, clone.Property33);
+                Assert.AreEqual(data.Property34, clone.Property34);
 
-            Assert.AreEqual(data.Property35.GetType(), clone.Property35?.GetType());
-            Assert.AreEqual(data.Property35.Property11, clone.Property35.Property11);
-            Assert.AreEqual((data.Property35 as TestB3).Property31, (clone.Property35 as TestB3).Property31);
-            Assert.AreEqual((data.Property35 as TestB3).Property32, (clone.Property35 as TestB3).Property32);
+                Assert.AreEqual(data.Property35.GetType(), clone.Property35?.GetType());
+                Assert.AreEqual(data.Property35.Property11, clone.Property35.Property11);
+                Assert.AreEqual((data.Property35 as TestB3).Property31, (clone.Property35 as TestB3).Property31);
+                Assert.AreEqual((data.Property35 as TestB3).Property32, (clone.Property35 as TestB3).Property32);
+            }
         }
 
     }

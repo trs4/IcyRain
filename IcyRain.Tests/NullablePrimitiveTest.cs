@@ -12,24 +12,36 @@ namespace IcyRain.Tests
         public void BoolTrue()
         {
             bool? value = true;
-            bool? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && result.Value);
+
+            foreach (var deepClone in Tests<bool?>.Functions)
+            {
+                bool? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && result.Value);
+            }
         }
 
         [Test]
         public void BoolFalse()
         {
             bool? value = false;
-            bool? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && !result.Value);
+
+            foreach (var deepClone in Tests<bool?>.Functions)
+            {
+                bool? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && !result.Value);
+            }
         }
 
         [Test]
         public void BoolNull()
         {
             bool? value = null;
-            bool? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<bool?>.Functions)
+            {
+                bool? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         #endregion
@@ -39,16 +51,24 @@ namespace IcyRain.Tests
         public void Char1()
         {
             char? value = null;
-            char? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<char?>.Functions)
+            {
+                char? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Char2()
         {
             char? value = 'д';
-            char? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<char?>.Functions)
+            {
+                char? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -58,16 +78,24 @@ namespace IcyRain.Tests
         public void SByte1()
         {
             sbyte? value = null;
-            sbyte? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<sbyte?>.Functions)
+            {
+                sbyte? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void SByte2()
         {
             sbyte? value = 25;
-            sbyte? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<sbyte?>.Functions)
+            {
+                sbyte? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -77,16 +105,24 @@ namespace IcyRain.Tests
         public void Byte1()
         {
             byte? value = null;
-            byte? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<byte?>.Functions)
+            {
+                byte? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Byte2()
         {
             byte? value = 25;
-            byte? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<byte?>.Functions)
+            {
+                byte? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -96,16 +132,24 @@ namespace IcyRain.Tests
         public void Short1()
         {
             short? value = null;
-            short? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<short?>.Functions)
+            {
+                short? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Short2()
         {
             short? value = 25;
-            short? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<short?>.Functions)
+            {
+                short? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -115,16 +159,24 @@ namespace IcyRain.Tests
         public void UShort1()
         {
             ushort? value = null;
-            ushort? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<ushort?>.Functions)
+            {
+                ushort? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void UShort2()
         {
             ushort? value = 25;
-            ushort? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<ushort?>.Functions)
+            {
+                ushort? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -134,16 +186,24 @@ namespace IcyRain.Tests
         public void Int1()
         {
             int? value = null;
-            int? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<int?>.Functions)
+            {
+                int? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Int2()
         {
             int? value = 25;
-            int? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<int?>.Functions)
+            {
+                int? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -153,16 +213,24 @@ namespace IcyRain.Tests
         public void UInt1()
         {
             uint? value = null;
-            uint? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<uint?>.Functions)
+            {
+                uint? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void UInt2()
         {
             uint? value = 25;
-            uint? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<uint?>.Functions)
+            {
+                uint? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -172,16 +240,24 @@ namespace IcyRain.Tests
         public void Long1()
         {
             long? value = null;
-            long? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<long?>.Functions)
+            {
+                long? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Long2()
         {
             long? value = 25;
-            long? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<long?>.Functions)
+            {
+                long? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -191,16 +267,24 @@ namespace IcyRain.Tests
         public void ULong1()
         {
             ulong? value = null;
-            ulong? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<ulong?>.Functions)
+            {
+                ulong? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void ULong2()
         {
             ulong? value = 25;
-            ulong? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<ulong?>.Functions)
+            {
+                ulong? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -210,16 +294,24 @@ namespace IcyRain.Tests
         public void Float1()
         {
             float? value = null;
-            float? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<float?>.Functions)
+            {
+                float? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Float2()
         {
             float? value = 25;
-            float? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<float?>.Functions)
+            {
+                float? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -229,16 +321,24 @@ namespace IcyRain.Tests
         public void Double1()
         {
             double? value = null;
-            double? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<double?>.Functions)
+            {
+                double? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Double2()
         {
             double? value = 25;
-            double? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<double?>.Functions)
+            {
+                double? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -248,16 +348,24 @@ namespace IcyRain.Tests
         public void Decimal1()
         {
             decimal? value = null;
-            decimal? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<decimal?>.Functions)
+            {
+                decimal? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Decimal2()
         {
             decimal? value = 25;
-            decimal? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<decimal?>.Functions)
+            {
+                decimal? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -267,17 +375,25 @@ namespace IcyRain.Tests
         public void DateTime1()
         {
             DateTime? value = null;
-            DateTime? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<DateTime?>.Functions)
+            {
+                DateTime? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void DateTime2()
         {
             DateTime? value = new DateTime(2021, 1, 26, 23, 1, 0, DateTimeKind.Utc);
-            DateTime? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
-            Assert.AreEqual(value.Value.Kind, result.Value.Kind);
+
+            foreach (var deepClone in Tests<DateTime?>.Functions)
+            {
+                DateTime? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+                Assert.AreEqual(value.Value.Kind, result.Value.Kind);
+            }
         }
 
         #endregion
@@ -287,16 +403,24 @@ namespace IcyRain.Tests
         public void DateTimeOffset1()
         {
             DateTimeOffset? value = null;
-            DateTimeOffset? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<DateTimeOffset?>.Functions)
+            {
+                DateTimeOffset? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void DateTimeOffset2()
         {
             DateTimeOffset? value = new DateTime(2021, 1, 26, 23, 1, 0, DateTimeKind.Utc);
-            DateTimeOffset? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<DateTimeOffset?>.Functions)
+            {
+                DateTimeOffset? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -306,16 +430,24 @@ namespace IcyRain.Tests
         public void Guid1()
         {
             Guid? value = null;
-            Guid? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<Guid?>.Functions)
+            {
+                Guid? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Guid2()
         {
             Guid? value = Guid.NewGuid();
-            Guid? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<Guid?>.Functions)
+            {
+                Guid? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -325,16 +457,24 @@ namespace IcyRain.Tests
         public void TimeSpan1()
         {
             TimeSpan? value = null;
-            TimeSpan? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<TimeSpan?>.Functions)
+            {
+                TimeSpan? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void TimeSpan2()
         {
             TimeSpan? value = new TimeSpan(23, 12, 8);
-            TimeSpan? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+
+            foreach (var deepClone in Tests<TimeSpan?>.Functions)
+            {
+                TimeSpan? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            }
         }
 
         #endregion
@@ -344,16 +484,24 @@ namespace IcyRain.Tests
         public void IntPtr1()
         {
             IntPtr? value = null;
-            IntPtr? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<IntPtr?>.Functions)
+            {
+                IntPtr? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void IntPtr2()
         {
             IntPtr? value = new IntPtr(25);
-            IntPtr? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToInt64() == result.Value.ToInt64());
+
+            foreach (var deepClone in Tests<IntPtr?>.Functions)
+            {
+                IntPtr? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value.ToInt64() == result.Value.ToInt64());
+            }
         }
 
         #endregion
@@ -363,16 +511,24 @@ namespace IcyRain.Tests
         public void UIntPtr1()
         {
             UIntPtr? value = null;
-            UIntPtr? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<UIntPtr?>.Functions)
+            {
+                UIntPtr? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void UIntPtr2()
         {
             UIntPtr? value = new UIntPtr(25);
-            UIntPtr? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToUInt64() == result.Value.ToUInt64());
+
+            foreach (var deepClone in Tests<UIntPtr?>.Functions)
+            {
+                UIntPtr? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value.ToUInt64() == result.Value.ToUInt64());
+            }
         }
 
         #endregion
@@ -382,16 +538,24 @@ namespace IcyRain.Tests
         public void ArraySegment1()
         {
             ArraySegment<byte>? value = null;
-            ArraySegment<byte>? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<ArraySegment<byte>?>.Functions)
+            {
+                ArraySegment<byte>? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void ArraySegment2()
         {
             ArraySegment<byte>? value = new ArraySegment<byte>(new byte[] { 1, 5, 0, 9 });
-            ArraySegment<byte>? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.Array.SequenceEqual(result.Value));
+
+            foreach (var deepClone in Tests<ArraySegment<byte>?>.Functions)
+            {
+                ArraySegment<byte>? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value.Array.SequenceEqual(result.Value));
+            }
         }
 
         #endregion
@@ -401,16 +565,24 @@ namespace IcyRain.Tests
         public void Memory1()
         {
             Memory<byte>? value = null;
-            Memory<byte>? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<Memory<byte>?>.Functions)
+            {
+                Memory<byte>? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void Memory2()
         {
             Memory<byte>? value = new byte[] { 1, 5, 0, 9 };
-            Memory<byte>? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
+
+            foreach (var deepClone in Tests<Memory<byte>?>.Functions)
+            {
+                Memory<byte>? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
+            }
         }
 
         #endregion
@@ -420,16 +592,24 @@ namespace IcyRain.Tests
         public void ReadOnlyMemory1()
         {
             ReadOnlyMemory<byte>? value = null;
-            ReadOnlyMemory<byte>? result = Serialization.DeepClone(value);
-            Assert.IsFalse(result.HasValue);
+
+            foreach (var deepClone in Tests<ReadOnlyMemory<byte>?>.Functions)
+            {
+                ReadOnlyMemory<byte>? result = deepClone(value);
+                Assert.IsFalse(result.HasValue);
+            }
         }
 
         [Test]
         public void ReadOnlyMemory2()
         {
             ReadOnlyMemory<byte>? value = new byte[] { 1, 5, 0, 9 };
-            ReadOnlyMemory<byte>? result = Serialization.DeepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
+
+            foreach (var deepClone in Tests<ReadOnlyMemory<byte>?>.Functions)
+            {
+                ReadOnlyMemory<byte>? result = deepClone(value);
+                Assert.IsTrue(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
+            }
         }
 
         #endregion

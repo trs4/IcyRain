@@ -13,8 +13,12 @@ namespace IcyRain.Tests
         public void BoolList()
         {
             var value = new List<bool> { true, false, true, true };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<bool>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -24,8 +28,12 @@ namespace IcyRain.Tests
         public void CharList()
         {
             var value = new List<char> { 't', 'r', '9', 'ц' };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<char>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -35,8 +43,12 @@ namespace IcyRain.Tests
         public void SByteList()
         {
             var value = new List<sbyte> { 0, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<sbyte>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -46,8 +58,12 @@ namespace IcyRain.Tests
         public void ByteList()
         {
             var value = new List<byte> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<byte>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -57,8 +73,12 @@ namespace IcyRain.Tests
         public void ShortList()
         {
             var value = new List<short> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<short>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -68,8 +88,12 @@ namespace IcyRain.Tests
         public void UShortList()
         {
             var value = new List<ushort> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<ushort>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -79,8 +103,12 @@ namespace IcyRain.Tests
         public void IntList()
         {
             var value = new List<int> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<int>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -90,8 +118,12 @@ namespace IcyRain.Tests
         public void UIntList()
         {
             var value = new List<uint> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<uint>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -101,8 +133,12 @@ namespace IcyRain.Tests
         public void LongList()
         {
             var value = new List<long> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<long>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -112,8 +148,12 @@ namespace IcyRain.Tests
         public void ULongList()
         {
             var value = new List<ulong> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<ulong>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -123,8 +163,12 @@ namespace IcyRain.Tests
         public void FloatList()
         {
             var value = new List<float> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<float>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -134,8 +178,12 @@ namespace IcyRain.Tests
         public void DoubleList()
         {
             var value = new List<double> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<double>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -145,8 +193,12 @@ namespace IcyRain.Tests
         public void DecimalList()
         {
             var value = new List<decimal> { 25, 34, 3, 7 };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<decimal>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -161,8 +213,11 @@ namespace IcyRain.Tests
                 new DateTime(2000, 1, 4, 10, 7, 0, DateTimeKind.Utc),
             };
 
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            foreach (var deepClone in Tests<List<DateTime>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -176,8 +231,11 @@ namespace IcyRain.Tests
                 new DateTime(2021, 1, 26, 23, 1, 0, DateTimeKind.Utc),
             };
 
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            foreach (var deepClone in Tests<List<DateTimeOffset>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -187,8 +245,12 @@ namespace IcyRain.Tests
         public void StringList()
         {
             var value = new List<string> { "25тестtest", null, string.Empty, "t34" };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<string>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -198,8 +260,12 @@ namespace IcyRain.Tests
         public void GuidList()
         {
             var value = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<Guid>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion
@@ -209,8 +275,12 @@ namespace IcyRain.Tests
         public void TimeSpanList()
         {
             var value = new List<TimeSpan> { new TimeSpan(23, 12, 8), new TimeSpan(10, 4, 8) };
-            var result = Serialization.DeepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+
+            foreach (var deepClone in Tests<List<TimeSpan>>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.IsTrue(value.SequenceEqual(result));
+            }
         }
 
         #endregion

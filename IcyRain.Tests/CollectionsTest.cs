@@ -19,16 +19,19 @@ namespace IcyRain.Tests
                 { 4, "6" },
             };
 
-            var clone = Serialization.DeepClone(data);
+            foreach (var deepClone in Tests<Dictionary<int, string>>.Functions)
+            {
+                var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.TryGetValue(2, out string value) && value == "1");
-            Assert.IsTrue(clone.TryGetValue(5, out value) && value == "2");
-            Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
-            Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
-            Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
-            Assert.IsTrue(clone.TryGetValue(4, out value) && value == "6");
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Count, clone.Count);
+                Assert.IsTrue(clone.TryGetValue(2, out string value) && value == "1");
+                Assert.IsTrue(clone.TryGetValue(5, out value) && value == "2");
+                Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
+                Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
+                Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
+                Assert.IsTrue(clone.TryGetValue(4, out value) && value == "6");
+            }
         }
 
         [Test]
@@ -45,16 +48,20 @@ namespace IcyRain.Tests
             };
 
             var data = new ReadOnlyDictionary<int, string>(dictionary);
-            var clone = Serialization.DeepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.TryGetValue(2, out string value) && value == "1");
-            Assert.IsTrue(clone.TryGetValue(5, out value) && value == "2");
-            Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
-            Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
-            Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
-            Assert.IsTrue(clone.TryGetValue(4, out value) && value == "6");
+            foreach (var deepClone in Tests<ReadOnlyDictionary<int, string>>.Functions)
+            {
+                var clone = deepClone(data);
+
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Count, clone.Count);
+                Assert.IsTrue(clone.TryGetValue(2, out string value) && value == "1");
+                Assert.IsTrue(clone.TryGetValue(5, out value) && value == "2");
+                Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
+                Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
+                Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
+                Assert.IsTrue(clone.TryGetValue(4, out value) && value == "6");
+            }
         }
 
         [Test]
@@ -62,15 +69,18 @@ namespace IcyRain.Tests
         {
             var data = new HashSet<int>() { 2, 7, 8, 3, 4 };
 
-            var clone = Serialization.DeepClone(data);
+            foreach (var deepClone in Tests<HashSet<int>>.Functions)
+            {
+                var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.Contains(2));
-            Assert.IsTrue(clone.Contains(7));
-            Assert.IsTrue(clone.Contains(8));
-            Assert.IsTrue(clone.Contains(3));
-            Assert.IsTrue(clone.Contains(4));
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Count, clone.Count);
+                Assert.IsTrue(clone.Contains(2));
+                Assert.IsTrue(clone.Contains(7));
+                Assert.IsTrue(clone.Contains(8));
+                Assert.IsTrue(clone.Contains(3));
+                Assert.IsTrue(clone.Contains(4));
+            }
         }
 
         [Test]
@@ -79,15 +89,18 @@ namespace IcyRain.Tests
             var list = new List<int> { 2, 7, 8, 3, 4 };
             var data = new ReadOnlyCollection<int>(list);
 
-            var clone = Serialization.DeepClone(data);
+            foreach (var deepClone in Tests<ReadOnlyCollection<int>>.Functions)
+            {
+                var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.Contains(2));
-            Assert.IsTrue(clone.Contains(7));
-            Assert.IsTrue(clone.Contains(8));
-            Assert.IsTrue(clone.Contains(3));
-            Assert.IsTrue(clone.Contains(4));
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Count, clone.Count);
+                Assert.IsTrue(clone.Contains(2));
+                Assert.IsTrue(clone.Contains(7));
+                Assert.IsTrue(clone.Contains(8));
+                Assert.IsTrue(clone.Contains(3));
+                Assert.IsTrue(clone.Contains(4));
+            }
         }
 
         [Test]
@@ -95,11 +108,14 @@ namespace IcyRain.Tests
         {
             var data = new KeyValuePair<int, string>(2, "1");
 
-            var clone = Serialization.DeepClone(data);
+            foreach (var deepClone in Tests<KeyValuePair<int, string>>.Functions)
+            {
+                var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Key, clone.Key);
-            Assert.AreEqual(data.Value, clone.Value);
+                Assert.IsNotNull(clone);
+                Assert.AreEqual(data.Key, clone.Key);
+                Assert.AreEqual(data.Value, clone.Value);
+            }
         }
 
     }
