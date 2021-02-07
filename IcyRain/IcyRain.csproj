@@ -6,6 +6,11 @@
     <DefineConstants></DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <PackageId>IcyRain</PackageId>
+    <PackageTags>buffers;binary;serialization;serializer;grpc</PackageTags>
+    <PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
