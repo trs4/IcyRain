@@ -63,6 +63,17 @@ namespace IcyRain
         public static T Deserialize<T>(byte[] bytes, DeserializeOptions options = null)
             => BytesSwitcher<T>.Instance.Deserialize(bytes, options);
 
+        /// <summary>Deserialize via byte array</summary>
+        /// <typeparam name="T">Concrete type</typeparam>
+        /// <param name="bytes">Byte array</param>
+        /// <param name="offset">Byte array offset</param>
+        /// <param name="count">Byte array count</param>
+        /// <param name="options">Deserialize options</param>
+        /// <returns>Deserialized object</returns>
+        [MethodImpl(Flags.HotPath)]
+        public static T Deserialize<T>(byte[] bytes, int offset, int count, DeserializeOptions options = null)
+            => BytesSwitcher<T>.Instance.Deserialize(bytes, offset, count, options);
+
         #endregion
         #region Segment
 

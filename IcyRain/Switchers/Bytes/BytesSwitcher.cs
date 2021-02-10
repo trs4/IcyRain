@@ -17,5 +17,7 @@ namespace IcyRain.Switchers
         public abstract byte[] Serialize(T value);
 
         public abstract T Deserialize(byte[] bytes, DeserializeOptions options);
+
+        public abstract T Deserialize(byte[] bytes, int offset, int count, DeserializeOptions options);
     }
 }

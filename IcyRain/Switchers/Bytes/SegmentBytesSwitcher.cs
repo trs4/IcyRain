@@ -19,5 +19,14 @@ namespace IcyRain.Switchers
             return new ArraySegment<byte>(bytes);
         }
 
+        [MethodImpl(Flags.HotPath)]
+        public override ArraySegment<byte> Deserialize(byte[] bytes, int offset, int count, DeserializeOptions options)
+        {
+            if (bytes is null)
+                throw new ArgumentNullException(nameof(bytes));
+
+            return new ArraySegment<byte>(bytes, offset, count);
+        }
+
     }
 }

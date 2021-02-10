@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
 using IcyRain.Serializers;
@@ -23,6 +24,20 @@ namespace IcyRain.Switchers
             try
             {
                 var reader = new Reader(bytes);
+                return Serializer<Resolver, T>.Instance.Deserialize(ref reader, options ?? DeserializeOptions.Default);
+            }
+            finally
+            {
+                Buffers.Return(bytes);
+            }
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override T Deserialize(byte[] bytes, int offset, int count, DeserializeOptions options)
+        {
+            try
+            {
+                var reader = new Reader(new ReadOnlyMemory<byte>(bytes, offset, count));
                 return Serializer<Resolver, T>.Instance.Deserialize(ref reader, options ?? DeserializeOptions.Default);
             }
             finally
