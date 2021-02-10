@@ -11,10 +11,9 @@
     <PackageReference Include="Grpc.Core" Version="2.35.0" />
     <PackageReference Include="Grpc.Core.Api" Version="2.35.0" />
     <PackageReference Include="ZeroFormatter" Version="1.6.4" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
   </ItemGroup>
-
 </Project>
