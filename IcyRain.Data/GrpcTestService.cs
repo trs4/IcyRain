@@ -112,12 +112,12 @@ namespace IcyRain.Data
             // Server streaming with Stream
             using var stream4 = client.GetResponseMessage();
             using var destinationStream4 = new MemoryStream();
-            await stream4.WriteToAsync(destinationStream4).ConfigureAwait(false);
+            await stream4.CopyToAsync(destinationStream4).ConfigureAwait(false);
 
             // Server streaming with Stream and data
             var stream5 = await client.GetDataResponseMessage().ConfigureAwait(false);
             using var destinationStream5 = new MemoryStream();
-            await stream5.WriteToAsync(destinationStream5).ConfigureAwait(false);
+            await stream5.CopyToAsync(destinationStream5).ConfigureAwait(false);
             var data5 = stream5.Data;
 
 
@@ -125,14 +125,14 @@ namespace IcyRain.Data
             using var stream6 = GenerateStream();
             var responseStream6 = await client.GetDuplexMessage(stream6).ConfigureAwait(false);
             using var destinationStream6 = new MemoryStream();
-            await responseStream6.WriteToAsync(destinationStream6).ConfigureAwait(false);
+            await responseStream6.CopyToAsync(destinationStream6).ConfigureAwait(false);
 
             // Duplex streaming with Stream and data
             var data7 = new SealedData() { Property5 = "test7" };
             using var stream7 = GenerateStream();
             var responseStream7 = await client.GetDataDuplexMessage(data7, stream7).ConfigureAwait(false);
             using var destinationStream7 = new MemoryStream();
-            await responseStream7.WriteToAsync(destinationStream7).ConfigureAwait(false);
+            await responseStream7.CopyToAsync(destinationStream7).ConfigureAwait(false);
             var dataResponse7 = responseStream7.Data;
 
 
@@ -206,7 +206,7 @@ namespace IcyRain.Data
             using var stream = TransferStream.Create(reader);
 
             using var destinationStream = new MemoryStream();
-            await stream.WriteToAsync(destinationStream, context.CancellationToken).ConfigureAwait(false);
+            await stream.CopyToAsync(destinationStream, -1, context.CancellationToken).ConfigureAwait(false);
             return new Empty();
         }
 
@@ -217,7 +217,7 @@ namespace IcyRain.Data
             var data = stream.Data;
 
             using var destinationStream = new MemoryStream();
-            await stream.WriteToAsync(destinationStream, context.CancellationToken).ConfigureAwait(false);
+            await stream.CopyToAsync(destinationStream, -1, context.CancellationToken).ConfigureAwait(false);
             return new Empty();
         }
 

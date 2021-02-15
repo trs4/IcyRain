@@ -22,8 +22,6 @@ namespace IcyRain.Streams
         public static TransferStream Create(TransferStreamReader reader, Action onDispose = null)
             => new TransferReaderStream(reader, onDispose);
 
-        public abstract ValueTask WriteToAsync(Stream stream, CancellationToken cancellationToken = default);
-
         #region Stream
 
         public sealed override bool CanRead => true;
@@ -93,10 +91,10 @@ namespace IcyRain.Streams
         #endregion
 
         [MethodImpl(Flags.HotPath)]
-        protected async ValueTask WriteToCoreAsync(TransferStreamReader reader, Stream stream, CancellationToken cancellationToken)
+        protected async Task CopyToCoreAsync(TransferStreamReader reader, Stream destination, CancellationToken cancellationToken)
         {
-            if (stream is null)
-                throw new ArgumentNullException(nameof(stream));
+            if (destination is null)
+                throw new ArgumentNullException(nameof(destination));
 
             while (await reader.MoveNext(cancellationToken).ConfigureAwait(false))
             {
@@ -104,9 +102,9 @@ namespace IcyRain.Streams
                 using var part = reader.Current;
 
 #if NETFRAMEWORK
-                var task = stream.WriteAsync(part.Buffer, 0, part.BufferSize, cancellationToken);
+                var task = destination.WriteAsync(part.Buffer, 0, part.BufferSize, cancellationToken);
 #else
-                var task = stream.WriteAsync(new ReadOnlyMemory<byte>(part.Buffer, 0, part.BufferSize), cancellationToken);
+                var task = destination.WriteAsync(new ReadOnlyMemory<byte>(part.Buffer, 0, part.BufferSize), cancellationToken);
 #endif
                 if (!task.IsCompleted)
                     await task.ConfigureAwait(false);

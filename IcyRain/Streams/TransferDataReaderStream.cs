@@ -13,8 +13,8 @@ namespace IcyRain.Streams
             : base(reader.Data, onDispose)
             => _reader = reader;
 
-        public sealed override ValueTask WriteToAsync(Stream stream, CancellationToken cancellationToken = default)
-            => WriteToCoreAsync(_reader, stream, cancellationToken);
+        public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
+            => CopyToCoreAsync(_reader, destination, cancellationToken);
 
         public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             => ReadCoreAsync(_reader, buffer, offset, count, cancellationToken);
