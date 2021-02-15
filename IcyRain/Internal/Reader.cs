@@ -15,6 +15,7 @@ namespace IcyRain.Internal
         private ReadOnlySpan<byte> _currentSpan;
         private readonly ReadOnlySequence<byte>.Enumerator _sequenceEnumerator;
 
+        [MethodImpl(Flags.HotPath)]
         internal Reader(in ReadOnlySequence<byte> sequence)
         {
             _offset = 0;
@@ -34,6 +35,7 @@ namespace IcyRain.Internal
             }
         }
 
+        [MethodImpl(Flags.HotPath)]
         internal Reader(ReadOnlyMemory<byte> memory)
         {
             _offset = 0;

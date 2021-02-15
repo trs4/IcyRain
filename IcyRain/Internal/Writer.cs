@@ -13,6 +13,7 @@ namespace IcyRain.Internal
         private int _offset;
         private readonly Span<byte> _span;
 
+        [MethodImpl(Flags.HotPath)]
         internal Writer(Span<byte> span)
         {
             _offset = 0;
