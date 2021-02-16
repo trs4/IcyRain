@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using IcyRain.Data.Objects;
 using NUnit.Framework;
 
@@ -6,6 +7,46 @@ namespace IcyRain.Tests
 {
     public class SerializationTest
     {
+        [Test]
+        public void VersionTest()
+        {
+            var value = new Version(1, 2, 3, 4);
+
+            foreach (var deepClone in Tests<Version>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.AreEqual(value.Major, result.Major);
+                Assert.AreEqual(value.Minor, result.Minor);
+                Assert.AreEqual(value.Build, result.Build);
+                Assert.AreEqual(value.Revision, result.Revision);
+            }
+        }
+
+        [Test]
+        public void IPAddressTest()
+        {
+            var value = IPAddress.Parse("1.2.3.4");
+
+            foreach (var deepClone in Tests<IPAddress>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.AreEqual(value.ToString(), result.ToString());
+            }
+        }
+
+        [Test]
+        public void IPEndPointTest()
+        {
+            var value = new IPEndPoint(IPAddress.Parse("1.2.3.4"), 12345);
+
+            foreach (var deepClone in Tests<IPEndPoint>.Functions)
+            {
+                var result = deepClone(value);
+                Assert.AreEqual(value.Address.ToString(), result.Address.ToString());
+                Assert.AreEqual(value.Port, result.Port);
+            }
+        }
+
         [Test]
         public void SealedClass()
         {

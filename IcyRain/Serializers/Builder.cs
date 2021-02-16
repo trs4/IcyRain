@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Net;
 using IcyRain.Builders;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
@@ -175,6 +176,11 @@ namespace IcyRain.Serializers
             { typeof(Memory<byte>), () => new MemorySerializer<TResolver>() },
             { typeof(ReadOnlyMemory<byte>), () => new ReadOnlyMemorySerializer<TResolver>() },
             { typeof(ReadOnlySequence<byte>), () => new ReadOnlySequenceByteSerializer<TResolver>() },
+            
+            // Extended
+            { typeof(Version), () => new VersionSerializer<TResolver>() },
+            { typeof(IPAddress), () => new IPAddressSerializer<TResolver>() },
+            { typeof(IPEndPoint), () => new IPEndPointSerializer<TResolver>() },
 
             // Nullable
             { typeof(bool?), () => new NullableBoolSerializer<TResolver>() },
