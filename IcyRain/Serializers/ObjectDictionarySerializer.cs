@@ -90,7 +90,7 @@ namespace IcyRain.Serializers
             }
         }
 
-        public override sealed TDictionary Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TDictionary Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -102,12 +102,29 @@ namespace IcyRain.Serializers
                 : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
 
             for (int i = 0; i < length; i++)
-                value.Add(_keySerializer.Deserialize(ref reader, options), _valueSerializer.Deserialize(ref reader, options));
+                value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
 
             return value;
         }
 
-        public override sealed TDictionary DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TDictionary DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length < 0)
+                return default;
+
+            var value = _capacityConstructor is null
+                ? new TDictionary()
+                : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
+
+            for (int i = 0; i < length; i++)
+                value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
+
+            return value;
+        }
+
+        public override sealed TDictionary DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -116,7 +133,21 @@ namespace IcyRain.Serializers
                 : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
 
             for (int i = 0; i < length; i++)
-                value.Add(_keySerializer.Deserialize(ref reader, options), _valueSerializer.Deserialize(ref reader, options));
+                value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
+
+            return value;
+        }
+
+        public override sealed TDictionary DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            var value = _capacityConstructor is null
+                ? new TDictionary()
+                : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
+
+            for (int i = 0; i < length; i++)
+                value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
 
             return value;
         }

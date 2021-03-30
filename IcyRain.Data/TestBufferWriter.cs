@@ -61,13 +61,25 @@ namespace IcyRain.Internal
             Advance(bytes.Length);
         }
 
-        public T DeepClone<T>(T value, Action<IBufferWriter<byte>, T> serialize, Func<ReadOnlySequence<byte>, T> deserialize)
+        public T DeepCloneBuffer<T>(T value, Action<IBufferWriter<byte>, T> serialize, Func<ReadOnlySequence<byte>, T> deserialize)
         {
             serialize(this, value);
             return deserialize(ToSequence());
         }
 
-        public T DeepClone<T>(T value, Func<T, byte[]> serialize, Func<byte[], T> deserialize)
+        public T DeepCloneBuffer<T>(T value, Func<IBufferWriter<byte>, T, int> serialize, Func<ReadOnlySequence<byte>, T> deserialize)
+        {
+            serialize(this, value);
+            return deserialize(ToSequence());
+        }
+
+        public T DeepCloneBuffer<T>(T value, Func<IBufferWriter<byte>, T, int> serialize, Func<ReadOnlySequence<byte>, int, T> deserialize)
+        {
+            serialize(this, value);
+            return deserialize(ToSequence(), _count);
+        }
+
+        public T DeepCloneBytes<T>(T value, Func<T, byte[]> serialize, Func<byte[], T> deserialize)
         {
             Write(serialize(value));
             return deserialize(ToArray());

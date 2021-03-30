@@ -44,11 +44,19 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed KeyValuePair<TKey, TValue> Deserialize(ref Reader reader, DeserializeOptions options)
-            => new KeyValuePair<TKey, TValue>(_keySerializer.Deserialize(ref reader, options), _valueSerializer.Deserialize(ref reader, options));
+        public override sealed KeyValuePair<TKey, TValue> Deserialize(ref Reader reader)
+            => new KeyValuePair<TKey, TValue>(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed KeyValuePair<TKey, TValue> DeserializeSpot(ref Reader reader, DeserializeOptions options)
-            => new KeyValuePair<TKey, TValue>(_keySerializer.Deserialize(ref reader, options), _valueSerializer.Deserialize(ref reader, options));
+        public override sealed KeyValuePair<TKey, TValue> DeserializeInUTC(ref Reader reader)
+            => new KeyValuePair<TKey, TValue>(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed KeyValuePair<TKey, TValue> DeserializeSpot(ref Reader reader)
+            => new KeyValuePair<TKey, TValue>(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed KeyValuePair<TKey, TValue> DeserializeInUTCSpot(ref Reader reader)
+            => new KeyValuePair<TKey, TValue>(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
     }
 }

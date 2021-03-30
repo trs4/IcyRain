@@ -36,13 +36,44 @@ namespace IcyRain.Internal
         }
 
         [MethodImpl(Flags.HotPath)]
-        internal Reader(ReadOnlyMemory<byte> memory)
+        internal Reader(in ReadOnlyMemory<byte> memory)
         {
             _offset = 0;
             _currentMemory = memory;
             _currentSpan = memory.Span;
             _sequenceEnumerator = default;
         }
+
+#pragma warning disable CA1801 // Review unused parameters
+        [MethodImpl(Flags.HotPath)]
+        internal Reader(in ReadOnlySequence<byte> sequence, bool forCompress)
+        {
+            _offset = 1;
+
+            if (sequence.IsSingleSegment)
+            {
+                _currentMemory = sequence.First;
+                _currentSpan = _currentMemory.Span;
+                _sequenceEnumerator = default;
+            }
+            else
+            {
+                _sequenceEnumerator = sequence.GetEnumerator();
+                _sequenceEnumerator.MoveNext();
+                _currentMemory = _sequenceEnumerator.Current;
+                _currentSpan = _currentMemory.Span;
+            }
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        internal Reader(in ReadOnlyMemory<byte> memory, bool forCompress)
+        {
+            _offset = 1;
+            _currentMemory = memory;
+            _currentSpan = memory.Span;
+            _sequenceEnumerator = default;
+        }
+#pragma warning restore CA1801 // Review unused parameters
 
         #endregion
         #region Memory
@@ -172,7 +203,6 @@ namespace IcyRain.Internal
 
         #endregion
         #region Types
-#pragma warning disable CA1062 // Validate arguments of public methods
 
         #region Bool
 
@@ -462,7 +492,7 @@ namespace IcyRain.Internal
             => DateTime.FromBinary(ReadLong());
 
         [MethodImpl(Flags.HotPath)]
-        public unsafe DateTime ReadDateTime(DeserializeOptions options)
+        public unsafe DateTime ReadDateTime()
         {
             DateTime value;
             bool isUtcTimeZone;
@@ -473,11 +503,18 @@ namespace IcyRain.Internal
                 isUtcTimeZone = *(ptr + 8) == 1;
             }
 
-            return options.IsUtcZone || isUtcTimeZone ? value : value.ToLocalTime();
+            return isUtcTimeZone ? value : value.ToLocalTime();
         }
 
         [MethodImpl(Flags.HotPath)]
-        public unsafe void AppendDateTime(ref DateTime value, DeserializeOptions options)
+        public unsafe DateTime ReadDateTimeInUTC()
+        {
+            fixed (byte* ptr = GetSpan(9))
+                return DateTime.FromBinary(*(long*)ptr);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public unsafe void AppendDateTime(ref DateTime value)
         {
             bool isUtcTimeZone;
 
@@ -487,8 +524,15 @@ namespace IcyRain.Internal
                 isUtcTimeZone = *(ptr + 8) == 1;
             }
 
-            if (!isUtcTimeZone && !options.IsUtcZone)
+            if (!isUtcTimeZone)
                 value = value.ToLocalTime();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public unsafe void AppendDateTimeInUTC(ref DateTime value)
+        {
+            fixed (byte* ptr = GetSpan(9))
+                value = DateTime.FromBinary(*(long*)ptr);
         }
 
         #endregion
@@ -591,7 +635,6 @@ namespace IcyRain.Internal
 
         #endregion
 
-#pragma warning restore CA1062 // Validate arguments of public methods
         #endregion
     }
 }

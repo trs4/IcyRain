@@ -108,9 +108,9 @@ namespace IcyRain.Builders
                 {
                     var unionData = unionDataList[dataListCount];
 
-                    il.Emit(OpCodes.Call, data.GetInstance);
+                    il.Emit(OpCodes.Call, unionData.GetInstance);
                     il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Callvirt, data.GetCapacity);
+                    il.Emit(OpCodes.Callvirt, unionData.GetCapacity);
                     il.Emit(OpCodes.Ldc_I4_1);
                     il.Emit(OpCodes.Add);
                     il.Emit(OpCodes.Ret);
@@ -164,10 +164,10 @@ namespace IcyRain.Builders
                     il.Emit(OpCodes.Ldarg_1);
                     il.EmitLdc_I4(unionDataList.Length);
                     il.Emit(OpCodes.Call, Types.WriteByte);
-                    il.Emit(OpCodes.Call, data.GetInstance);
+                    il.Emit(OpCodes.Call, unionData.GetInstance);
                     il.Emit(OpCodes.Ldarg_1);
                     il.Emit(OpCodes.Ldarg_2);
-                    il.Emit(OpCodes.Callvirt, data.SerializeSpot);
+                    il.Emit(OpCodes.Callvirt, unionData.SerializeSpot);
                     il.Emit(OpCodes.Ret);
                 }
 
@@ -202,7 +202,7 @@ namespace IcyRain.Builders
                 il.Emit(OpCodes.Ret);
             }
 
-            // T Deserialize(ref Reader reader, DeserializeOptions options)
+            // T Deserialize(ref Reader reader)
             {
                 var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Deserialize), Flags.PublicOverrideMethod,
                     type, Types.Deserialize)
@@ -233,37 +233,58 @@ namespace IcyRain.Builders
                     il.EmitLdc_I4(i + 1);
                     il.Emit(OpCodes.Bne_Un_S, propertyLabel);
 
-                    il.Emit(OpCodes.Call, unionData.GetInstance);
-                    il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Ldarg_2);
-                    il.Emit(OpCodes.Callvirt, unionData.DeserializeSpot); ;
-                    il.Emit(OpCodes.Ret);
+                    unionData.EmitDeserializeSpot(il);
                     il.MarkLabel(propertyLabel);
                 }
 
                 if (isAbstractBaseType)
-                {
-                    // throw new InvalidOperationException("Unknown index: " + index);
-                    il.Emit(OpCodes.Ldstr, "Unknown index: ");
-                    il.Emit(OpCodes.Ldloca_S, 0);
-                    il.Emit(OpCodes.Call, Types.ByteToStringMethod);
-                    il.Emit(OpCodes.Call, Types.StringConcatMethod);
-                    il.Emit(OpCodes.Newobj, Types.InvalidOperationExceptionCtor);
-                    il.Emit(OpCodes.Throw);
-                }
+                    EmitException(il);
                 else
-                {
-                    var unionData = unionDataList[dataListCount];
-
-                    il.Emit(OpCodes.Call, data.GetInstance);
-                    il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Ldarg_2);
-                    il.Emit(OpCodes.Callvirt, data.DeserializeSpot);
-                    il.Emit(OpCodes.Ret);
-                }
+                    unionDataList[dataListCount].EmitDeserializeSpot(il);
             }
 
-            // T DeserializeSpot(ref Reader reader, DeserializeOptions options)
+            // T DeserializeInUTC(ref Reader reader)
+            {
+                var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTC), Flags.PublicOverrideMethod,
+                    type, Types.Deserialize)
+                    .WithNames(Naming.Deserialize);
+
+                var il = method.GetILGenerator();
+                var label = il.DefineLabel();
+                il.DeclareLocal(Types.Byte);
+
+                // int index = reader.ReadByte();
+                il.Emit(OpCodes.Ldarg_1);
+                il.Emit(OpCodes.Call, data.ReadMethod);
+                il.Emit(OpCodes.Stloc_0);
+                il.Emit(OpCodes.Ldloc_0);
+                il.Emit(OpCodes.Brtrue_S, label);
+
+                // return null;
+                il.Emit(OpCodes.Ldnull);
+                il.Emit(OpCodes.Ret);
+                il.MarkLabel(label);
+
+                for (int i = 0; i < dataListCount; i++)
+                {
+                    var unionData = unionDataList[i];
+                    var propertyLabel = il.DefineLabel();
+
+                    il.Emit(OpCodes.Ldloc_0);
+                    il.EmitLdc_I4(i + 1);
+                    il.Emit(OpCodes.Bne_Un_S, propertyLabel);
+
+                    unionData.EmitDeserializeInUTCSpot(il);
+                    il.MarkLabel(propertyLabel);
+                }
+
+                if (isAbstractBaseType)
+                    EmitException(il);
+                else
+                    unionDataList[dataListCount].EmitDeserializeInUTCSpot(il);
+            }
+
+            // T DeserializeSpot(ref Reader reader)
             {
                 var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeSpot), Flags.PublicOverrideMethod,
                     type, Types.Deserialize)
@@ -287,37 +308,62 @@ namespace IcyRain.Builders
                     il.EmitLdc_I4(i + 1);
                     il.Emit(OpCodes.Bne_Un_S, propertyLabel);
 
-                    il.Emit(OpCodes.Call, unionData.GetInstance);
-                    il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Ldarg_2);
-                    il.Emit(OpCodes.Callvirt, unionData.DeserializeSpot);
-                    il.Emit(OpCodes.Ret);
+                    unionData.EmitDeserializeSpot(il);
                     il.MarkLabel(propertyLabel);
                 }
 
                 if (isAbstractBaseType)
-                {
-                    // throw new InvalidOperationException("Unknown index: " + index);
-                    il.Emit(OpCodes.Ldstr, "Unknown index: ");
-                    il.Emit(OpCodes.Ldloca_S, 0);
-                    il.Emit(OpCodes.Call, Types.ByteToStringMethod);
-                    il.Emit(OpCodes.Call, Types.StringConcatMethod);
-                    il.Emit(OpCodes.Newobj, Types.InvalidOperationExceptionCtor);
-                    il.Emit(OpCodes.Throw);
-                }
+                    EmitException(il);
                 else
-                {
-                    var unionData = unionDataList[dataListCount];
+                    unionDataList[dataListCount].EmitDeserializeSpot(il);
+            }
 
-                    il.Emit(OpCodes.Call, data.GetInstance);
-                    il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Ldarg_2);
-                    il.Emit(OpCodes.Callvirt, data.DeserializeSpot);
-                    il.Emit(OpCodes.Ret);
+            // T DeserializeInUTCSpot(ref Reader reader)
+            {
+                var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTCSpot), Flags.PublicOverrideMethod,
+                    type, Types.Deserialize)
+                    .WithNames(Naming.Deserialize);
+
+                var il = method.GetILGenerator();
+                var label = il.DefineLabel();
+                il.DeclareLocal(Types.Byte);
+
+                // int index = reader.ReadByte();
+                il.Emit(OpCodes.Ldarg_1);
+                il.Emit(OpCodes.Call, data.ReadMethod);
+                il.Emit(OpCodes.Stloc_0);
+
+                for (int i = 0; i < dataListCount; i++)
+                {
+                    var unionData = unionDataList[i];
+                    var propertyLabel = il.DefineLabel();
+
+                    il.Emit(OpCodes.Ldloc_0);
+                    il.EmitLdc_I4(i + 1);
+                    il.Emit(OpCodes.Bne_Un_S, propertyLabel);
+
+                    unionData.EmitDeserializeInUTCSpot(il);
+                    il.MarkLabel(propertyLabel);
                 }
+
+                if (isAbstractBaseType)
+                    EmitException(il);
+                else
+                    unionDataList[dataListCount].EmitDeserializeInUTCSpot(il);
             }
 
             return builder.CreateType();
+        }
+
+        private static void EmitException(ILGenerator il)
+        {
+            // throw new InvalidOperationException("Unknown index: " + index);
+            il.Emit(OpCodes.Ldstr, "Unknown index: ");
+            il.Emit(OpCodes.Ldloca_S, 0);
+            il.Emit(OpCodes.Call, Types.ByteToStringMethod);
+            il.Emit(OpCodes.Call, Types.StringConcatMethod);
+            il.Emit(OpCodes.Newobj, Types.InvalidOperationExceptionCtor);
+            il.Emit(OpCodes.Throw);
         }
 
     }

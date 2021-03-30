@@ -13,7 +13,6 @@ namespace IcyRain
         public static class Streams
         {
             /// <summary>Serialize via buffer</summary>
-            /// <typeparam name="T">Concrete type</typeparam>
             /// <param name="buffer">Buffer</param>
             /// <param name="part">Stream part</param>
             [MethodImpl(Flags.HotPath)]
@@ -29,7 +28,6 @@ namespace IcyRain
             }
 
             /// <summary>Deserialize via buffer</summary>
-            /// <typeparam name="T">Concrete type</typeparam>
             /// <param name="sequence">Buffer</param>
             /// <returns>Stream part</returns>
             [MethodImpl(Flags.HotPath)]
@@ -39,11 +37,10 @@ namespace IcyRain
             /// <summary>Deserialize via buffer</summary>
             /// <typeparam name="T">Concrete type</typeparam>
             /// <param name="sequence">Buffer</param>
-            /// <param name="options">Deserialize options</param>
             /// <returns>Stream part</returns>
             [MethodImpl(Flags.HotPath)]
-            public static StreamDataPart<T> DeserializeData<T>(in ReadOnlySequence<byte> sequence, DeserializeOptions options = null)
-                => new StreamDataPart<T>(sequence, options);
+            public static StreamDataPart<T> DeserializeData<T>(in ReadOnlySequence<byte> sequence)
+                => new StreamDataPart<T>(sequence);
         }
     }
 }

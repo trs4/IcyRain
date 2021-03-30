@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using IcyRain.Compression.LZ4;
 using IcyRain.Internal;
 
 namespace IcyRain.Switchers
@@ -11,21 +12,45 @@ namespace IcyRain.Switchers
             => value.Count == 0 ? Array.Empty<byte>() : (value.Array.Length == value.Count ? value.Array : value.TransferToArray());
 
         [MethodImpl(Flags.HotPath)]
-        public sealed override ArraySegment<byte> Deserialize(byte[] bytes, DeserializeOptions options)
+        public sealed override byte[] SerializeWithLZ4(ArraySegment<byte> value, out int serializedLength)
         {
-            if (bytes is null)
-                throw new ArgumentNullException(nameof(bytes));
-
-            return new ArraySegment<byte>(bytes);
+            serializedLength = value.Count;
+            return LZ4ArrayCodec.EncodeToArray(value);
         }
 
+
         [MethodImpl(Flags.HotPath)]
-        public override ArraySegment<byte> Deserialize(byte[] bytes, int offset, int count, DeserializeOptions options)
+        public sealed override ArraySegment<byte> Deserialize(byte[] bytes, int offset, int count)
         {
             if (bytes is null)
                 throw new ArgumentNullException(nameof(bytes));
 
             return new ArraySegment<byte>(bytes, offset, count);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ArraySegment<byte> DeserializeInUTC(byte[] bytes, int offset, int count)
+        {
+            if (bytes is null)
+                throw new ArgumentNullException(nameof(bytes));
+
+            return new ArraySegment<byte>(bytes, offset, count);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ArraySegment<byte> DeserializeWithLZ4(byte[] bytes, int offset, int count, out int decodedLength)
+        {
+            decodedLength = count;
+            byte[] result = LZ4ArrayCodec.DecodeToRentArray(new Span<byte>(bytes, offset, count), ref decodedLength);
+            return new ArraySegment<byte>(result, 0, decodedLength);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ArraySegment<byte> DeserializeInUTCWithLZ4(byte[] bytes, int offset, int count, out int decodedLength)
+        {
+            decodedLength = count;
+            byte[] result = LZ4ArrayCodec.DecodeToRentArray(new Span<byte>(bytes, offset, count), ref decodedLength);
+            return new ArraySegment<byte>(result, 0, decodedLength);
         }
 
     }

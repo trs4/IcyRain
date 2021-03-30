@@ -102,7 +102,7 @@ namespace IcyRain.Data.Objects
             writer.WriteByte(255); // End object
         }
 
-        public override sealed TestData Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestData Deserialize(ref Reader reader)
         {
             int index = reader.ReadByte(); // Read 0 or 1 or 255
 
@@ -113,69 +113,149 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property1 = _s_Property1Serializer.DeserializeSpot(ref reader, options);
+                obj.Property1 = _s_Property1Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 2
             }
 
             if (index == 2)
             {
-                obj.Property2 = _s_Property2Serializer.DeserializeSpot(ref reader, options);
+                obj.Property2 = _s_Property2Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 3
             }
 
             if (index == 3)
             {
-                obj.Property3 = _s_Property3Serializer.DeserializeSpot(ref reader, options);
+                obj.Property3 = _s_Property3Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadInt(); // Read 4
             }
 
             if (index == 4)
             {
-                obj.Property4 = _s_Property4Serializer.DeserializeSpot(ref reader, options);
+                obj.Property4 = _s_Property4Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 5
             }
 
             if (index == 5)
             {
-                obj.Property5 = _s_Property5Serializer.DeserializeSpot(ref reader, options);
+                obj.Property5 = _s_Property5Serializer.DeserializeSpot(ref reader);
                 reader.ReadByte(); // Read 255
             }
 
             return obj;
         }
 
-        public override sealed TestData DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestData DeserializeInUTC(ref Reader reader)
+        {
+            int index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 0)
+                return null;
+
+            var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+
+            if (index == 1)
+            {
+                obj.Property1 = _s_Property1Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 2
+            }
+
+            if (index == 2)
+            {
+                obj.Property2 = _s_Property2Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 3
+            }
+
+            if (index == 3)
+            {
+                obj.Property3 = _s_Property3Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadInt(); // Read 4
+            }
+
+            if (index == 4)
+            {
+                obj.Property4 = _s_Property4Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 5
+            }
+
+            if (index == 5)
+            {
+                obj.Property5 = _s_Property5Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadByte(); // Read 255
+            }
+
+            return obj;
+        }
+
+        public override sealed TestData DeserializeSpot(ref Reader reader)
         {
             var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
             int index = reader.ReadByte(); // Read 0 or 1 or 255
 
             if (index == 1)
             {
-                obj.Property1 = _s_Property1Serializer.DeserializeSpot(ref reader, options);
+                obj.Property1 = _s_Property1Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 2
             }
 
             if (index == 2)
             {
-                obj.Property2 = _s_Property2Serializer.DeserializeSpot(ref reader, options);
+                obj.Property2 = _s_Property2Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 3
             }
 
             if (index == 3)
             {
-                obj.Property3 = _s_Property3Serializer.DeserializeSpot(ref reader, options);
+                obj.Property3 = _s_Property3Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadInt(); // Read 4
             }
 
             if (index == 4)
             {
-                obj.Property4 = _s_Property4Serializer.DeserializeSpot(ref reader, options);
+                obj.Property4 = _s_Property4Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 5
             }
 
             if (index == 5)
             {
-                obj.Property5 = _s_Property5Serializer.DeserializeSpot(ref reader, options);
+                obj.Property5 = _s_Property5Serializer.DeserializeSpot(ref reader);
+                reader.ReadByte(); // Read 255
+            }
+
+            return obj;
+        }
+
+        public override sealed TestData DeserializeInUTCSpot(ref Reader reader)
+        {
+            var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+            int index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 1)
+            {
+                obj.Property1 = _s_Property1Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 2
+            }
+
+            if (index == 2)
+            {
+                obj.Property2 = _s_Property2Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 3
+            }
+
+            if (index == 3)
+            {
+                obj.Property3 = _s_Property3Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadInt(); // Read 4
+            }
+
+            if (index == 4)
+            {
+                obj.Property4 = _s_Property4Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 5
+            }
+
+            if (index == 5)
+            {
+                obj.Property5 = _s_Property5Serializer.DeserializeInUTCSpot(ref reader);
                 reader.ReadByte(); // Read 255
             }
 

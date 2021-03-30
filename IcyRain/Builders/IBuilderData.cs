@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Reflection.Emit;
 using IcyRain.Serializers;
 
 namespace IcyRain.Builders
@@ -34,8 +35,14 @@ namespace IcyRain.Builders
 
         MethodInfo DeserializeSpot { get; }
 
+        MethodInfo DeserializeInUTCSpot { get; }
+
         MethodInfo Add { get; }
 
         ISerializer Serializer { get; }
+
+        void EmitDeserializeSpot(ILGenerator il);
+
+        void EmitDeserializeInUTCSpot(ILGenerator il);
     }
 }

@@ -43,8 +43,12 @@ namespace IcyRain.Serializers
 
         public abstract void SerializeSpot(ref Writer writer, T value);
 
-        public abstract T Deserialize(ref Reader reader, DeserializeOptions options);
+        public abstract T Deserialize(ref Reader reader);
 
-        public abstract T DeserializeSpot(ref Reader reader, DeserializeOptions options);
+        public abstract T DeserializeInUTC(ref Reader reader);
+
+        public abstract T DeserializeSpot(ref Reader reader);
+
+        public abstract T DeserializeInUTCSpot(ref Reader reader);
     }
 }

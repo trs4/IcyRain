@@ -81,7 +81,7 @@ namespace IcyRain.Serializers
             }
         }
 
-        public override sealed IReadOnlyCollection<T> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed IReadOnlyCollection<T> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -90,7 +90,7 @@ namespace IcyRain.Serializers
                 var value = new T[length];
 
                 for (int i = 0; i < length; i++)
-                    value[i] = _serializer.Deserialize(ref reader, options);
+                    value[i] = _serializer.Deserialize(ref reader);
 
                 return value;
             }
@@ -98,7 +98,24 @@ namespace IcyRain.Serializers
             return length == 0 ? Array.Empty<T>() : null;
         }
 
-        public override sealed IReadOnlyCollection<T> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed IReadOnlyCollection<T> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new T[length];
+
+                for (int i = 0; i < length; i++)
+                    value[i] = _serializer.DeserializeInUTC(ref reader);
+
+                return value;
+            }
+
+            return length == 0 ? Array.Empty<T>() : null;
+        }
+
+        public override sealed IReadOnlyCollection<T> DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -108,7 +125,22 @@ namespace IcyRain.Serializers
             var value = new T[length];
 
             for (int i = 0; i < length; i++)
-                value[i] = _serializer.Deserialize(ref reader, options);
+                value[i] = _serializer.Deserialize(ref reader);
+
+            return value;
+        }
+
+        public override sealed IReadOnlyCollection<T> DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return Array.Empty<T>();
+
+            var value = new T[length];
+
+            for (int i = 0; i < length; i++)
+                value[i] = _serializer.DeserializeInUTC(ref reader);
 
             return value;
         }

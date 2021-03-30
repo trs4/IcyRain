@@ -10,8 +10,16 @@ namespace IcyRain.Serializers
     public abstract class UnionUShortMapSerializer<T> : Serializer<UnionResolver, T>
         where T : class
     {
-        private static readonly Dictionary<Type, UnionUShortData<T>> _map = new Dictionary<Type, UnionUShortData<T>>();
-        private static readonly Dictionary<ushort, DeserializeMethod<T>> _deserializeMap = new Dictionary<ushort, DeserializeMethod<T>>();
+        private static Dictionary<Type, UnionUShortData<T>> _map;
+        private static Dictionary<ushort, DeserializeMethod<T>> _deserializeMap;
+        private static Dictionary<ushort, DeserializeMethod<T>> _deserializeInUTCMap;
+
+        protected UnionUShortMapSerializer(int capacity)
+        {
+            _map = new(capacity);
+            _deserializeMap = new(capacity);
+            _deserializeInUTCMap = new(capacity);
+        }
 
         public void Add<TUnionType>(ushort index)
             where TUnionType : T
@@ -21,10 +29,11 @@ namespace IcyRain.Serializers
                 (ref Writer writer, T value) => Serializer<Resolver, TUnionType>.Instance.SerializeSpot(ref writer, (TUnionType)value)));
 
             _deserializeMap.Add(index,
-                (ref Reader reader, DeserializeOptions options) => Serializer<Resolver, TUnionType>.Instance.DeserializeSpot(ref reader, options));
-        }
+                (ref Reader reader) => Serializer<Resolver, TUnionType>.Instance.DeserializeSpot(ref reader));
 
-        protected UnionUShortMapSerializer() { }
+            _deserializeInUTCMap.Add(index,
+                (ref Reader reader) => Serializer<Resolver, TUnionType>.Instance.DeserializeInUTCSpot(ref reader));
+        }
 
         [MethodImpl(Flags.HotPath)]
         public override sealed int? GetSize() => null;
@@ -65,21 +74,39 @@ namespace IcyRain.Serializers
             }
         }
 
-        public override sealed T Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed T Deserialize(ref Reader reader)
         {
             ushort index = reader.ReadUShort();
 
             return index == 0 ? null : (_deserializeMap.TryGetValue(index, out var deserializeMethod)
-                ? deserializeMethod(ref reader, options)
+                ? deserializeMethod(ref reader)
                 : throw new InvalidOperationException("Unknown index: " + index));
         }
 
-        public override sealed T DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed T DeserializeInUTC(ref Reader reader)
+        {
+            ushort index = reader.ReadUShort();
+
+            return index == 0 ? null : (_deserializeInUTCMap.TryGetValue(index, out var deserializeMethod)
+                ? deserializeMethod(ref reader)
+                : throw new InvalidOperationException("Unknown index: " + index));
+        }
+
+        public override sealed T DeserializeSpot(ref Reader reader)
         {
             ushort index = reader.ReadUShort();
 
             return _deserializeMap.TryGetValue(index, out var deserializeMethod)
-                ? deserializeMethod(ref reader, options)
+                ? deserializeMethod(ref reader)
+                : throw new InvalidOperationException("Unknown index: " + index);
+        }
+
+        public override sealed T DeserializeInUTCSpot(ref Reader reader)
+        {
+            ushort index = reader.ReadUShort();
+
+            return _deserializeInUTCMap.TryGetValue(index, out var deserializeMethod)
+                ? deserializeMethod(ref reader)
                 : throw new InvalidOperationException("Unknown index: " + index);
         }
 

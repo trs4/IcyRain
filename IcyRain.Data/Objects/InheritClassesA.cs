@@ -225,7 +225,7 @@ namespace IcyRain.Data.Objects
             throw new NotImplementedException();
         }
 
-        public override sealed TestA1 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA1 Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 255 or 1 or 0
 
@@ -236,14 +236,37 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader, options);
+                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
                 reader.ReadByte(); // Read 0
             }
 
             return obj;
         }
 
-        public override sealed TestA1 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA1 DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 255 or 1 or 0
+
+            if (index == 255)
+                return null;
+
+            var obj = (TestA1)FormatterServices.GetUninitializedObject(typeof(TestA1));
+
+            if (index == 1)
+            {
+                obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadByte(); // Read 0
+            }
+
+            return obj;
+        }
+
+        public override sealed TestA1 DeserializeSpot(ref Reader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override sealed TestA1 DeserializeInUTCSpot(ref Reader reader)
         {
             throw new NotImplementedException();
         }
@@ -304,7 +327,7 @@ namespace IcyRain.Data.Objects
             throw new NotImplementedException();
         }
 
-        public override sealed TestA2 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA2 Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
@@ -315,26 +338,61 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader, options);
+                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 2
             }
 
             if (index == 2)
             {
-                obj.Property21 = _s_Property21Serializer.DeserializeSpot(ref reader, options);
+                obj.Property21 = _s_Property21Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 3
             }
 
             if (index == 3)
             {
-                obj.Property22 = _s_Property22Serializer.DeserializeSpot(ref reader, options);
+                obj.Property22 = _s_Property22Serializer.DeserializeSpot(ref reader);
                 reader.ReadInt(); // Read 255
             }
 
             return obj;
         }
 
-        public override sealed TestA2 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA2 DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 0)
+                return null;
+
+            var obj = (TestA2)FormatterServices.GetUninitializedObject(typeof(TestA2));
+
+            if (index == 1)
+            {
+                obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 2
+            }
+
+            if (index == 2)
+            {
+                obj.Property21 = _s_Property21Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 3
+            }
+
+            if (index == 3)
+            {
+                obj.Property22 = _s_Property22Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadInt(); // Read 255
+            }
+
+            return obj;
+        }
+
+        public override sealed TestA2 DeserializeSpot(ref Reader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override sealed TestA2 DeserializeInUTCSpot(ref Reader reader)
         {
             throw new NotImplementedException();
         }
@@ -421,7 +479,7 @@ namespace IcyRain.Data.Objects
             throw new NotImplementedException();
         }
 
-        public override sealed TestA3 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA3 Deserialize(ref Reader reader)
         {
             ushort index = reader.ReadUShort(); // Read 0 or 1 or 65535
 
@@ -432,44 +490,97 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader, options);
+                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadUShort(); // Read 2
             }
 
             if (index == 2)
             {
-                obj.Property31 = _s_Property31Serializer.DeserializeSpot(ref reader, options);
+                obj.Property31 = _s_Property31Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadUShort(); // Read 3
             }
 
             if (index == 3)
             {
-                obj.Property32 = _s_Property32Serializer.DeserializeSpot(ref reader, options);
+                obj.Property32 = _s_Property32Serializer.DeserializeSpot(ref reader);
                 reader.ReadUShort(); // Read 4
             }
 
             if (index == 4)
             {
-                obj.Property33 = _s_Property33Serializer.DeserializeSpot(ref reader, options);
+                obj.Property33 = _s_Property33Serializer.DeserializeSpot(ref reader);
                 reader.ReadUShort(); // Read 5
             }
 
             if (index == 5)
             {
-                obj.Property34 = _s_Property34Serializer.DeserializeSpot(ref reader, options);
+                obj.Property34 = _s_Property34Serializer.DeserializeSpot(ref reader);
                 reader.ReadUShort(); // Read 6
             }
 
             if (index == 6)
             {
-                obj.Property35 = _s_Property35Serializer.DeserializeSpot(ref reader, options);
+                obj.Property35 = _s_Property35Serializer.DeserializeSpot(ref reader);
                 reader.ReadUShort(); // Read 65535
             }
 
             return obj;
         }
 
-        public override sealed TestA3 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA3 DeserializeInUTC(ref Reader reader)
+        {
+            ushort index = reader.ReadUShort(); // Read 0 or 1 or 65535
+
+            if (index == 0)
+                return null;
+
+            var obj = (TestA3)FormatterServices.GetUninitializedObject(typeof(TestA3));
+
+            if (index == 1)
+            {
+                obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadUShort(); // Read 2
+            }
+
+            if (index == 2)
+            {
+                obj.Property31 = _s_Property31Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadUShort(); // Read 3
+            }
+
+            if (index == 3)
+            {
+                obj.Property32 = _s_Property32Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadUShort(); // Read 4
+            }
+
+            if (index == 4)
+            {
+                obj.Property33 = _s_Property33Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadUShort(); // Read 5
+            }
+
+            if (index == 5)
+            {
+                obj.Property34 = _s_Property34Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadUShort(); // Read 6
+            }
+
+            if (index == 6)
+            {
+                obj.Property35 = _s_Property35Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadUShort(); // Read 65535
+            }
+
+            return obj;
+        }
+
+        public override sealed TestA3 DeserializeSpot(ref Reader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override sealed TestA3 DeserializeInUTCSpot(ref Reader reader)
         {
             throw new NotImplementedException();
         }
@@ -527,28 +638,54 @@ namespace IcyRain.Data.Objects
         }
 #pragma warning restore IDE0038 // Use pattern matching
 
-        public override sealed TestA1 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA1 Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
             if (index == 0)
                 return null;
             else if (index == 1)
-                return Serializer<Resolver, TestA2>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestA2>.Instance.DeserializeSpot(ref reader);
             else if (index == 2)
-                return Serializer<Resolver, TestA3>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestA3>.Instance.DeserializeSpot(ref reader);
             else
                 throw new InvalidOperationException("Unknown index: " + index);
         }
 
-        public override sealed TestA1 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestA1 DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 0)
+                return null;
+            else if (index == 1)
+                return Serializer<Resolver, TestA2>.Instance.DeserializeInUTCSpot(ref reader);
+            else if (index == 2)
+                return Serializer<Resolver, TestA3>.Instance.DeserializeInUTCSpot(ref reader);
+            else
+                throw new InvalidOperationException("Unknown index: " + index);
+        }
+
+        public override sealed TestA1 DeserializeSpot(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
             if (index == 1)
-                return Serializer<Resolver, TestA2>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestA2>.Instance.DeserializeSpot(ref reader);
             else if (index == 2)
-                return Serializer<Resolver, TestA3>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestA3>.Instance.DeserializeSpot(ref reader);
+            else
+                throw new InvalidOperationException("Unknown index: " + index);
+        }
+
+        public override sealed TestA1 DeserializeInUTCSpot(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 1)
+                return Serializer<Resolver, TestA2>.Instance.DeserializeInUTCSpot(ref reader);
+            else if (index == 2)
+                return Serializer<Resolver, TestA3>.Instance.DeserializeInUTCSpot(ref reader);
             else
                 throw new InvalidOperationException("Unknown index: " + index);
         }

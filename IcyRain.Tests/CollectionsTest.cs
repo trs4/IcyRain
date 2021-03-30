@@ -16,7 +16,21 @@ namespace IcyRain.Tests
                 { 10, "3" },
                 { 9, "4" },
                 { 3, "5" },
-                { 4, "6" },
+                { 4, "7" },
+                { 42, "5" },
+                { 43, "9" },
+                { 44, "10" },
+
+                { 45, "11" },
+                { 46, "12" },
+                { 47, "13" },
+                { 48, "14" },
+                { 49, "15" },
+                { 410, "16" },
+                { 411, "17" },
+                { 412, "18" },
+                { 413, "19" },
+                { 414, "20" },
             };
 
             foreach (var deepClone in Tests<Dictionary<int, string>>.Functions)
@@ -30,7 +44,7 @@ namespace IcyRain.Tests
                 Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
                 Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
                 Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
-                Assert.IsTrue(clone.TryGetValue(4, out value) && value == "6");
+                Assert.IsTrue(clone.TryGetValue(4, out value) && value == "7");
             }
         }
 

@@ -60,7 +60,7 @@ namespace IcyRain.Serializers
                 _serializer.Serialize(ref writer, array[i]);
         }
 
-        public override sealed List<T> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<T> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -69,7 +69,7 @@ namespace IcyRain.Serializers
                 var value = new T[length];
 
                 for (int i = 0; i < length; i++)
-                    value[i] = _serializer.Deserialize(ref reader, options);
+                    value[i] = _serializer.Deserialize(ref reader);
 
                 return value.CreateList();
             }
@@ -77,7 +77,24 @@ namespace IcyRain.Serializers
             return length == 0 ? new List<T>() : null;
         }
 
-        public override sealed List<T> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<T> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new T[length];
+
+                for (int i = 0; i < length; i++)
+                    value[i] = _serializer.DeserializeInUTC(ref reader);
+
+                return value.CreateList();
+            }
+
+            return length == 0 ? new List<T>() : null;
+        }
+
+        public override sealed List<T> DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -87,7 +104,22 @@ namespace IcyRain.Serializers
             var value = new T[length];
 
             for (int i = 0; i < length; i++)
-                value[i] = _serializer.Deserialize(ref reader, options);
+                value[i] = _serializer.Deserialize(ref reader);
+
+            return value.CreateList();
+        }
+
+        public override sealed List<T> DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return new List<T>();
+
+            var value = new T[length];
+
+            for (int i = 0; i < length; i++)
+                value[i] = _serializer.DeserializeInUTC(ref reader);
 
             return value.CreateList();
         }

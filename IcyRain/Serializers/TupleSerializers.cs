@@ -42,19 +42,36 @@ namespace IcyRain.Serializers
             => _serializer1.Serialize(ref writer, value.Item1);
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
             return new Tuple<T1>(item1);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            return new Tuple<T1>(item1);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            return new Tuple<T1>(item1);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
             return new Tuple<T1>(item1);
         }
 
@@ -103,21 +120,40 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
             return new Tuple<T1, T2>(item1, item2);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2>(item1, item2);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            return new Tuple<T1, T2>(item1, item2);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2>(item1, item2);
         }
 
@@ -171,23 +207,44 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
             return new Tuple<T1, T2, T3>(item1, item2, item3);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2, T3>(item1, item2, item3);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            return new Tuple<T1, T2, T3>(item1, item2, item3);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2, T3>(item1, item2, item3);
         }
 
@@ -245,25 +302,48 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
             return new Tuple<T1, T2, T3, T4>(item1, item2, item3, item4);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2, T3, T4>(item1, item2, item3, item4);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            return new Tuple<T1, T2, T3, T4>(item1, item2, item3, item4);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2, T3, T4>(item1, item2, item3, item4);
         }
 
@@ -326,27 +406,52 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
             return new Tuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
         }
 
@@ -413,29 +518,56 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5, T6> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
-            var item6 = _serializer6.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            var item6 = _serializer6.Deserialize(ref reader);
             return new Tuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5, T6> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
-            var item6 = _serializer6.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            var item6 = _serializer6.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            var item6 = _serializer6.Deserialize(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            var item6 = _serializer6.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
         }
 
@@ -507,31 +639,60 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
-            var item6 = _serializer6.Deserialize(ref reader, options);
-            var item7 = _serializer7.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            var item6 = _serializer6.Deserialize(ref reader);
+            var item7 = _serializer7.Deserialize(ref reader);
             return new Tuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
-            var item6 = _serializer6.Deserialize(ref reader, options);
-            var item7 = _serializer7.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            var item6 = _serializer6.DeserializeInUTC(ref reader);
+            var item7 = _serializer7.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            var item6 = _serializer6.Deserialize(ref reader);
+            var item7 = _serializer7.Deserialize(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            var item6 = _serializer6.DeserializeInUTC(ref reader);
+            var item7 = _serializer7.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
         }
 
@@ -591,33 +752,64 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
 
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
-            var item6 = _serializer6.Deserialize(ref reader, options);
-            var item7 = _serializer7.Deserialize(ref reader, options);
-            var rest = _serializerRest.Deserialize(ref reader, options);
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            var item6 = _serializer6.Deserialize(ref reader);
+            var item7 = _serializer7.Deserialize(ref reader);
+            var rest = _serializerRest.Deserialize(ref reader);
             return new Tuple<T1, T2, T3, T4, T5, T6, T7, TRest>(item1, item2, item3, item4, item5, item6, item7, rest);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> DeserializeInUTC(ref Reader reader)
         {
-            var item1 = _serializer1.Deserialize(ref reader, options);
-            var item2 = _serializer2.Deserialize(ref reader, options);
-            var item3 = _serializer3.Deserialize(ref reader, options);
-            var item4 = _serializer4.Deserialize(ref reader, options);
-            var item5 = _serializer5.Deserialize(ref reader, options);
-            var item6 = _serializer6.Deserialize(ref reader, options);
-            var item7 = _serializer7.Deserialize(ref reader, options);
-            var rest = _serializerRest.Deserialize(ref reader, options);
+            if (!reader.ReadBool())
+                return null;
+
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            var item6 = _serializer6.DeserializeInUTC(ref reader);
+            var item7 = _serializer7.DeserializeInUTC(ref reader);
+            var rest = _serializerRest.DeserializeInUTC(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5, T6, T7, TRest>(item1, item2, item3, item4, item5, item6, item7, rest);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> DeserializeSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.Deserialize(ref reader);
+            var item2 = _serializer2.Deserialize(ref reader);
+            var item3 = _serializer3.Deserialize(ref reader);
+            var item4 = _serializer4.Deserialize(ref reader);
+            var item5 = _serializer5.Deserialize(ref reader);
+            var item6 = _serializer6.Deserialize(ref reader);
+            var item7 = _serializer7.Deserialize(ref reader);
+            var rest = _serializerRest.Deserialize(ref reader);
+            return new Tuple<T1, T2, T3, T4, T5, T6, T7, TRest>(item1, item2, item3, item4, item5, item6, item7, rest);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Tuple<T1, T2, T3, T4, T5, T6, T7, TRest> DeserializeInUTCSpot(ref Reader reader)
+        {
+            var item1 = _serializer1.DeserializeInUTC(ref reader);
+            var item2 = _serializer2.DeserializeInUTC(ref reader);
+            var item3 = _serializer3.DeserializeInUTC(ref reader);
+            var item4 = _serializer4.DeserializeInUTC(ref reader);
+            var item5 = _serializer5.DeserializeInUTC(ref reader);
+            var item6 = _serializer6.DeserializeInUTC(ref reader);
+            var item7 = _serializer7.DeserializeInUTC(ref reader);
+            var rest = _serializerRest.DeserializeInUTC(ref reader);
             return new Tuple<T1, T2, T3, T4, T5, T6, T7, TRest>(item1, item2, item3, item4, item5, item6, item7, rest);
         }
 

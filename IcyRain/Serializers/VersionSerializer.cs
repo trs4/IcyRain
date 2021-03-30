@@ -24,14 +24,25 @@ namespace IcyRain.Serializers
             => writer.WriteNotNullString(value.ToString());
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Version Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Version Deserialize(ref Reader reader)
         {
             string version = reader.ReadString();
             return version is null ? null : Version.Parse(version);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed Version DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Version DeserializeInUTC(ref Reader reader)
+        {
+            string version = reader.ReadString();
+            return version is null ? null : Version.Parse(version);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Version DeserializeSpot(ref Reader reader)
+            => Version.Parse(reader.ReadNotNullString());
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed Version DeserializeInUTCSpot(ref Reader reader)
             => Version.Parse(reader.ReadNotNullString());
     }
 }

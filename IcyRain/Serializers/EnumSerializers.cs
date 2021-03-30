@@ -40,11 +40,19 @@ namespace IcyRain.Serializers
             => _serializer(ref writer, value);
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed T Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed T Deserialize(ref Reader reader)
             => _deserializer(ref reader);
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed T DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed T DeserializeInUTC(ref Reader reader)
+            => _deserializer(ref reader);
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed T DeserializeSpot(ref Reader reader)
+            => _deserializer(ref reader);
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed T DeserializeInUTCSpot(ref Reader reader)
             => _deserializer(ref reader);
     }
 
@@ -87,13 +95,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, T? value)
             => throw new NotSupportedException();
 
-        public override sealed T? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed T? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? _deserializer(ref reader) : null;
         }
 
-        public override sealed T? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed T? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? _deserializer(ref reader) : null;
+        }
+
+        public override sealed T? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed T? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -141,7 +158,7 @@ namespace IcyRain.Serializers
                 _serializer(ref writer, value[i]);
         }
 
-        public override sealed T[] Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed T[] Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -158,7 +175,39 @@ namespace IcyRain.Serializers
             return length == 0 ? Array.Empty<T>() : null;
         }
 
-        public override sealed T[] DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed T[] DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new T[length];
+
+                for (int i = 0; i < length; i++)
+                    value[i] = _deserializer(ref reader);
+
+                return value;
+            }
+
+            return length == 0 ? Array.Empty<T>() : null;
+        }
+
+        public override sealed T[] DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return Array.Empty<T>();
+
+            var value = new T[length];
+
+            for (int i = 0; i < length; i++)
+                value[i] = _deserializer(ref reader);
+
+            return value;
+        }
+
+        public override sealed T[] DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -222,7 +271,7 @@ namespace IcyRain.Serializers
                 _serializer(ref writer, array[i]);
         }
 
-        public override sealed List<T> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<T> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -239,7 +288,39 @@ namespace IcyRain.Serializers
             return length == 0 ? new List<T>() : null;
         }
 
-        public override sealed List<T> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<T> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new T[length];
+
+                for (int i = 0; i < length; i++)
+                    value[i] = _deserializer(ref reader);
+
+                return value.CreateList();
+            }
+
+            return length == 0 ? new List<T>() : null;
+        }
+
+        public override sealed List<T> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return new List<T>();
+
+            var value = new T[length];
+
+            for (int i = 0; i < length; i++)
+                value[i] = _deserializer(ref reader);
+
+            return value.CreateList();
+        }
+
+        public override sealed List<T> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 

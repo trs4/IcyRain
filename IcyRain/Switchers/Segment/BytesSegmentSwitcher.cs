@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using IcyRain.Compression.LZ4;
 using IcyRain.Internal;
 
 namespace IcyRain.Switchers
@@ -16,7 +17,30 @@ namespace IcyRain.Switchers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public sealed override byte[] Deserialize(ArraySegment<byte> segment, DeserializeOptions options)
+        public sealed override ArraySegment<byte> SerializeWithLZ4(byte[] value, out int serializedLength)
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+
+            serializedLength = value.Length;
+            return LZ4ArrayCodec.EncodeToSegment(value);
+        }
+
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override byte[] Deserialize(ArraySegment<byte> segment)
             => segment.Count == 0 ? Array.Empty<byte>() : (segment.Array.Length == segment.Count ? segment.Array : segment.TransferToArray());
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override byte[] DeserializeInUTC(ArraySegment<byte> segment)
+            => segment.Count == 0 ? Array.Empty<byte>() : (segment.Array.Length == segment.Count ? segment.Array : segment.TransferToArray());
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override byte[] DeserializeWithLZ4(ArraySegment<byte> segment, out int decodedLength)
+            => segment.TransferToArrayWithLZ4Decompress(out decodedLength);
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override byte[] DeserializeInUTCWithLZ4(ArraySegment<byte> segment, out int decodedLength)
+            => segment.TransferToArrayWithLZ4Decompress(out decodedLength);
     }
 }

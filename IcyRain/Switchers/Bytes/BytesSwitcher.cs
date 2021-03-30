@@ -14,10 +14,18 @@ namespace IcyRain.Switchers
         static BytesSwitcher()
             => Instance = BytesBuilder.Get<T>();
 
+
         public abstract byte[] Serialize(T value);
 
-        public abstract T Deserialize(byte[] bytes, DeserializeOptions options);
+        public abstract byte[] SerializeWithLZ4(T value, out int serializedLength);
 
-        public abstract T Deserialize(byte[] bytes, int offset, int count, DeserializeOptions options);
+
+        public abstract T Deserialize(byte[] bytes, int offset, int count);
+
+        public abstract T DeserializeInUTC(byte[] bytes, int offset, int count);
+
+        public abstract T DeserializeWithLZ4(byte[] bytes, int offset, int count, out int decodedLength);
+
+        public abstract T DeserializeInUTCWithLZ4(byte[] bytes, int offset, int count, out int decodedLength);
     }
 }

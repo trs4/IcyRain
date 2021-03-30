@@ -36,6 +36,7 @@ namespace IcyRain.Builders
                 var il = method.GetILGenerator();
 
                 il.Emit(OpCodes.Ldarg_0);
+                il.EmitLdc_I4(unionTypes.Length);
                 il.Emit(OpCodes.Call, data.Constructor);
 
                 for (int i = 0; i < unionTypes.Length; i++)

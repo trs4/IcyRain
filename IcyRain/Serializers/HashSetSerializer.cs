@@ -58,7 +58,7 @@ namespace IcyRain.Serializers
                 _serializer.Serialize(ref writer, item);
         }
 
-        public override sealed HashSet<T> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed HashSet<T> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -67,7 +67,7 @@ namespace IcyRain.Serializers
                 var value = new HashSet<T>(length, _comparer);
 
                 for (int i = 0; i < length; i++)
-                    value.Add(_serializer.Deserialize(ref reader, options));
+                    value.Add(_serializer.Deserialize(ref reader));
 
                 return value;
             }
@@ -75,13 +75,41 @@ namespace IcyRain.Serializers
             return length == 0 ? new HashSet<T>(_comparer) : null;
         }
 
-        public override sealed HashSet<T> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed HashSet<T> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new HashSet<T>(length, _comparer);
+
+                for (int i = 0; i < length; i++)
+                    value.Add(_serializer.DeserializeInUTC(ref reader));
+
+                return value;
+            }
+
+            return length == 0 ? new HashSet<T>(_comparer) : null;
+        }
+
+        public override sealed HashSet<T> DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             var value = new HashSet<T>(length, _comparer);
 
             for (int i = 0; i < length; i++)
-                value.Add(_serializer.Deserialize(ref reader, options));
+                value.Add(_serializer.Deserialize(ref reader));
+
+            return value;
+        }
+
+        public override sealed HashSet<T> DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            var value = new HashSet<T>(length, _comparer);
+
+            for (int i = 0; i < length; i++)
+                value.Add(_serializer.DeserializeInUTC(ref reader));
 
             return value;
         }

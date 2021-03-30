@@ -10,8 +10,16 @@ namespace IcyRain.Serializers
     public abstract class UnionByteMapSerializer<T> : Serializer<UnionResolver, T>
         where T : class
     {
-        private static readonly Dictionary<Type, UnionByteData<T>> _map = new Dictionary<Type, UnionByteData<T>>();
-        private static readonly Dictionary<byte, DeserializeMethod<T>> _deserializeMap = new Dictionary<byte, DeserializeMethod<T>>();
+        private static Dictionary<Type, UnionByteData<T>> _map;
+        private static Dictionary<byte, DeserializeMethod<T>> _deserializeMap;
+        private static Dictionary<byte, DeserializeMethod<T>> _deserializeInUTCMap;
+
+        protected UnionByteMapSerializer(int capacity)
+        {
+            _map = new(capacity);
+            _deserializeMap = new(capacity);
+            _deserializeInUTCMap = new(capacity);
+        }
 
         public void Add<TUnionType>(byte index)
             where TUnionType : T
@@ -21,10 +29,12 @@ namespace IcyRain.Serializers
                 (ref Writer writer, T value) => Serializer<Resolver, TUnionType>.Instance.SerializeSpot(ref writer, (TUnionType)value)));
 
             _deserializeMap.Add(index,
-                (ref Reader reader, DeserializeOptions options) => Serializer<Resolver, TUnionType>.Instance.DeserializeSpot(ref reader, options));
+                (ref Reader reader) => Serializer<Resolver, TUnionType>.Instance.DeserializeSpot(ref reader));
+
+            _deserializeInUTCMap.Add(index,
+                (ref Reader reader) => Serializer<Resolver, TUnionType>.Instance.DeserializeInUTCSpot(ref reader));
         }
 
-        protected UnionByteMapSerializer() { }
 
         [MethodImpl(Flags.HotPath)]
         public override sealed int? GetSize() => null;
@@ -65,21 +75,39 @@ namespace IcyRain.Serializers
             }
         }
 
-        public override sealed T Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed T Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte();
 
             return index == 0 ? null : (_deserializeMap.TryGetValue(index, out var deserializeMethod)
-                ? deserializeMethod(ref reader, options)
+                ? deserializeMethod(ref reader)
                 : throw new InvalidOperationException("Unknown index: " + index));
         }
 
-        public override sealed T DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed T DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte();
+
+            return index == 0 ? null : (_deserializeInUTCMap.TryGetValue(index, out var deserializeMethod)
+                ? deserializeMethod(ref reader)
+                : throw new InvalidOperationException("Unknown index: " + index));
+        }
+
+        public override sealed T DeserializeSpot(ref Reader reader)
         {
             byte index = reader.ReadByte();
 
             return _deserializeMap.TryGetValue(index, out var deserializeMethod)
-                ? deserializeMethod(ref reader, options)
+                ? deserializeMethod(ref reader)
+                : throw new InvalidOperationException("Unknown index: " + index);
+        }
+
+        public override sealed T DeserializeInUTCSpot(ref Reader reader)
+        {
+            byte index = reader.ReadByte();
+
+            return _deserializeInUTCMap.TryGetValue(index, out var deserializeMethod)
+                ? deserializeMethod(ref reader)
                 : throw new InvalidOperationException("Unknown index: " + index);
         }
 

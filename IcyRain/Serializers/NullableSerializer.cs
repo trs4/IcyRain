@@ -43,13 +43,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, T? value)
             => throw new NotSupportedException();
 
-        public override sealed T? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed T? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
-            return hasValue ? _serializer.Deserialize(ref reader, options) : null;
+            return hasValue ? _serializer.Deserialize(ref reader) : null;
         }
 
-        public override sealed T? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed T? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? _serializer.DeserializeInUTC(ref reader) : null;
+        }
+
+        public override sealed T? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed T? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 }

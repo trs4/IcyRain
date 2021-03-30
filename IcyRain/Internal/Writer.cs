@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using IcyRain.Compression.LZ4;
 
 namespace IcyRain.Internal
 {
@@ -20,11 +21,24 @@ namespace IcyRain.Internal
             _span = span;
         }
 
+#pragma warning disable CA1801 // Review unused parameters
+        [MethodImpl(Flags.HotPath)]
+        internal Writer(Span<byte> span, bool forCompress)
+        {
+            span[0] = 0;
+            _offset = 1;
+            _span = span;
+        }
+#pragma warning restore CA1801 // Review unused parameters
+
         internal int Size
         {
             [MethodImpl(Flags.HotPath)]
             get => _offset;
         }
+
+        [MethodImpl(Flags.HotPath)]
+        internal void CompressLZ4() => LZ4Codec.Encode(_span, ref _offset);
 
         #endregion
         #region Types
@@ -674,11 +688,13 @@ namespace IcyRain.Internal
         {
             if (value.IsSingleSegment)
             {
+                int length = (int)value.Length;
+
                 fixed (byte* ptr = _span)
                 fixed (byte* ptrValue = value.First.Span)
-                    Unsafe.CopyBlock(ptr + _offset, ptrValue, (uint)value.Length);
+                    Unsafe.CopyBlock(ptr + _offset, ptrValue, (uint)length);
 
-                _offset += (int)value.Length;
+                _offset += length;
             }
             else
             {

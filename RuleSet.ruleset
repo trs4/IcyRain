@@ -19,7 +19,6 @@
     <Rule Id="CA1018" Action="Warning" />
     <Rule Id="CA1019" Action="Warning" />
     <Rule Id="CA1020" Action="Warning" />
-    <Rule Id="CA1021" Action="Warning" />
     <Rule Id="CA1023" Action="Warning" />
     <Rule Id="CA1025" Action="Warning" />
     <Rule Id="CA1026" Action="Warning" />
@@ -77,7 +76,6 @@
     <Rule Id="CA1415" Action="Warning" />
     <Rule Id="CA1500" Action="Warning" />
     <Rule Id="CA1501" Action="Warning" />
-    <Rule Id="CA1502" Action="Warning" />
     <Rule Id="CA1504" Action="Warning" />
     <Rule Id="CA1505" Action="Warning" />
     <Rule Id="CA1600" Action="Warning" />
@@ -90,7 +88,6 @@
     <Rule Id="CA1707" Action="Warning" />
     <Rule Id="CA1708" Action="Warning" />
     <Rule Id="CA1709" Action="Warning" />
-    <Rule Id="CA1710" Action="Warning" />
     <Rule Id="CA1712" Action="Warning" />
     <Rule Id="CA1713" Action="Warning" />
     <Rule Id="CA1714" Action="Warning" />
@@ -98,10 +95,8 @@
     <Rule Id="CA1716" Action="Warning" />
     <Rule Id="CA1717" Action="Warning" />
     <Rule Id="CA1719" Action="Warning" />
-    <Rule Id="CA1720" Action="Warning" />
     <Rule Id="CA1721" Action="Warning" />
     <Rule Id="CA1722" Action="Warning" />
-    <Rule Id="CA1725" Action="Warning" />
     <Rule Id="CA1726" Action="Warning" />
     <Rule Id="CA1800" Action="Warning" />
     <Rule Id="CA1801" Action="Info" />
@@ -252,14 +247,14 @@
     <Rule Id="CA1508" Action="Warning" />
     <Rule Id="CA1707" Action="Warning" />
     <Rule Id="CA1708" Action="Warning" />
-    <Rule Id="CA1710" Action="Warning" />
+    <Rule Id="CA1710" Action="None" />
     <Rule Id="CA1711" Action="None" />
     <Rule Id="CA1712" Action="Warning" />
     <Rule Id="CA1715" Action="Warning" />
     <Rule Id="CA1716" Action="Warning" />
-    <Rule Id="CA1720" Action="Warning" />
+    <Rule Id="CA1720" Action="None" />
     <Rule Id="CA1721" Action="Warning" />
-    <Rule Id="CA1725" Action="Warning" />
+    <Rule Id="CA1725" Action="None" />
     <Rule Id="CA1801" Action="Info" />
     <Rule Id="CA1806" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />

@@ -8,8 +8,6 @@ namespace IcyRain.Streams
     /// <summary>System class for transfer stream</summary>
     public sealed class StreamDataPart<T> : StreamPart
     {
-        private readonly DeserializeOptions _options;
-
         /// <summary>Serialize side</summary>
         [MethodImpl(Flags.HotPath)]
         internal StreamDataPart(T data, Stream stream, int bufferSize = Buffers.StreamPartSize)
@@ -18,9 +16,7 @@ namespace IcyRain.Streams
 
         /// <summary>Deserialize size</summary>
         [MethodImpl(Flags.HotPath)]
-        internal StreamDataPart(ReadOnlySequence<byte> sequence, DeserializeOptions options)
-            : base(sequence)
-            => _options = options;
+        internal StreamDataPart(ReadOnlySequence<byte> sequence) : base(sequence) { }
 
         public T Data { get; }
 
@@ -42,6 +38,6 @@ namespace IcyRain.Streams
         }
 
         [MethodImpl(Flags.HotPath)]
-        internal T Deserialize() => Serialization.Deserialize<T>(Buffer, 0, BufferSize, _options);
+        internal T Deserialize() => Serialization.Deserialize<T>(Buffer, 0, BufferSize);
     }
 }

@@ -36,7 +36,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed IPEndPoint Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed IPEndPoint Deserialize(ref Reader reader)
         {
             if (!reader.ReadBool())
                 return null;
@@ -47,7 +47,27 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed IPEndPoint DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed IPEndPoint DeserializeInUTC(ref Reader reader)
+        {
+            if (!reader.ReadBool())
+                return null;
+
+            string version = reader.ReadString();
+            var address = version is null ? null : IPAddress.Parse(version);
+            return new IPEndPoint(address, reader.ReadInt());
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed IPEndPoint DeserializeSpot(ref Reader reader)
+        {
+            reader.ReadBool();
+            string version = reader.ReadString();
+            var address = version is null ? null : IPAddress.Parse(version);
+            return new IPEndPoint(address, reader.ReadInt());
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed IPEndPoint DeserializeInUTCSpot(ref Reader reader)
         {
             reader.ReadBool();
             string version = reader.ReadString();

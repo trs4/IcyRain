@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
 using IcyRain.Serializers;
@@ -21,6 +22,7 @@ namespace IcyRain.Builders
         private MethodInfo _getCapacity;
         private MethodInfo _serializeSpot;
         private MethodInfo _deserializeSpot;
+        private MethodInfo _deserializeInUTCSpot;
         private MethodInfo _add;
         private ISerializer _serializer;
 
@@ -90,6 +92,8 @@ namespace IcyRain.Builders
 
         public MethodInfo DeserializeSpot => _deserializeSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.DeserializeSpot));
 
+        public MethodInfo DeserializeInUTCSpot => _deserializeInUTCSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.DeserializeInUTCSpot));
+
         public MethodInfo Add => _add ??= _serializerTypeInfo.GetMethod(nameof(UnionByteMapSerializer<object>.Add));
 
         public ISerializer Serializer => _serializer ??= GetInstance.Invoke(null, null) as ISerializer;
@@ -105,6 +109,22 @@ namespace IcyRain.Builders
                 return false;
 
             throw new NotSupportedException($"Properties count is {propertiesCount}. Max available count is 65534");
+        }
+
+        public void EmitDeserializeSpot(ILGenerator il)
+        {
+            il.Emit(OpCodes.Call, GetInstance);
+            il.Emit(OpCodes.Ldarg_1);
+            il.Emit(OpCodes.Callvirt, DeserializeSpot);
+            il.Emit(OpCodes.Ret);
+        }
+
+        public void EmitDeserializeInUTCSpot(ILGenerator il)
+        {
+            il.Emit(OpCodes.Call, GetInstance);
+            il.Emit(OpCodes.Ldarg_1);
+            il.Emit(OpCodes.Callvirt, DeserializeInUTCSpot);
+            il.Emit(OpCodes.Ret);
         }
 
     }

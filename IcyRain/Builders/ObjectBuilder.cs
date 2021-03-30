@@ -27,14 +27,14 @@ namespace IcyRain.Builders
 
             var fields = FieldsBuilder.Build(builder, data.Properties);
             var calculatedFields = new List<FieldData>(fields.Length);
-            int size = data.PropertyIndexSize;
+            int size = data.PropertyIndexSize * (fields.Length + 1);
 
             foreach (var field in fields)
             {
                 int? fieldSize = field.Data.Serializer.GetSize();
 
                 if (fieldSize.HasValue)
-                    size += fieldSize.Value + data.PropertyIndexSize;
+                    size += fieldSize.Value;
                 else
                     calculatedFields.Add(field);
             }
@@ -191,7 +191,7 @@ namespace IcyRain.Builders
                 il.Emit(OpCodes.Ret);
             }
 
-            // T Deserialize(ref Reader reader, DeserializeOptions options)
+            // T Deserialize(ref Reader reader)
             {
                 var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Deserialize), Flags.PublicOverrideMethod,
                     type, Types.Deserialize)
@@ -235,12 +235,11 @@ namespace IcyRain.Builders
                     il.EmitLdc_I4(i + 1);
                     il.Emit(OpCodes.Bne_Un_S, propertyLabel);
 
-                    // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader, options);
+                    // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
                     il.Emit(OpCodes.Ldloc_1);
                     il.Emit(OpCodes.Ldarg_0);
                     il.Emit(OpCodes.Ldfld, field.Field);
                     il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Ldarg_2);
                     il.Emit(OpCodes.Callvirt, field.Data.DeserializeSpot);
                     field.EmitSetProperty(il);
 
@@ -260,7 +259,75 @@ namespace IcyRain.Builders
                 il.Emit(OpCodes.Ret);
             }
 
-            // T DeserializeSpot(ref Reader reader, DeserializeOptions options)
+            // T DeserializeInUTC(ref Reader reader)
+            {
+                var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTC), Flags.PublicOverrideMethod,
+                    type, Types.Deserialize)
+                    .WithNames(Naming.Deserialize);
+
+                var il = method.GetILGenerator();
+                var label = il.DefineLabel();
+                il.DeclareLocal(Types.Int);
+                il.DeclareLocal(type);
+
+                // int num = reader.ReadByte();
+                il.Emit(OpCodes.Ldarg_1);
+                il.Emit(OpCodes.Call, data.ReadMethod);
+                il.Emit(OpCodes.Stloc_0);
+
+                // if (num == 0)
+                il.Emit(OpCodes.Ldloc_0);
+                il.Emit(OpCodes.Brtrue_S, label);
+
+                // return null;
+                il.Emit(OpCodes.Ldnull);
+                il.Emit(OpCodes.Ret);
+                il.MarkLabel(label);
+
+                // TestData testData = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+                il.Emit(OpCodes.Ldarg_0);
+                il.Emit(OpCodes.Ldfld, typeField);
+                il.Emit(OpCodes.Call, Types.GetUninitializedObjectMethod);
+                il.Emit(OpCodes.Castclass, type);
+                il.Emit(OpCodes.Stloc_1);
+
+                int maxIndex = fields.Length - 1;
+
+                for (int i = 0; i <= maxIndex; i++)
+                {
+                    var field = fields[i];
+                    var propertyLabel = il.DefineLabel();
+
+                    // if (num == 1)
+                    il.Emit(OpCodes.Ldloc_0);
+                    il.EmitLdc_I4(i + 1);
+                    il.Emit(OpCodes.Bne_Un_S, propertyLabel);
+
+                    // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
+                    il.Emit(OpCodes.Ldloc_1);
+                    il.Emit(OpCodes.Ldarg_0);
+                    il.Emit(OpCodes.Ldfld, field.Field);
+                    il.Emit(OpCodes.Ldarg_1);
+                    il.Emit(OpCodes.Callvirt, field.Data.DeserializeInUTCSpot);
+                    field.EmitSetProperty(il);
+
+                    // num = reader.ReadByte();
+                    il.Emit(OpCodes.Ldarg_1);
+                    il.Emit(OpCodes.Call, data.ReadMethod);
+
+                    if (i < maxIndex)
+                        il.Emit(OpCodes.Stloc_0);
+                    else
+                        il.Emit(OpCodes.Pop);
+
+                    il.MarkLabel(propertyLabel);
+                }
+
+                il.Emit(OpCodes.Ldloc_1);
+                il.Emit(OpCodes.Ret);
+            }
+
+            // T DeserializeSpot(ref Reader reader)
             {
                 var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeSpot), Flags.PublicOverrideMethod,
                     type, Types.Deserialize)
@@ -295,13 +362,71 @@ namespace IcyRain.Builders
                     il.EmitLdc_I4(i + 1);
                     il.Emit(OpCodes.Bne_Un_S, propertyLabel);
 
-                    // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader, options);
+                    // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
                     il.Emit(OpCodes.Ldloc_1);
                     il.Emit(OpCodes.Ldarg_0);
                     il.Emit(OpCodes.Ldfld, field.Field);
                     il.Emit(OpCodes.Ldarg_1);
-                    il.Emit(OpCodes.Ldarg_2);
                     il.Emit(OpCodes.Callvirt, field.Data.DeserializeSpot);
+                    field.EmitSetProperty(il);
+
+                    // num = reader.ReadByte();
+                    il.Emit(OpCodes.Ldarg_1);
+                    il.Emit(OpCodes.Call, data.ReadMethod);
+
+                    if (i < maxIndex)
+                        il.Emit(OpCodes.Stloc_0);
+                    else
+                        il.Emit(OpCodes.Pop);
+
+                    il.MarkLabel(propertyLabel);
+                }
+
+                il.Emit(OpCodes.Ldloc_1);
+                il.Emit(OpCodes.Ret);
+            }
+
+            // T DeserializeInUTCSpot(ref Reader reader)
+            {
+                var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTCSpot), Flags.PublicOverrideMethod,
+                    type, Types.Deserialize)
+                    .WithNames(Naming.Deserialize);
+
+                var il = method.GetILGenerator();
+                var label = il.DefineLabel();
+                il.DeclareLocal(Types.Int);
+                il.DeclareLocal(type);
+
+                // TestData testData = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+                il.Emit(OpCodes.Ldarg_0);
+                il.Emit(OpCodes.Ldfld, typeField);
+                il.Emit(OpCodes.Call, Types.GetUninitializedObjectMethod);
+                il.Emit(OpCodes.Castclass, type);
+                il.Emit(OpCodes.Stloc_1);
+
+                // int num = reader.ReadByte();
+                il.Emit(OpCodes.Ldarg_1);
+                il.Emit(OpCodes.Call, data.ReadMethod);
+                il.Emit(OpCodes.Stloc_0);
+
+                int maxIndex = fields.Length - 1;
+
+                for (int i = 0; i <= maxIndex; i++)
+                {
+                    var field = fields[i];
+                    var propertyLabel = il.DefineLabel();
+
+                    // if (num == 1)
+                    il.Emit(OpCodes.Ldloc_0);
+                    il.EmitLdc_I4(i + 1);
+                    il.Emit(OpCodes.Bne_Un_S, propertyLabel);
+
+                    // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
+                    il.Emit(OpCodes.Ldloc_1);
+                    il.Emit(OpCodes.Ldarg_0);
+                    il.Emit(OpCodes.Ldfld, field.Field);
+                    il.Emit(OpCodes.Ldarg_1);
+                    il.Emit(OpCodes.Callvirt, field.Data.DeserializeInUTCSpot);
                     field.EmitSetProperty(il);
 
                     // num = reader.ReadByte();

@@ -8,7 +8,7 @@ namespace IcyRain.Switchers
     internal sealed class SequenceBufferSwitcher : BufferSwitcher<ReadOnlySequence<byte>>
     {
         [MethodImpl(Flags.HotPath)]
-        public unsafe sealed override void Serialize(IBufferWriter<byte> buffer, ReadOnlySequence<byte> value)
+        public unsafe sealed override int Serialize(IBufferWriter<byte> buffer, ReadOnlySequence<byte> value)
         {
             if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -32,6 +32,7 @@ namespace IcyRain.Switchers
             }
 
             buffer.Advance(length);
+            return length;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -55,7 +56,38 @@ namespace IcyRain.Switchers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public sealed override ReadOnlySequence<byte> Deserialize(in ReadOnlySequence<byte> sequence, DeserializeOptions options)
+        public unsafe sealed override int SerializeWithLZ4(IBufferWriter<byte> buffer, ReadOnlySequence<byte> value, out int serializedLength)
+        {
+            if (buffer is null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            int encodedLength = serializedLength = (int)value.Length;
+
+            if (serializedLength > 0)
+            {
+                fixed (byte* ptr = buffer.GetSpan(serializedLength + 1))
+                    value.WriteWithLZ4Compress(ptr, ref encodedLength);
+            }
+
+            buffer.Advance(encodedLength);
+            return encodedLength;
+        }
+
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ReadOnlySequence<byte> Deserialize(in ReadOnlySequence<byte> sequence)
             => sequence;
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ReadOnlySequence<byte> DeserializeInUTC(in ReadOnlySequence<byte> sequence)
+            => sequence;
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ReadOnlySequence<byte> DeserializeWithLZ4(in ReadOnlySequence<byte> sequence, int sequenceLength, out int decodedLength)
+            => sequence.TransferToSequenceWithLZ4Decompress(sequenceLength, out decodedLength);
+
+        [MethodImpl(Flags.HotPath)]
+        public sealed override ReadOnlySequence<byte> DeserializeInUTCWithLZ4(in ReadOnlySequence<byte> sequence, int sequenceLength, out int decodedLength)
+            => sequence.TransferToSequenceWithLZ4Decompress(sequenceLength, out decodedLength);
     }
 }

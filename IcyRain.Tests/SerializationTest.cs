@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using IcyRain.Data.Objects;
+using IcyRain.Internal;
 using NUnit.Framework;
 
 namespace IcyRain.Tests
@@ -62,13 +64,72 @@ namespace IcyRain.Tests
             foreach (var deepClone in Tests<SealedData>.Functions)
             {
                 var clone = deepClone(data);
+                Check(deepClone, data, clone);
+            }
+        }
 
-                Assert.IsNotNull(clone);
-                Assert.AreEqual(data.Property1, clone.Property1);
-                Assert.AreEqual(data.Property2, clone.Property2);
-                Assert.AreEqual(data.Property3, clone.Property3);
-                Assert.AreEqual(data.Property4, clone.Property4);
-                Assert.AreEqual(data.Property5, clone.Property5);
+        [Test]
+        public void ListSealedClass()
+        {
+            var data = new SealedData
+            {
+                Property1 = true,
+                Property2 = 25,
+                Property3 = 4.5,
+                Property4 = new DateTime(2021, 5, 1, 5, 8, 7),
+                Property5 = "test",
+            };
+
+            var list = new List<SealedData>(100);
+
+            for (int i = 0; i < 100; i++)
+                list.Add(data);
+
+            foreach (var deepClone in Tests<List<SealedData>>.Functions)
+            {
+                var cloneList = deepClone(list);
+
+                Assert.IsNotNull(cloneList);
+                Assert.AreEqual(list.Count, cloneList.Count);
+
+                for (int i = 0; i < 100; i++)
+                {
+                    var clone = cloneList[i];
+                    Check(deepClone, data, clone);
+                }
+            }
+        }
+
+        private static void Check(Delegate deepClone, TestData data, TestData clone)
+        {
+            Assert.IsNotNull(clone);
+            Assert.AreEqual(data.Property1, clone.Property1);
+            Assert.AreEqual(data.Property2, clone.Property2);
+            Assert.AreEqual(data.Property3, clone.Property3);
+            Check(deepClone, data.Property4, clone.Property4);
+            Assert.AreEqual(data.Property5, clone.Property5);
+        }
+
+        private static void Check(Delegate deepClone, SealedData data, SealedData clone)
+        {
+            Assert.IsNotNull(clone);
+            Assert.AreEqual(data.Property1, clone.Property1);
+            Assert.AreEqual(data.Property2, clone.Property2);
+            Assert.AreEqual(data.Property3, clone.Property3);
+            Check(deepClone, data.Property4, clone.Property4);
+            Assert.AreEqual(data.Property5, clone.Property5);
+        }
+
+        private static void Check(Delegate deepClone, DateTime data, DateTime clone)
+        {
+            if (deepClone.Method.Name.Contains("InUTC"))
+            {
+                Assert.AreEqual(DateTimeKind.Utc, clone.Kind);
+                Assert.AreEqual(data, clone.ToLocalTime());
+            }
+            else
+            {
+                Assert.AreEqual(data, clone);
             }
         }
 
@@ -87,13 +148,7 @@ namespace IcyRain.Tests
             foreach (var deepClone in Tests<TestData>.Functions)
             {
                 var clone = deepClone(data);
-
-                Assert.IsNotNull(clone);
-                Assert.AreEqual(data.Property1, clone.Property1);
-                Assert.AreEqual(data.Property2, clone.Property2);
-                Assert.AreEqual(data.Property3, clone.Property3);
-                Assert.AreEqual(data.Property4, clone.Property4);
-                Assert.AreEqual(data.Property5, clone.Property5);
+                Check(deepClone, data, clone);
             }
         }
 
@@ -114,7 +169,7 @@ namespace IcyRain.Tests
                 Assert.IsNotNull(clone);
                 Assert.AreEqual(data.Property11, clone.Property11);
                 Assert.AreEqual(data.Property31, clone.Property31);
-                Assert.AreEqual(data.Property32, clone.Property32);
+                Check(deepClone, data.Property32, clone.Property32);
             }
         }
 
@@ -142,14 +197,15 @@ namespace IcyRain.Tests
                 Assert.IsNotNull(clone);
                 Assert.AreEqual(data.Property11, clone.Property11);
                 Assert.AreEqual(data.Property31, clone.Property31);
-                Assert.AreEqual(data.Property32, clone.Property32);
+                Check(deepClone, data.Property32, clone.Property32);
+
                 Assert.AreEqual(data.Property33, clone.Property33);
                 Assert.AreEqual(data.Property34, clone.Property34);
 
                 Assert.AreEqual(data.Property35.GetType(), clone.Property35?.GetType());
                 Assert.AreEqual(data.Property35.Property11, clone.Property35.Property11);
                 Assert.AreEqual((data.Property35 as TestB3).Property31, (clone.Property35 as TestB3).Property31);
-                Assert.AreEqual((data.Property35 as TestB3).Property32, (clone.Property35 as TestB3).Property32);
+                Check(deepClone, (data.Property35 as TestB3).Property32, (clone.Property35 as TestB3).Property32);
             }
         }
 

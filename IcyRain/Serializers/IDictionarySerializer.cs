@@ -82,7 +82,7 @@ namespace IcyRain.Serializers
             }
         }
 
-        public override sealed IDictionary<TKey, TValue> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed IDictionary<TKey, TValue> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -91,7 +91,7 @@ namespace IcyRain.Serializers
                 var value = new Dictionary<TKey, TValue>(length, _comparer);
 
                 for (int i = 0; i < length; i++)
-                    value.Add(_keySerializer.Deserialize(ref reader, options), _valueSerializer.Deserialize(ref reader, options));
+                    value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
 
                 return value;
             }
@@ -99,13 +99,41 @@ namespace IcyRain.Serializers
             return length == 0 ? new Dictionary<TKey, TValue>(_comparer) : null;
         }
 
-        public override sealed IDictionary<TKey, TValue> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed IDictionary<TKey, TValue> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new Dictionary<TKey, TValue>(length, _comparer);
+
+                for (int i = 0; i < length; i++)
+                    value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
+
+                return value;
+            }
+
+            return length == 0 ? new Dictionary<TKey, TValue>(_comparer) : null;
+        }
+
+        public override sealed IDictionary<TKey, TValue> DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             var value = new Dictionary<TKey, TValue>(length, _comparer);
 
             for (int i = 0; i < length; i++)
-                value.Add(_keySerializer.Deserialize(ref reader, options), _valueSerializer.Deserialize(ref reader, options));
+                value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
+
+            return value;
+        }
+
+        public override sealed IDictionary<TKey, TValue> DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            var value = new Dictionary<TKey, TValue>(length, _comparer);
+
+            for (int i = 0; i < length; i++)
+                value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
 
             return value;
         }

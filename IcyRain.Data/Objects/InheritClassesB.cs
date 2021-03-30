@@ -98,7 +98,7 @@ namespace IcyRain.Data.Objects
             throw new NotImplementedException();
         }
 
-        public override sealed TestB1 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB1 Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
@@ -109,14 +109,37 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader, options);
+                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
                 reader.ReadByte(); // Read 255
             }
 
             return obj;
         }
 
-        public override sealed TestB1 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB1 DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 0)
+                return null;
+
+            var obj = (TestB1)FormatterServices.GetUninitializedObject(typeof(TestB1));
+
+            if (index == 1)
+            {
+                obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadByte(); // Read 255
+            }
+
+            return obj;
+        }
+
+        public override sealed TestB1 DeserializeSpot(ref Reader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override sealed TestB1 DeserializeInUTCSpot(ref Reader reader)
         {
             throw new NotImplementedException();
         }
@@ -178,7 +201,7 @@ namespace IcyRain.Data.Objects
             throw new NotImplementedException();
         }
 
-        public override sealed TestB2 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB2 Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
@@ -189,26 +212,61 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader, options);
+                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 2
             }
 
             if (index == 2)
             {
-                obj.Property21 = _s_Property21Serializer.DeserializeSpot(ref reader, options);
+                obj.Property21 = _s_Property21Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadByte(); // Read 3
             }
 
             if (index == 3)
             {
-                obj.Property22 = _s_Property22Serializer.DeserializeSpot(ref reader, options);
+                obj.Property22 = _s_Property22Serializer.DeserializeSpot(ref reader);
                 reader.ReadInt(); // Read 255
             }
 
             return obj;
         }
 
-        public override sealed TestB2 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB2 DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 0)
+                return null;
+
+            var obj = (TestB2)FormatterServices.GetUninitializedObject(typeof(TestB2));
+
+            if (index == 1)
+            {
+                obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 2
+            }
+
+            if (index == 2)
+            {
+                obj.Property21 = _s_Property21Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadByte(); // Read 3
+            }
+
+            if (index == 3)
+            {
+                obj.Property22 = _s_Property22Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadInt(); // Read 255
+            }
+
+            return obj;
+        }
+
+        public override sealed TestB2 DeserializeSpot(ref Reader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override sealed TestB2 DeserializeInUTCSpot(ref Reader reader)
         {
             throw new NotImplementedException();
         }
@@ -270,7 +328,7 @@ namespace IcyRain.Data.Objects
             throw new NotImplementedException();
         }
 
-        public override sealed TestB3 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB3 Deserialize(ref Reader reader)
         {
             ushort index = reader.ReadUShort(); // Read 0 or 1 or 65535
 
@@ -281,26 +339,61 @@ namespace IcyRain.Data.Objects
 
             if (index == 1)
             {
-                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader, options);
+                obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadUShort(); // Read 2
             }
 
             if (index == 2)
             {
-                obj.Property31 = _s_Property31Serializer.DeserializeSpot(ref reader, options);
+                obj.Property31 = _s_Property31Serializer.DeserializeSpot(ref reader);
                 index = reader.ReadUShort(); // Read 3
             }
 
             if (index == 3)
             {
-                obj.Property32 = _s_Property32Serializer.DeserializeSpot(ref reader, options);
+                obj.Property32 = _s_Property32Serializer.DeserializeSpot(ref reader);
                 reader.ReadUShort(); // Read 65535
             }
 
             return obj;
         }
 
-        public override sealed TestB3 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB3 DeserializeInUTC(ref Reader reader)
+        {
+            ushort index = reader.ReadUShort(); // Read 0 or 1 or 65535
+
+            if (index == 0)
+                return null;
+
+            var obj = (TestB3)FormatterServices.GetUninitializedObject(typeof(TestB3));
+
+            if (index == 1)
+            {
+                obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadUShort(); // Read 2
+            }
+
+            if (index == 2)
+            {
+                obj.Property31 = _s_Property31Serializer.DeserializeInUTCSpot(ref reader);
+                index = reader.ReadUShort(); // Read 3
+            }
+
+            if (index == 3)
+            {
+                obj.Property32 = _s_Property32Serializer.DeserializeInUTCSpot(ref reader);
+                reader.ReadUShort(); // Read 65535
+            }
+
+            return obj;
+        }
+
+        public override sealed TestB3 DeserializeSpot(ref Reader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override sealed TestB3 DeserializeInUTCSpot(ref Reader reader)
         {
             throw new NotImplementedException();
         }
@@ -359,30 +452,56 @@ namespace IcyRain.Data.Objects
         }
 #pragma warning restore IDE0038 // Use pattern matching
 
-        public override sealed TestB1 Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB1 Deserialize(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
             if (index == 0)
                 return null;
             else if (index == 1)
-                return Serializer<Resolver, TestB2>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestB2>.Instance.DeserializeSpot(ref reader);
             else if (index == 2)
-                return Serializer<Resolver, TestB3>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestB3>.Instance.DeserializeSpot(ref reader);
             else
-                return Serializer<Resolver, TestB1>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestB1>.Instance.DeserializeSpot(ref reader);
         }
 
-        public override sealed TestB1 DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TestB1 DeserializeInUTC(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 0)
+                return null;
+            else if (index == 1)
+                return Serializer<Resolver, TestB2>.Instance.DeserializeInUTCSpot(ref reader);
+            else if (index == 2)
+                return Serializer<Resolver, TestB3>.Instance.DeserializeInUTCSpot(ref reader);
+            else
+                return Serializer<Resolver, TestB1>.Instance.DeserializeInUTCSpot(ref reader);
+        }
+
+        public override sealed TestB1 DeserializeSpot(ref Reader reader)
         {
             byte index = reader.ReadByte(); // Read 0 or 1 or 255
 
             if (index == 1)
-                return Serializer<Resolver, TestB2>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestB2>.Instance.DeserializeSpot(ref reader);
             else if (index == 2)
-                return Serializer<Resolver, TestB3>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestB3>.Instance.DeserializeSpot(ref reader);
             else
-                return Serializer<Resolver, TestB1>.Instance.DeserializeSpot(ref reader, options);
+                return Serializer<Resolver, TestB1>.Instance.DeserializeSpot(ref reader);
+        }
+
+        public override sealed TestB1 DeserializeInUTCSpot(ref Reader reader)
+        {
+            byte index = reader.ReadByte(); // Read 0 or 1 or 255
+
+            if (index == 1)
+                return Serializer<Resolver, TestB2>.Instance.DeserializeInUTCSpot(ref reader);
+            else if (index == 2)
+                return Serializer<Resolver, TestB3>.Instance.DeserializeInUTCSpot(ref reader);
+            else
+                return Serializer<Resolver, TestB1>.Instance.DeserializeInUTCSpot(ref reader);
         }
 
     }
@@ -390,6 +509,7 @@ namespace IcyRain.Data.Objects
     public sealed class TestB1ByteUnionSerializer : UnionByteMapSerializer<TestB1>
     {
         public TestB1ByteUnionSerializer()
+            : base(3)
         {
             Add<TestB2>(1);
             Add<TestB3>(2);
@@ -401,6 +521,7 @@ namespace IcyRain.Data.Objects
     public sealed class TestB1UShortUnionSerializer : UnionUShortMapSerializer<TestB1>
     {
         public TestB1UShortUnionSerializer()
+            : base(3)
         {
             Add<TestB2>(1);
             Add<TestB3>(2);

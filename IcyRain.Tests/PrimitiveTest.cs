@@ -364,6 +364,7 @@ namespace IcyRain.Tests
             foreach (var deepClone in Tests<DateTime>.Functions)
             {
                 DateTime result = deepClone(value);
+
                 Assert.AreEqual(value, result);
                 Assert.AreEqual(value.Kind, result.Kind);
             }
@@ -377,8 +378,18 @@ namespace IcyRain.Tests
             foreach (var deepClone in Tests<DateTime>.Functions)
             {
                 DateTime result = deepClone(value);
+
+                if (deepClone.Method.Name.Contains("InUTC"))
+                {
+                    Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+                    result = result.ToLocalTime();
+                }
+                else
+                {
+                    Assert.AreEqual(value.Kind, result.Kind);
+                }
+
                 Assert.AreEqual(value, result);
-                Assert.AreEqual(value.Kind, result.Kind);
             }
         }
 

@@ -32,13 +32,25 @@ namespace IcyRain.Serializers
 
         public sealed override void SerializeSpot(ref Writer writer, T value) => Throw();
 
-        public sealed override T Deserialize(ref Reader reader, DeserializeOptions options)
+        public sealed override T Deserialize(ref Reader reader)
         {
             Throw();
             return default;
         }
 
-        public sealed override T DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public sealed override T DeserializeInUTC(ref Reader reader)
+        {
+            Throw();
+            return default;
+        }
+
+        public sealed override T DeserializeSpot(ref Reader reader)
+        {
+            Throw();
+            return default;
+        }
+
+        public sealed override T DeserializeInUTCSpot(ref Reader reader)
         {
             Throw();
             return default;

@@ -15,7 +15,6 @@ namespace IcyRain.Data
 
         #region Data
 
-        private static readonly DeserializeOptions _options = new(DateTimeKind.Utc);
         private static readonly Marshaller<TestData> _requestMarshaller = new(SerializeData, DeserializeData<TestData>);
         private static readonly Marshaller<SealedData> _responseMarshaller = new(SerializeData, DeserializeData<SealedData>);
         private static readonly Marshaller<Empty> _emptyMarshaller = new(SerializeData, DeserializeData<Empty>);
@@ -29,7 +28,7 @@ namespace IcyRain.Data
         }
 
         private static T DeserializeData<T>(DeserializationContext context)
-            => Serialization.Deserialize<T>(context.PayloadAsReadOnlySequence(), _options);
+            => Serialization.Deserialize<T>(context.PayloadAsReadOnlySequence());
 
         #endregion
         #region Stream

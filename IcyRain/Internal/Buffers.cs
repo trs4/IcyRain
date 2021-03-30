@@ -8,6 +8,7 @@ namespace IcyRain.Internal
     {
         public const int MinArrayLength = 512;
         public const int StreamPartSize = 1024 * 1024; // 1 Mb
+        public const int MinCompressSize = 256;
 
         [MethodImpl(Flags.HotPath)]
         public static byte[] Rent(int sizeHint)
@@ -17,6 +18,13 @@ namespace IcyRain.Internal
         public static void Return(byte[] buffer)
         {
             if (buffer is not null && buffer.Length >= MinArrayLength)
+                ArrayPool<byte>.Shared.Return(buffer);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public static void ReturnWithCheck(byte[] buffer)
+        {
+            if (buffer is not null && buffer.Length >= MinArrayLength && (buffer.Length & (buffer.Length - 1)) == 0)
                 ArrayPool<byte>.Shared.Return(buffer);
         }
 

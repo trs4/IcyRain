@@ -31,13 +31,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, bool? value)
             => throw new NotSupportedException();
 
-        public override sealed bool? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed bool? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadBool() : null;
         }
 
-        public override sealed bool? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed bool? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadBool() : null;
+        }
+
+        public override sealed bool? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed bool? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -67,13 +76,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, char? value)
             => throw new NotSupportedException();
 
-        public override sealed char? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed char? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadChar() : null;
         }
 
-        public override sealed char? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed char? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadChar() : null;
+        }
+
+        public override sealed char? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed char? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -103,13 +121,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, sbyte? value)
             => throw new NotSupportedException();
 
-        public override sealed sbyte? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed sbyte? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadSByte() : null;
         }
 
-        public override sealed sbyte? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed sbyte? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadSByte() : null;
+        }
+
+        public override sealed sbyte? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed sbyte? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -139,13 +166,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, byte? value)
             => throw new NotSupportedException();
 
-        public override sealed byte? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed byte? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadByte() : null;
         }
 
-        public override sealed byte? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed byte? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadByte() : null;
+        }
+
+        public override sealed byte? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed byte? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -175,13 +211,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, short? value)
             => throw new NotSupportedException();
 
-        public override sealed short? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed short? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadShort() : null;
         }
 
-        public override sealed short? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed short? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadShort() : null;
+        }
+
+        public override sealed short? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed short? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -211,13 +256,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, ushort? value)
             => throw new NotSupportedException();
 
-        public override sealed ushort? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed ushort? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadUShort() : null;
         }
 
-        public override sealed ushort? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed ushort? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadUShort() : null;
+        }
+
+        public override sealed ushort? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed ushort? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -247,13 +301,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, int? value)
             => throw new NotSupportedException();
 
-        public override sealed int? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed int? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadInt() : null;
         }
 
-        public override sealed int? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed int? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadInt() : null;
+        }
+
+        public override sealed int? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed int? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -283,13 +346,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, uint? value)
             => throw new NotSupportedException();
 
-        public override sealed uint? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed uint? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadUInt() : null;
         }
 
-        public override sealed uint? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed uint? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadUInt() : null;
+        }
+
+        public override sealed uint? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed uint? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -319,13 +391,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, long? value)
             => throw new NotSupportedException();
 
-        public override sealed long? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed long? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadLong() : null;
         }
 
-        public override sealed long? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed long? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadLong() : null;
+        }
+
+        public override sealed long? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed long? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -355,13 +436,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, ulong? value)
             => throw new NotSupportedException();
 
-        public override sealed ulong? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed ulong? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadULong() : null;
         }
 
-        public override sealed ulong? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed ulong? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadULong() : null;
+        }
+
+        public override sealed ulong? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed ulong? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -391,13 +481,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, float? value)
             => throw new NotSupportedException();
 
-        public override sealed float? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed float? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadFloat() : null;
         }
 
-        public override sealed float? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed float? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadFloat() : null;
+        }
+
+        public override sealed float? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed float? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -427,13 +526,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, double? value)
             => throw new NotSupportedException();
 
-        public override sealed double? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed double? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadDouble() : null;
         }
 
-        public override sealed double? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed double? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadDouble() : null;
+        }
+
+        public override sealed double? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed double? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -463,13 +571,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, decimal? value)
             => throw new NotSupportedException();
 
-        public override sealed decimal? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed decimal? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadDecimal() : null;
         }
 
-        public override sealed decimal? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed decimal? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadDecimal() : null;
+        }
+
+        public override sealed decimal? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed decimal? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -500,13 +617,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, Guid? value)
             => throw new NotSupportedException();
 
-        public override sealed Guid? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed Guid? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadGuid() : null;
         }
 
-        public override sealed Guid? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed Guid? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadGuid() : null;
+        }
+
+        public override sealed Guid? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed Guid? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -514,11 +640,11 @@ namespace IcyRain.Serializers
         where TResolver : Resolver
     {
         [MethodImpl(Flags.HotPath)]
-        public override sealed int? GetSize() => 14;
+        public override sealed int? GetSize() => 10;
 
         [MethodImpl(Flags.HotPath)]
         public override sealed int GetCapacity(DateTime? value)
-            => value.HasValue ? 14 : 1;
+            => value.HasValue ? 10 : 1;
 
         public override sealed void Serialize(ref Writer writer, DateTime? value)
         {
@@ -537,13 +663,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, DateTime? value)
             => throw new NotSupportedException();
 
-        public override sealed DateTime? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed DateTime? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
-            return hasValue ? reader.ReadDateTime(options) : null;
+            return hasValue ? reader.ReadDateTime() : null;
         }
 
-        public override sealed DateTime? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed DateTime? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadDateTimeInUTC() : null;
+        }
+
+        public override sealed DateTime? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed DateTime? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -575,13 +710,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, DateTimeOffset? value)
             => throw new NotSupportedException();
 
-        public override sealed DateTimeOffset? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed DateTimeOffset? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? new DateTimeOffset(reader.ReadDateTimeWithoutZone().Ticks, TimeSpan.FromMinutes(reader.ReadShort())) : null;
         }
 
-        public override sealed DateTimeOffset? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed DateTimeOffset? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? new DateTimeOffset(reader.ReadDateTimeWithoutZone().Ticks, TimeSpan.FromMinutes(reader.ReadShort())) : null;
+        }
+
+        public override sealed DateTimeOffset? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed DateTimeOffset? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -612,13 +756,22 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, TimeSpan? value)
             => throw new NotSupportedException();
 
-        public override sealed TimeSpan? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TimeSpan? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? reader.ReadTimeSpan() : null;
         }
 
-        public override sealed TimeSpan? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TimeSpan? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? reader.ReadTimeSpan() : null;
+        }
+
+        public override sealed TimeSpan? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed TimeSpan? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -649,13 +802,23 @@ namespace IcyRain.Serializers
             => throw new NotSupportedException();
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed IntPtr? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed IntPtr? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? new IntPtr(reader.ReadLong()) : null;
         }
 
-        public override sealed IntPtr? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        [MethodImpl(Flags.HotPath)]
+        public override sealed IntPtr? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? new IntPtr(reader.ReadLong()) : null;
+        }
+
+        public override sealed IntPtr? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed IntPtr? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 
@@ -686,13 +849,23 @@ namespace IcyRain.Serializers
             => throw new NotSupportedException();
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed UIntPtr? Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed UIntPtr? Deserialize(ref Reader reader)
         {
             bool hasValue = reader.ReadBool();
             return hasValue ? new UIntPtr(reader.ReadULong()) : null;
         }
 
-        public override sealed UIntPtr? DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        [MethodImpl(Flags.HotPath)]
+        public override sealed UIntPtr? DeserializeInUTC(ref Reader reader)
+        {
+            bool hasValue = reader.ReadBool();
+            return hasValue ? new UIntPtr(reader.ReadULong()) : null;
+        }
+
+        public override sealed UIntPtr? DeserializeSpot(ref Reader reader)
+            => throw new NotSupportedException();
+
+        public override sealed UIntPtr? DeserializeInUTCSpot(ref Reader reader)
             => throw new NotSupportedException();
     }
 

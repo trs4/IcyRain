@@ -31,15 +31,7 @@ namespace IcyRain.Builders
 
         public static void Emit(ILGenerator il, Label label, FieldData data)
         {
-            if (data.PropertyType.IsClass)
-            {
-                EmitBool(il, label, data);
-            }
-            else if (_map.TryGetValue(data.PropertyType, out var emitDelegate))
-            {
-                emitDelegate(il, label, data);
-            }
-            else if (data.PropertyType.IsNullable())
+            if (data.IsNullable)
             {
                 il.Emit(OpCodes.Ldarg_2);
                 data.EmitGetProperty(il);
@@ -47,6 +39,14 @@ namespace IcyRain.Builders
                 il.Emit(OpCodes.Ldloca_S, data.VariableIndex);
                 il.Emit(OpCodes.Call, data.RealPropertyType.GetMethod("get_HasValue"));
                 il.Emit(OpCodes.Brfalse_S, label);
+            }
+            else if (data.PropertyType.IsClass)
+            {
+                EmitBool(il, label, data);
+            }
+            else if (_map.TryGetValue(data.PropertyType, out var emitDelegate))
+            {
+                emitDelegate(il, label, data);
             }
             else
             {

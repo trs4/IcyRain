@@ -36,7 +36,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<bool> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<bool> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -46,7 +46,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<bool> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<bool> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadBoolArray(length).CreateList()
+                : (length == 0 ? new List<bool>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<bool> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadBoolArray(length).CreateList() : new List<bool>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<bool> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadBoolArray(length).CreateList() : new List<bool>();
@@ -84,7 +101,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<char> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<char> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -94,7 +111,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<char> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<char> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadCharArray(length).CreateList()
+                : (length == 0 ? new List<char>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<char> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadCharArray(length).CreateList() : new List<char>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<char> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadCharArray(length).CreateList() : new List<char>();
@@ -132,7 +166,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<sbyte> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<sbyte> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -142,7 +176,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<sbyte> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<sbyte> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadSByteArray(length).CreateList()
+                : (length == 0 ? new List<sbyte>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<sbyte> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadSByteArray(length).CreateList() : new List<sbyte>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<sbyte> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadSByteArray(length).CreateList() : new List<sbyte>();
@@ -180,7 +231,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<byte> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<byte> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -190,7 +241,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<byte> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<byte> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadByteArray(length).CreateList()
+                : (length == 0 ? new List<byte>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<byte> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadByteArray(length).CreateList() : new List<byte>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<byte> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadByteArray(length).CreateList() : new List<byte>();
@@ -228,7 +296,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<short> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<short> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -238,7 +306,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<short> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<short> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadShortArray(length).CreateList()
+                : (length == 0 ? new List<short>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<short> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadShortArray(length).CreateList() : new List<short>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<short> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadShortArray(length).CreateList() : new List<short>();
@@ -276,7 +361,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<ushort> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<ushort> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -286,7 +371,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<ushort> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<ushort> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadUShortArray(length).CreateList()
+                : (length == 0 ? new List<ushort>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<ushort> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadUShortArray(length).CreateList() : new List<ushort>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<ushort> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadUShortArray(length).CreateList() : new List<ushort>();
@@ -324,7 +426,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<int> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<int> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -334,7 +436,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<int> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<int> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadIntArray(length).CreateList()
+                : (length == 0 ? new List<int>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<int> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadIntArray(length).CreateList() : new List<int>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<int> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadIntArray(length).CreateList() : new List<int>();
@@ -372,7 +491,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<uint> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<uint> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -382,7 +501,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<uint> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<uint> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadUIntArray(length).CreateList()
+                : (length == 0 ? new List<uint>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<uint> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadUIntArray(length).CreateList() : new List<uint>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<uint> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadUIntArray(length).CreateList() : new List<uint>();
@@ -420,7 +556,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<long> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<long> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -430,7 +566,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<long> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<long> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadLongArray(length).CreateList()
+                : (length == 0 ? new List<long>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<long> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadLongArray(length).CreateList() : new List<long>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<long> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadLongArray(length).CreateList() : new List<long>();
@@ -468,7 +621,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<ulong> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<ulong> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -478,7 +631,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<ulong> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<ulong> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadULongArray(length).CreateList()
+                : (length == 0 ? new List<ulong>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<ulong> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadULongArray(length).CreateList() : new List<ulong>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<ulong> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadULongArray(length).CreateList() : new List<ulong>();
@@ -516,7 +686,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<float> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<float> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -526,7 +696,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<float> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<float> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadFloatArray(length).CreateList()
+                : (length == 0 ? new List<float>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<float> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadFloatArray(length).CreateList() : new List<float>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<float> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadFloatArray(length).CreateList() : new List<float>();
@@ -564,7 +751,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<double> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<double> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -574,7 +761,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<double> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<double> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadDoubleArray(length).CreateList()
+                : (length == 0 ? new List<double>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<double> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadDoubleArray(length).CreateList() : new List<double>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<double> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadDoubleArray(length).CreateList() : new List<double>();
@@ -612,7 +816,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<decimal> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<decimal> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -622,7 +826,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<decimal> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<decimal> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadDecimalArray(length).CreateList()
+                : (length == 0 ? new List<decimal>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<decimal> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadDecimalArray(length).CreateList() : new List<decimal>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<decimal> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadDecimalArray(length).CreateList() : new List<decimal>();
@@ -678,7 +899,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<string> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<string> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -696,7 +917,41 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<string> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<string> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new string[length];
+
+                for (int i = 0; i < length; i++)
+                    value[i] = reader.ReadString();
+
+                return value.CreateList();
+            }
+
+            return length == 0 ? new List<string>() : null;
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<string> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return new List<string>();
+
+            var value = new string[length];
+
+            for (int i = 0; i < length; i++)
+                value[i] = reader.ReadString();
+
+            return value.CreateList();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<string> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -743,7 +998,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<Guid> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<Guid> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -753,7 +1008,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<Guid> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<Guid> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadGuidArray(length).CreateList()
+                : (length == 0 ? new List<Guid>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<Guid> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadGuidArray(length).CreateList() : new List<Guid>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<Guid> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadGuidArray(length).CreateList() : new List<Guid>();
@@ -769,7 +1041,7 @@ namespace IcyRain.Serializers
 
         [MethodImpl(Flags.HotPath)]
         public override sealed int GetCapacity(List<DateTime> value)
-            => value is null ? 4 : value.Count * 13 + 4;
+            => value is null ? 4 : value.Count * 9 + 4;
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void Serialize(ref Writer writer, List<DateTime> value)
@@ -797,7 +1069,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<DateTime> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<DateTime> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -806,7 +1078,7 @@ namespace IcyRain.Serializers
                 var value = new DateTime[length];
 
                 for (int i = 0; i < length; i++)
-                    reader.AppendDateTime(ref value[i], options);
+                    reader.AppendDateTime(ref value[i]);
 
                 return value.CreateList();
             }
@@ -815,7 +1087,25 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<DateTime> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<DateTime> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new DateTime[length];
+
+                for (int i = 0; i < length; i++)
+                    reader.AppendDateTimeInUTC(ref value[i]);
+
+                return value.CreateList();
+            }
+
+            return length == 0 ? new List<DateTime>() : null;
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<DateTime> DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -825,7 +1115,23 @@ namespace IcyRain.Serializers
             var value = new DateTime[length];
 
             for (int i = 0; i < length; i++)
-                reader.AppendDateTime(ref value[i], options);
+                reader.AppendDateTime(ref value[i]);
+
+            return value.CreateList();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<DateTime> DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return new List<DateTime>();
+
+            var value = new DateTime[length];
+
+            for (int i = 0; i < length; i++)
+                reader.AppendDateTimeInUTC(ref value[i]);
 
             return value.CreateList();
         }
@@ -878,7 +1184,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<DateTimeOffset> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<DateTimeOffset> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -896,7 +1202,41 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<DateTimeOffset> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<DateTimeOffset> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length > 0)
+            {
+                var value = new DateTimeOffset[length];
+
+                for (int i = 0; i < length; i++)
+                    value[i] = new DateTimeOffset(reader.ReadDateTimeWithoutZone().Ticks, TimeSpan.FromMinutes(reader.ReadShort()));
+
+                return value.CreateList();
+            }
+
+            return length == 0 ? new List<DateTimeOffset>() : null;
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<DateTimeOffset> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length == 0)
+                return new List<DateTimeOffset>();
+
+            var value = new DateTimeOffset[length];
+
+            for (int i = 0; i < length; i++)
+                value[i] = new DateTimeOffset(reader.ReadDateTimeWithoutZone().Ticks, TimeSpan.FromMinutes(reader.ReadShort()));
+
+            return value.CreateList();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<DateTimeOffset> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -943,7 +1283,7 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<TimeSpan> Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed List<TimeSpan> Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -953,7 +1293,24 @@ namespace IcyRain.Serializers
         }
 
         [MethodImpl(Flags.HotPath)]
-        public override sealed List<TimeSpan> DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed List<TimeSpan> DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            return length > 0
+                ? reader.ReadTimeSpanArray(length).CreateList()
+                : (length == 0 ? new List<TimeSpan>() : null);
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<TimeSpan> DeserializeSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+            return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : new List<TimeSpan>();
+        }
+
+        [MethodImpl(Flags.HotPath)]
+        public override sealed List<TimeSpan> DeserializeInUTCSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
             return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : new List<TimeSpan>();

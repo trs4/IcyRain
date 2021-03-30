@@ -68,7 +68,7 @@ namespace IcyRain.Serializers
                 _serializer.Serialize(ref writer, item);
         }
 
-        public override sealed TCollection Deserialize(ref Reader reader, DeserializeOptions options)
+        public override sealed TCollection Deserialize(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -80,12 +80,29 @@ namespace IcyRain.Serializers
                 : (TCollection)_capacityConstructor.Invoke(new object[] { length });
 
             for (int i = 0; i < length; i++)
-                value.Add(_serializer.Deserialize(ref reader, options));
+                value.Add(_serializer.Deserialize(ref reader));
 
             return value;
         }
 
-        public override sealed TCollection DeserializeSpot(ref Reader reader, DeserializeOptions options)
+        public override sealed TCollection DeserializeInUTC(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            if (length < 0)
+                return default;
+
+            var value = _capacityConstructor is null
+                ? new TCollection()
+                : (TCollection)_capacityConstructor.Invoke(new object[] { length });
+
+            for (int i = 0; i < length; i++)
+                value.Add(_serializer.DeserializeInUTC(ref reader));
+
+            return value;
+        }
+
+        public override sealed TCollection DeserializeSpot(ref Reader reader)
         {
             int length = reader.ReadInt();
 
@@ -94,7 +111,21 @@ namespace IcyRain.Serializers
                 : (TCollection)_capacityConstructor.Invoke(new object[] { length });
 
             for (int i = 0; i < length; i++)
-                value.Add(_serializer.Deserialize(ref reader, options));
+                value.Add(_serializer.Deserialize(ref reader));
+
+            return value;
+        }
+
+        public override sealed TCollection DeserializeInUTCSpot(ref Reader reader)
+        {
+            int length = reader.ReadInt();
+
+            var value = _capacityConstructor is null
+                ? new TCollection()
+                : (TCollection)_capacityConstructor.Invoke(new object[] { length });
+
+            for (int i = 0; i < length; i++)
+                value.Add(_serializer.DeserializeInUTC(ref reader));
 
             return value;
         }

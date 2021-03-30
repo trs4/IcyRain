@@ -75,7 +75,7 @@ namespace IcyRain.Internal
         public static readonly Type WriterRef = Writer.MakeByRefType();
         public static readonly Type Reader = typeof(Reader);
         public static readonly Type ReaderRef = Reader.MakeByRefType();
-        public static readonly Type[] Deserialize = new[] { ReaderRef, typeof(DeserializeOptions) };
+        public static readonly Type[] Deserialize = new[] { ReaderRef };
 
         public static readonly Type Resolver = typeof(Resolver);
         public static readonly Type UnionResolver = typeof(UnionResolver);

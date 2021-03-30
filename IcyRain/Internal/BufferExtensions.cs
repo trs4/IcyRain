@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
+using IcyRain.Compression.LZ4;
 
 namespace IcyRain.Internal
 {
@@ -21,10 +22,19 @@ namespace IcyRain.Internal
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static unsafe byte[] TransferToArray(this in ReadOnlySequence<byte> value)
         {
-            if (value.IsEmpty)
+            long length = value.Length;
+
+            if (length == 0)
                 return Array.Empty<byte>();
 
-            byte[] result = new byte[value.Length];
+            byte[] result = new byte[length];
+
+            if (value.IsSingleSegment)
+            {
+                value.First.Span.TryCopyTo(result);
+                return result;
+            }
+
             int offset = 0;
             var position = value.Start;
 
@@ -45,6 +55,323 @@ namespace IcyRain.Internal
             }
 
             return result;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe byte[] TransferToRentArray(this in ReadOnlySequence<byte> value)
+        {
+            int length = (int)value.Length;
+
+            if (length == 0)
+                return Array.Empty<byte>();
+
+            byte[] result = Buffers.Rent(length);
+
+            if (value.IsSingleSegment)
+            {
+                value.First.Span.TryCopyTo(result);
+                return result;
+            }
+
+            int offset = 0;
+            var position = value.Start;
+
+            fixed (byte* ptr = result)
+            {
+                while (value.TryGet(ref position, out var memory))
+                {
+                    var span = memory.Span;
+
+                    fixed (byte* ptrValue = span)
+                        Unsafe.CopyBlock(ptr + offset, ptrValue, (uint)span.Length);
+
+                    offset += span.Length;
+
+                    if (position.GetObject() is null)
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe byte[] TransferToArrayWithLZ4Decompress(this in ReadOnlySequence<byte> value,
+            int length, out int decodedLength)
+        {
+            decodedLength = length;
+
+            if (length <= 1)
+                return Array.Empty<byte>();
+
+            ReadOnlySpan<byte> span;
+            int ptrValueOffset;
+            byte[] result;
+
+            if (value.IsSingleSegment)
+            {
+                span = value.First.Span;
+                ptrValueOffset = span[0] == 0 ? 1 : 0;
+                result = ptrValueOffset == 0 ? Buffers.Rent(length) : new byte[length - 1];
+                value.First.Span.Slice(ptrValueOffset).TryCopyTo(result);
+            }
+            else
+            {
+                int offset = 0;
+                var position = value.Start;
+
+                value.TryGet(ref position, out var memory);
+                span = memory.Span;
+                ptrValueOffset = span[0] == 0 ? 1 : 0;
+                result = ptrValueOffset == 0 ? Buffers.Rent(length) : new byte[length - 1];
+
+                fixed (byte* ptr = result)
+                {
+                    fixed (byte* ptrValue = span)
+                        Unsafe.CopyBlock(ptr + offset, ptrValue + ptrValueOffset, (uint)(span.Length - ptrValueOffset));
+
+                    offset += span.Length - ptrValueOffset;
+
+                    if (position.GetObject() is not null)
+                    {
+                        while (value.TryGet(ref position, out memory))
+                        {
+                            span = memory.Span;
+
+                            fixed (byte* ptrValue = span)
+                                Unsafe.CopyBlock(ptr + offset, ptrValue, (uint)span.Length);
+
+                            offset += span.Length;
+
+                            if (position.GetObject() is null)
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return ptrValueOffset == 1
+                ? result
+                : LZ4ArrayCodec.DecodeToArray(result, ref decodedLength);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe ArraySegment<byte> TransferToSegmentWithLZ4Decompress(this in ReadOnlySequence<byte> value,
+            int length, out int decodedLength)
+        {
+            decodedLength = length;
+
+            if (length <= 1)
+                return default;
+
+            ReadOnlySpan<byte> span;
+            bool uncompressed;
+            byte[] buffer = Buffers.Rent(length);
+
+            if (value.IsSingleSegment)
+            {
+                span = value.First.Span;
+                uncompressed = span[0] == 0;
+                value.First.Span.TryCopyTo(buffer);
+            }
+            else
+            {
+                int offset = 0;
+                var position = value.Start;
+
+                value.TryGet(ref position, out var memory);
+                span = memory.Span;
+                uncompressed = span[0] == 0;
+
+                fixed (byte* ptr = buffer)
+                {
+                    fixed (byte* ptrValue = span)
+                        Unsafe.CopyBlock(ptr + offset, ptrValue, (uint)span.Length);
+
+                    offset += span.Length;
+
+                    if (position.GetObject() is not null)
+                    {
+                        while (value.TryGet(ref position, out memory))
+                        {
+                            span = memory.Span;
+
+                            fixed (byte* ptrValue = span)
+                                Unsafe.CopyBlock(ptr + offset, ptrValue, (uint)span.Length);
+
+                            offset += span.Length;
+
+                            if (position.GetObject() is null)
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return uncompressed
+                ? new ArraySegment<byte>(buffer, 1, length - 1)
+                : LZ4ArrayCodec.DecodeToSegment(buffer, ref decodedLength);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe ReadOnlySequence<byte> TransferToSequenceWithLZ4Decompress(this in ReadOnlySequence<byte> value,
+            int length, out int decodedLength)
+        {
+            decodedLength = length;
+
+            if (length <= 1)
+                return default;
+
+            ReadOnlySpan<byte> span;
+            bool uncompressed;
+            byte[] buffer = Buffers.Rent(length);
+
+            if (value.IsSingleSegment)
+            {
+                span = value.First.Span;
+                uncompressed = span[0] == 0;
+                value.First.Span.TryCopyTo(buffer);
+            }
+            else
+            {
+                int offset = 0;
+                var position = value.Start;
+
+                value.TryGet(ref position, out var memory);
+                span = memory.Span;
+                uncompressed = span[0] == 0;
+
+                fixed (byte* ptr = buffer)
+                {
+                    fixed (byte* ptrValue = span)
+                        Unsafe.CopyBlock(ptr + offset, ptrValue, (uint)span.Length);
+
+                    offset += span.Length;
+
+                    if (position.GetObject() is not null)
+                    {
+                        while (value.TryGet(ref position, out memory))
+                        {
+                            span = memory.Span;
+
+                            fixed (byte* ptrValue = span)
+                                Unsafe.CopyBlock(ptr + offset, ptrValue, (uint)span.Length);
+
+                            offset += span.Length;
+
+                            if (position.GetObject() is null)
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return uncompressed
+                ? new ReadOnlySequence<byte>(buffer, 1, length - 1)
+                : LZ4ArrayCodec.DecodeToSequence(buffer, ref decodedLength);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe byte[] TransferToRentArrayWithLZ4Decompress(this Span<byte> value, out int decodedLength)
+        {
+            decodedLength = value.Length;
+
+            if (decodedLength <= 1)
+            {
+                decodedLength = 0;
+                return Array.Empty<byte>();
+            }
+
+            if (value[0] == 0)
+            {
+                decodedLength--;
+                byte[] result = Buffers.Rent(decodedLength);
+                value.Slice(1).TryCopyTo(result);
+                return result;
+            }
+
+            return LZ4ArrayCodec.DecodeToRentArray(value, ref decodedLength);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe byte[] TransferToArrayWithLZ4Decompress(this ArraySegment<byte> value, out int decodedLength)
+        {
+            decodedLength = value.Count;
+
+            if (decodedLength <= 1)
+            {
+                decodedLength = 0;
+                return Array.Empty<byte>();
+            }
+
+            byte[] result;
+
+            if (value.Array[value.Offset] == 0)
+            {
+                decodedLength--;
+                result = new byte[decodedLength];
+                result.WriteTo(value.Array, value.Offset + 1, decodedLength);
+                return result;
+            }
+
+            result = LZ4ArrayCodec.DecodeToArray(value);
+            decodedLength = result.Length;
+            return result;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe byte[] TransferToRentArrayWithLZ4Decompress(this ArraySegment<byte> value, out int decodedLength)
+        {
+            decodedLength = value.Count;
+
+            if (decodedLength <= 1)
+            {
+                decodedLength = 0;
+                return Array.Empty<byte>();
+            }
+
+            if (value.Array[value.Offset] == 0)
+            {
+                decodedLength--;
+                byte[] result = Buffers.Rent(decodedLength);
+                result.WriteTo(value.Array, value.Offset + 1, decodedLength);
+                return result;
+            }
+
+            return LZ4ArrayCodec.DecodeToRentArray(value, ref decodedLength);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static unsafe void WriteWithLZ4Compress(this in ReadOnlySequence<byte> value, byte* destination,
+            ref int encodedLength)
+        {
+            int length = encodedLength;
+
+            if (value.IsSingleSegment)
+            {
+                fixed (byte* ptrValue = value.First.Span)
+                {
+                    if (length > Buffers.MinCompressSize)
+                        LZ4Codec.Encode(ptrValue, destination, ref encodedLength);
+                    else
+                        BlockBuilder.NoCompression(destination, ptrValue, ref encodedLength);
+                }
+            }
+            else
+            {
+                byte[] buffer = Buffers.Rent(length);
+                WriteToBufferMultiple(value, buffer);
+
+                fixed (byte* ptrValue = buffer)
+                {
+                    if (length > Buffers.MinCompressSize)
+                        LZ4Codec.Encode(ptrValue, destination, ref encodedLength);
+                    else
+                        BlockBuilder.NoCompression(destination, ptrValue, ref encodedLength);
+                }
+
+                Buffers.Return(buffer);
+            }
         }
 
         [MethodImpl(Flags.HotPath)]

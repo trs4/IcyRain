@@ -13,7 +13,7 @@ namespace IcyRain.Internal
         public const string Value = "value";
 
         public static readonly string[] Serialize = new[] { "writer", "value" };
-        public static readonly string[] Deserialize = new[] { "reader", "options" };
+        public static readonly string[] Deserialize = new[] { "reader" };
 
         public static string GetName(Type type, bool isUnion = false, bool forSerializer = false)
         {
