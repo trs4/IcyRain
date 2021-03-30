@@ -15,7 +15,7 @@ namespace IcyRain.Switchers
         public sealed override byte[] SerializeWithLZ4(ReadOnlyMemory<byte> value, out int serializedLength)
         {
             serializedLength = value.Length;
-            return LZ4ArrayCodec.EncodeToArray(value.Span);
+            return LZ4ArrayEncoder.Encode(value.Span);
         }
 
 
@@ -41,7 +41,7 @@ namespace IcyRain.Switchers
         public sealed override ReadOnlyMemory<byte> DeserializeWithLZ4(byte[] bytes, int offset, int count, out int decodedLength)
         {
             decodedLength = count;
-            byte[] result = LZ4ArrayCodec.DecodeToRentArray(new Span<byte>(bytes, offset, count), ref decodedLength);
+            byte[] result = LZ4ArrayDecoder.RentDecode(new Span<byte>(bytes, offset, count), ref decodedLength);
             return new ReadOnlyMemory<byte>(result, 0, decodedLength);
         }
 
@@ -49,7 +49,7 @@ namespace IcyRain.Switchers
         public sealed override ReadOnlyMemory<byte> DeserializeInUTCWithLZ4(byte[] bytes, int offset, int count, out int decodedLength)
         {
             decodedLength = count;
-            byte[] result = LZ4ArrayCodec.DecodeToRentArray(new Span<byte>(bytes, offset, count), ref decodedLength);
+            byte[] result = LZ4ArrayDecoder.RentDecode(new Span<byte>(bytes, offset, count), ref decodedLength);
             return new ReadOnlyMemory<byte>(result, 0, decodedLength);
         }
 

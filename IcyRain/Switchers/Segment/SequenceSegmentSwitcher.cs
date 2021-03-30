@@ -17,7 +17,7 @@ namespace IcyRain.Switchers
         {
             byte[] buffer = value.TransferToRentArray();
             serializedLength = buffer.Length;
-            var result = LZ4ArrayCodec.EncodeToSegment(buffer);
+            var result = LZ4SegmentEncoder.Encode(buffer);
 
             Buffers.Return(buffer);
             return result;

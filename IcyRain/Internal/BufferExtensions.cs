@@ -152,7 +152,7 @@ namespace IcyRain.Internal
 
             return ptrValueOffset == 1
                 ? result
-                : LZ4ArrayCodec.DecodeToArray(result, ref decodedLength);
+                : LZ4ArrayDecoder.Decode(result, ref decodedLength);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -210,7 +210,7 @@ namespace IcyRain.Internal
 
             return uncompressed
                 ? new ArraySegment<byte>(buffer, 1, length - 1)
-                : LZ4ArrayCodec.DecodeToSegment(buffer, ref decodedLength);
+                : LZ4SegmentDecoder.Decode(buffer, ref decodedLength);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -268,7 +268,7 @@ namespace IcyRain.Internal
 
             return uncompressed
                 ? new ReadOnlySequence<byte>(buffer, 1, length - 1)
-                : LZ4ArrayCodec.DecodeToSequence(buffer, ref decodedLength);
+                : LZ4SequenceDecoder.Decode(buffer, ref decodedLength);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -290,7 +290,7 @@ namespace IcyRain.Internal
                 return result;
             }
 
-            return LZ4ArrayCodec.DecodeToRentArray(value, ref decodedLength);
+            return LZ4ArrayDecoder.RentDecode(value, ref decodedLength);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -314,7 +314,7 @@ namespace IcyRain.Internal
                 return result;
             }
 
-            result = LZ4ArrayCodec.DecodeToArray(value);
+            result = LZ4ArrayDecoder.Decode(value);
             decodedLength = result.Length;
             return result;
         }
@@ -338,7 +338,7 @@ namespace IcyRain.Internal
                 return result;
             }
 
-            return LZ4ArrayCodec.DecodeToRentArray(value, ref decodedLength);
+            return LZ4ArrayDecoder.RentDecode(value, ref decodedLength);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

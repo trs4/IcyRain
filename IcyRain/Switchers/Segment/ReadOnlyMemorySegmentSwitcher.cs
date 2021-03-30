@@ -15,7 +15,7 @@ namespace IcyRain.Switchers
         public sealed override ArraySegment<byte> SerializeWithLZ4(ReadOnlyMemory<byte> value, out int serializedLength)
         {
             serializedLength = value.Length;
-            return LZ4ArrayCodec.EncodeToSegment(value.Span);
+            return LZ4SegmentEncoder.Encode(value.Span);
         }
 
 

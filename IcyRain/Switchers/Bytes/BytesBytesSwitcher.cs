@@ -18,7 +18,7 @@ namespace IcyRain.Switchers
                 throw new ArgumentNullException(nameof(value));
 
             serializedLength = value.Length;
-            return LZ4ArrayCodec.EncodeToArray(value);
+            return LZ4ArrayEncoder.Encode(value);
         }
 
 
@@ -59,11 +59,11 @@ namespace IcyRain.Switchers
             decodedLength = count;
 
             if (offset == 0 && (count < 0 || bytes.Length == count))
-                return LZ4ArrayCodec.DecodeToArray(bytes, ref decodedLength);
+                return LZ4ArrayDecoder.Decode(bytes, ref decodedLength);
 
             var result = new byte[count];
             result.WriteTo(bytes, offset, count);
-            return LZ4ArrayCodec.DecodeToArray(bytes, ref decodedLength);
+            return LZ4ArrayDecoder.Decode(bytes, ref decodedLength);
         }
 
         [MethodImpl(Flags.HotPath)]
@@ -75,11 +75,11 @@ namespace IcyRain.Switchers
             decodedLength = count;
 
             if (offset == 0 && (count < 0 || bytes.Length == count))
-                return LZ4ArrayCodec.DecodeToArray(bytes, ref decodedLength);
+                return LZ4ArrayDecoder.Decode(bytes, ref decodedLength);
 
             var result = new byte[count];
             result.WriteTo(bytes, offset, count);
-            return LZ4ArrayCodec.DecodeToArray(bytes, ref decodedLength);
+            return LZ4ArrayDecoder.Decode(bytes, ref decodedLength);
         }
 
     }

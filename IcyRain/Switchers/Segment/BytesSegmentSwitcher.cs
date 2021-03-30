@@ -23,7 +23,7 @@ namespace IcyRain.Switchers
                 throw new ArgumentNullException(nameof(value));
 
             serializedLength = value.Length;
-            return LZ4ArrayCodec.EncodeToSegment(value);
+            return LZ4SegmentEncoder.Encode(value);
         }
 
 
