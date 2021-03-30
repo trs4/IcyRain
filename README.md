@@ -1,6 +1,8 @@
 # IcyRain
 **Fastest C# data serializer and deserializer** for .NET Core, .NET Framework for use in [Grpc.Core C# library](https://github.com/grpc/grpc/tree/master/src/csharp) with SerializationContext base on **IBufferWriter<byte>** and DeserializationContext base on **ReadOnlySequence<byte>** (see [example](https://github.com/trs4/IcyRain/blob/main/IcyRain.Data/GrpcTestService.cs)). And also supports serialization via **byte[]** or **ArraySegment<byte>**. See [performance](https://github.com/trs4/IcyRain#performance)
 
+Principle - performance first.
+
 Install
 ---
 **Package -> [IcyRain](https://www.nuget.org/packages/IcyRain/)** 
