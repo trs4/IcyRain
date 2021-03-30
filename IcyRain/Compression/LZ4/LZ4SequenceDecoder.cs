@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using IcyRain.Compression.LZ4.Engine;
 using IcyRain.Internal;
 
 namespace IcyRain.Compression.LZ4
@@ -31,7 +32,7 @@ namespace IcyRain.Compression.LZ4
 
                 fixed (byte* targetPtr = target)
                 {
-                    int decodedLength = LZ4Codec.Decode(sourcePtr + dataOffset, source.Length - dataOffset, targetPtr, target.Length);
+                    int decodedLength = LLxx.LZ4_decompress_safe(sourcePtr + dataOffset, targetPtr, source.Length - dataOffset, target.Length);
 
                     if (decodedLength != resultLength)
                         LZ4Codec.ThrowExpectedException(decodedLength, resultLength);
@@ -67,7 +68,7 @@ namespace IcyRain.Compression.LZ4
 
                 fixed (byte* targetPtr = target)
                 {
-                    decodedLength = LZ4Codec.Decode(sourcePtr + dataOffset, source.Length - dataOffset, targetPtr, target.Length);
+                    decodedLength = LLxx.LZ4_decompress_safe(sourcePtr + dataOffset, targetPtr, source.Length - dataOffset, target.Length);
 
                     if (decodedLength != resultLength)
                         LZ4Codec.ThrowExpectedException(decodedLength, resultLength);

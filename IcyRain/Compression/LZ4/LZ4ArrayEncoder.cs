@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using IcyRain.Compression.LZ4.Engine;
 using IcyRain.Internal;
 
 namespace IcyRain.Compression.LZ4
 {
     internal static class LZ4ArrayEncoder
     {
+        [MethodImpl(Flags.HotPath)]
         public static unsafe byte[] Encode(byte[] source)
         {
             fixed (byte* sourcePtr = source)
                 return Encode(sourcePtr, source.Length);
         }
 
+        [MethodImpl(Flags.HotPath)]
         public static unsafe byte[] Encode(Span<byte> source)
         {
             fixed (byte* sourcePtr = source)
                 return Encode(sourcePtr, source.Length);
         }
 
+        [MethodImpl(Flags.HotPath)]
         public static unsafe byte[] Encode(ReadOnlySpan<byte> source)
         {
             fixed (byte* sourcePtr = source)
                 return Encode(sourcePtr, source.Length);
         }
 
-        [MethodImpl(Flags.HotPath)]
         private static unsafe byte[] Encode(byte* sourcePtr, int size)
         {
             byte[] result;
@@ -36,7 +39,7 @@ namespace IcyRain.Compression.LZ4
 
                 fixed (byte* targetPtr = target)
                 {
-                    int encodedLength = LZ4Codec.Encode(sourcePtr, size, targetPtr, size);
+                    int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, targetPtr, size, size, 1);
 
                     if (encodedLength > 0 && encodedLength < size)
                     {
