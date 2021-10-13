@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using IcyRain.Internal;
 
 namespace IcyRain.Compression.LZ4.Internal
 {
@@ -17,10 +14,10 @@ namespace IcyRain.Compression.LZ4.Internal
         /// <summary>Protected constructor to prevent instantiation.</summary>
         protected XXH() { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         internal static uint XXH_read32(void* p) => *(uint*)p;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         internal static ulong XXH_read64(void* p) => *(ulong*)p;
 
         internal static void XXH_zero(void* target, int length)

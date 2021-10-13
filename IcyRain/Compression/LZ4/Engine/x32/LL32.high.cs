@@ -1,49 +1,19 @@
-//------------------------------------------------------------------------------
-//
-// This file has been generated. All changes will be lost.
-//
-//------------------------------------------------------------------------------
-#define BIT32
-
-using System;
 using System.Runtime.CompilerServices;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-#if BIT32
-using reg_t = System.UInt32;
+using IcyRain.Internal;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
-#else
-using reg_t = System.UInt64;
-using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
-#endif
+using reg_t = System.UInt32;
 using size_t = System.UInt32;
-using uptr_t = System.UInt64;
-
-//------------------------------------------------------------------------------
 
 namespace IcyRain.Compression.LZ4.Engine
 {
-#if BIT32
     internal unsafe partial class LL32
-#else
-	internal unsafe partial class LL64
-#endif
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint LZ4HC_countPattern(byte* ip, byte* iEnd, uint pattern32)
         {
             const int ARCH = sizeof(reg_t);
             byte* iStart = ip;
             reg_t pattern = pattern32;
-#if !BIT32
-			pattern |= pattern << 32;
-#endif
 
             while ((ip < iEnd - (ARCH - 1)))
             {
@@ -68,7 +38,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return (uint)(ip - iStart);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int
             LZ4HC_InsertAndGetWiderMatch(
                 LZ4_streamHC_t* hc4,
@@ -110,7 +80,9 @@ namespace IcyRain.Compression.LZ4.Engine
             {
                 int matchLength = 0;
                 nbAttempts--;
+#if DEBUG
                 Assert(matchIndex < ipIndex);
+#endif
                 if (favorDecSpeed != 0 && (ipIndex - matchIndex < 8))
                 {
                     /* do nothing */
@@ -119,13 +91,14 @@ namespace IcyRain.Compression.LZ4.Engine
                 {
                     /* within current Prefix */
                     byte* matchPtr = @base + matchIndex;
+#if DEBUG
                     Assert(matchPtr >= lowPrefixPtr);
                     Assert(matchPtr < ip);
                     Assert(longest >= 1);
-                    if (Mem.Peek2(iLowLimit + longest - 1)
-                        == Mem.Peek2(matchPtr - lookBackLength + longest - 1))
+#endif
+                    if (Internal.Mem.Peek2(iLowLimit + longest - 1) == Internal.Mem.Peek2(matchPtr - lookBackLength + longest - 1))
                     {
-                        if (Mem.Peek4(matchPtr) == pattern)
+                        if (Internal.Mem.Peek4(matchPtr) == pattern)
                         {
                             int back = lookBackLength != 0 ? LZ4HC_countBack(
                                 ip, matchPtr, iLowLimit, lowPrefixPtr) : 0;
@@ -173,7 +146,9 @@ namespace IcyRain.Compression.LZ4.Engine
                 if (chainSwap && matchLength == longest)
                 {
                     /* better match => select a better chain */
+#if DEBUG
                     Assert(lookBackLength == 0); /* search forward only */
+#endif
                     if (matchIndex + (uint)longest <= ipIndex)
                     {
                         int kTrigger = 4;
@@ -263,8 +238,9 @@ namespace IcyRain.Compression.LZ4.Engine
                                     /* Limit backLength not go further than lowestMatchIndex */
                                     backLength = matchCandidateIdx - MAX(
                                         matchCandidateIdx - (uint)backLength, lowestMatchIndex);
-                                    Assert(
-                                        matchCandidateIdx - backLength >= lowestMatchIndex);
+#if DEBUG
+                                    Assert(matchCandidateIdx - backLength >= lowestMatchIndex);
+#endif
                                     currentSegmentLength = backLength + forwardPatternLength;
                                     /* Adjust to end of pattern if the source pattern fits, otherwise the beginning of the pattern */
                                     if ((currentSegmentLength
@@ -274,30 +250,34 @@ namespace IcyRain.Compression.LZ4.Engine
                                     {
                                         /* haven't reached this position yet */
                                         uint newMatchIndex = matchCandidateIdx
-                                            + (uint)forwardPatternLength
-                                            - (uint)
-                                            srcPatternLength; /* best position, full pattern, might be followed by more match */
+                                            + forwardPatternLength
+                                            - srcPatternLength; /* best position, full pattern, might be followed by more match */
+
                                         if (LZ4HC_protectDictEnd(dictLimit, newMatchIndex))
                                             matchIndex = newMatchIndex;
                                         else
                                         {
                                             /* Can only happen if started in the prefix */
+#if DEBUG
                                             Assert(
                                                 newMatchIndex >= dictLimit - 3
                                                 && newMatchIndex < dictLimit && !extDict);
+#endif
                                             matchIndex = dictLimit;
                                         }
                                     }
                                     else
                                     {
-                                        uint newMatchIndex =
-                                            matchCandidateIdx
-                                            - (uint)backLength; /* farthest position in current segment, will find a match of length currentSegmentLength + maybe some back */
+                                        uint newMatchIndex = matchCandidateIdx
+                                            - backLength; /* farthest position in current segment, will find a match of length currentSegmentLength + maybe some back */
+
                                         if (!LZ4HC_protectDictEnd(dictLimit, newMatchIndex))
                                         {
+#if DEBUG
                                             Assert(
                                                 newMatchIndex >= dictLimit - 3
                                                 && newMatchIndex < dictLimit && !extDict);
+#endif
                                             matchIndex = dictLimit;
                                         }
                                         else
@@ -310,11 +290,15 @@ namespace IcyRain.Compression.LZ4.Engine
                                                     currentSegmentLength, srcPatternLength);
                                                 if ((size_t)longest < maxML)
                                                 {
+#if DEBUG
                                                     Assert(@base + matchIndex != ip);
-                                                    if ((size_t)(ip - @base) - matchIndex
-                                                        > LZ4_DISTANCE_MAX) break;
+#endif
+                                                    if ((size_t)(ip - @base) - matchIndex > LZ4_DISTANCE_MAX)
+                                                        break;
 
+#if DEBUG
                                                     Assert(maxML < 2 * GB);
+#endif
                                                     longest = (int)maxML;
                                                     *matchpos =
                                                         @base
@@ -350,18 +334,24 @@ namespace IcyRain.Compression.LZ4.Engine
             {
                 size_t dictEndOffset = (size_t)(dictCtx->end - dictCtx->@base);
                 uint dictMatchIndex = dictCtx->hashTable[LZ4HC_hashPtr(ip)];
+#if DEBUG
                 Assert(dictEndOffset <= 1 * GB);
-                matchIndex = dictMatchIndex + lowestMatchIndex - (uint)dictEndOffset;
+#endif
+                matchIndex = dictMatchIndex + lowestMatchIndex - dictEndOffset;
+
                 while (ipIndex - matchIndex <= LZ4_DISTANCE_MAX && nbAttempts-- != 0)
                 {
                     byte* matchPtr = dictCtx->@base + dictMatchIndex;
 
-                    if (Mem.Peek4(matchPtr) == pattern)
+                    if (Internal.Mem.Peek4(matchPtr) == pattern)
                     {
                         int mlt;
                         int back = 0;
                         byte* vLimit = ip + (dictEndOffset - dictMatchIndex);
-                        if (vLimit > iHighLimit) vLimit = iHighLimit;
+
+                        if (vLimit > iHighLimit)
+                            vLimit = iHighLimit;
+
                         mlt = (int)LZ4_count(ip + MINMATCH, matchPtr + MINMATCH, vLimit)
                             + MINMATCH;
                         back = lookBackLength != 0 ? LZ4HC_countBack(
@@ -386,7 +376,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return longest;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_InsertAndFindBestMatch(
             LZ4_streamHC_t* hc4, /* Index table will be updated */
             byte* ip, byte* iLimit,
@@ -404,7 +394,7 @@ namespace IcyRain.Compression.LZ4.Engine
                 patternAnalysis, false /*chainSwap*/, dict, HCfavor_e.favorCompressionRatio);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static LZ4HC_match_t LZ4HC_FindLongerMatch(
             LZ4_streamHC_t* ctx,
             byte* ip, byte* iHighLimit,
@@ -436,7 +426,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return match;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_encodeSequence(
             byte** ip,
             byte** op,
@@ -471,14 +461,18 @@ namespace IcyRain.Compression.LZ4.Engine
             *op += length;
 
             /* Encode Offset */
+#if DEBUG
             Assert(
                 (*ip - match)
                 <= LZ4_DISTANCE_MAX); /* note : consider providing offset as a value, rather than as a pointer difference */
+#endif
             Mem.Poke2(*op, (ushort)(*ip - match));
             *op += 2;
 
             /* Encode MatchLength */
+#if DEBUG
             Assert(matchLength >= MINMATCH);
+#endif
             length = (size_t)matchLength - MINMATCH;
             if ((limit != 0) && (*op + (length / 255) + (1 + LASTLITERALS) > oend))
                 return 1; /* Check output limit */
@@ -513,7 +507,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_compress_hashChain(
             LZ4_streamHC_t* ctx,
             byte* source,
@@ -803,7 +797,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_compress_optimal(
             LZ4_streamHC_t* ctx,
             byte* source,
@@ -837,7 +831,9 @@ namespace IcyRain.Compression.LZ4.Engine
             if (sufficient_len >= LZ4_OPT_NUM) sufficient_len = LZ4_OPT_NUM - 1;
 
             /* Main Loop */
+#if DEBUG
             Assert(ip - anchor < LZ4_MAX_INPUT_SIZE);
+#endif
             while (ip <= mflimit)
             {
                 int llen = (int)(ip - anchor);
@@ -882,7 +878,9 @@ namespace IcyRain.Compression.LZ4.Engine
                     int mlen = MINMATCH;
                     int matchML = firstMatch.len; /* necessarily < sufficient_len < LZ4_OPT_NUM */
                     int offset = firstMatch.off;
+#if DEBUG
                     Assert(matchML < LZ4_OPT_NUM);
+#endif
                     for (; mlen <= matchML; mlen++)
                     {
                         int cost = LZ4HC_sequencePrice(llen, mlen);
@@ -971,7 +969,9 @@ namespace IcyRain.Compression.LZ4.Engine
                         int matchML = newMatch.len;
                         int ml = MINMATCH;
 
+#if DEBUG
                         Assert(cur + newMatch.len < LZ4_OPT_NUM);
+#endif
                         for (; ml <= matchML; ml++)
                         {
                             int pos = cur + ml;
@@ -990,14 +990,19 @@ namespace IcyRain.Compression.LZ4.Engine
                                 price = opt[cur].price + LZ4HC_sequencePrice(0, ml);
                             }
 
+#if DEBUG
                             Assert((uint)favorDecSpeed <= 1);
+#endif
                             if (pos > last_match_pos + TRAILING_LITERALS
                                 || price <= opt[pos].price - (int)favorDecSpeed)
                             {
+#if DEBUG
                                 Assert(pos < LZ4_OPT_NUM);
+#endif
                                 if ((ml == matchML) /* last pos of last match */
                                     && (last_match_pos < pos))
                                     last_match_pos = pos;
+
                                 opt[pos].mlen = ml;
                                 opt[pos].off = offset;
                                 opt[pos].litlen = ll;
@@ -1019,14 +1024,18 @@ namespace IcyRain.Compression.LZ4.Engine
                     }
                 } /* for (cur = 1; cur <= last_match_pos; cur++) */
 
+#if DEBUG
                 Assert(last_match_pos < LZ4_OPT_NUM + TRAILING_LITERALS);
+#endif
                 best_mlen = opt[last_match_pos].mlen;
                 best_off = opt[last_match_pos].off;
                 cur = last_match_pos - best_mlen;
 
             encode: /* cur, last_match_pos, best_mlen, best_off must be set */
+#if DEBUG
                 Assert(cur < LZ4_OPT_NUM);
                 Assert(last_match_pos >= 1); /* == 1 when only one candidate */
+#endif
                 {
                     int candidate_pos = cur;
                     int selected_matchLength = best_mlen;
@@ -1041,10 +1050,13 @@ namespace IcyRain.Compression.LZ4.Engine
                         opt[candidate_pos].off = selected_offset;
                         selected_matchLength = next_matchLength;
                         selected_offset = next_offset;
+
                         if (next_matchLength > candidate_pos)
                             break; /* last match elected, first match to encode */
 
+#if DEBUG
                         Assert(next_matchLength > 0); /* can be 1, means literal */
+#endif
                         candidate_pos -= next_matchLength;
                     }
                 }
@@ -1064,11 +1076,13 @@ namespace IcyRain.Compression.LZ4.Engine
                         } /* literal; note: can end up with several literals, in which case, skip them */
 
                         rPos += ml;
+#if DEBUG
                         Assert(ml >= MINMATCH);
                         Assert((offset >= 1) && (offset <= LZ4_DISTANCE_MAX));
+#endif
                         opSaved = op;
-                        if (LZ4HC_encodeSequence(&ip, &op, &anchor, ml, ip - offset, limit, oend)
-                            != 0) /* updates ip, op and anchor */
+
+                        if (LZ4HC_encodeSequence(&ip, &op, &anchor, ml, ip - offset, limit, oend) != 0) /* updates ip, op and anchor */
                             goto _dest_overflow;
                     }
                 }
@@ -1141,7 +1155,7 @@ namespace IcyRain.Compression.LZ4.Engine
 			new cParams_t(lz4hc_strat_e.lz4opt, 16384, LZ4_OPT_NUM), /* 12==LZ4HC_CLEVEL_MAX */
 		};
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_compress_generic_internal(
             LZ4_streamHC_t* ctx,
             byte* src,
@@ -1178,7 +1192,9 @@ namespace IcyRain.Compression.LZ4.Engine
                 }
                 else
                 {
+#if DEBUG
                     Assert(cParam.strat == lz4hc_strat_e.lz4opt);
+#endif
                     result = LZ4HC_compress_optimal(
                         ctx,
                         src, dst, srcSizePtr, dstCapacity,
@@ -1187,7 +1203,9 @@ namespace IcyRain.Compression.LZ4.Engine
                         dict, favor);
                 }
 
-                if (result <= 0) ctx->dirty = true;
+                if (result <= 0)
+                    ctx->dirty = true;
+
                 return result;
             }
         }
@@ -1201,7 +1219,9 @@ namespace IcyRain.Compression.LZ4.Engine
             int cLevel,
             limitedOutput_directive limit)
         {
+#if DEBUG
             Assert(ctx->dictCtx == null);
+#endif
             return LZ4HC_compress_generic_internal(
                 ctx, src, dst, srcSizePtr, dstCapacity, cLevel, limit, dictCtx_directive.noDictCtx);
         }
@@ -1216,7 +1236,9 @@ namespace IcyRain.Compression.LZ4.Engine
             limitedOutput_directive limit)
         {
             size_t position = (size_t)(ctx->end - ctx->@base) - ctx->lowLimit;
+#if DEBUG
             Assert(ctx->dictCtx != null);
+#endif
             if (position >= 64 * KB)
             {
                 ctx->dictCtx = null;
@@ -1267,7 +1289,9 @@ namespace IcyRain.Compression.LZ4.Engine
             limitedOutput_directive limit)
         {
             LZ4_streamHC_t* ctxPtr = LZ4_streamHCPtr;
+#if DEBUG
             Assert(ctxPtr != null);
+#endif
             /* auto-init if forgotten */
             if (ctxPtr->@base == null) LZ4HC_init_internal(ctxPtr, (byte*)src);
 

@@ -5,7 +5,6 @@
 //------------------------------------------------------------------------------
 #define BIT32
 
-using System;
 using System.Runtime.CompilerServices;
 
 //------------------------------------------------------------------------------
@@ -16,7 +15,6 @@ using System.Runtime.CompilerServices;
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 // ReSharper disable BuiltInTypeReferenceStyle
 #if BIT32
-using reg_t = System.UInt32;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
 #else
 using reg_t = System.UInt64;
@@ -27,8 +25,7 @@ using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
 using System.Numerics;
 #endif
 
-using size_t = System.UInt32;
-using uptr_t = System.UInt64;
+using IcyRain.Internal;
 
 //------------------------------------------------------------------------------
 
@@ -53,7 +50,7 @@ namespace IcyRain.Compression.LZ4.Engine
 
         private static readonly uint* DeBruijnBytePos = Mem.CloneArray(_DeBruijnBytePos);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_NbCommonBytes(uint val) =>
             DeBruijnBytePos[
                 unchecked((uint)((int)val & -(int)val) * 0x077CB531U >> 27)];
@@ -64,7 +61,7 @@ namespace IcyRain.Compression.LZ4.Engine
 		
 #if NET5_0
 		
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
 		protected static uint LZ4_NbCommonBytes(ulong val) =>
 			((uint) BitOperations.TrailingZeroCount(val) >> 3) & 0x07;
 		
@@ -82,8 +79,8 @@ namespace IcyRain.Compression.LZ4.Engine
 		};
 
 		private static readonly uint* DeBruijnBytePos = Mem.CloneArray(_DeBruijnBytePos);
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
+        [MethodImpl(Flags.HotPath)]
 		protected static uint LZ4_NbCommonBytes(ulong val) =>
 			DeBruijnBytePos[
 				unchecked((ulong) ((long) val & -(long) val) * 0x0218A392CDABBD3Ful >> 58)];
@@ -92,7 +89,7 @@ namespace IcyRain.Compression.LZ4.Engine
 		
 #endif // BIT32
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_count(byte* pIn, byte* pMatch, byte* pInLimit)
         {
             const int STEPSIZE = ALGORITHM_ARCH;
@@ -141,7 +138,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return (uint)(pIn - pStart);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_hashPosition(void* p, tableType_t tableType)
         {
 #if !BIT32
@@ -151,12 +148,12 @@ namespace IcyRain.Compression.LZ4.Engine
             return LZ4_hash4(Mem.Peek4(p), tableType);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static void LZ4_putPosition(
             byte* p, void* tableBase, tableType_t tableType, byte* srcBase) =>
             LZ4_putPositionOnHash(p, LZ4_hashPosition(p, tableType), tableBase, tableType, srcBase);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static byte* LZ4_getPosition(
             byte* p, void* tableBase, tableType_t tableType, byte* srcBase) =>
             LZ4_getPositionOnHash(LZ4_hashPosition(p, tableType), tableBase, tableType, srcBase);
@@ -165,8 +162,11 @@ namespace IcyRain.Compression.LZ4.Engine
 
         protected static void LZ4_renormDictT(LZ4_stream_t* LZ4_dict, int nextSize)
         {
+#if DEBUG
             Assert(nextSize >= 0);
-            if (LZ4_dict->currentOffset + (uint)nextSize <= 0x80000000) return;
+#endif
+            if (LZ4_dict->currentOffset + (uint)nextSize <= 0x80000000)
+                return;
 
             var delta = LZ4_dict->currentOffset - 64 * KB;
             var dictEnd = LZ4_dict->dictionary + LZ4_dict->dictSize;

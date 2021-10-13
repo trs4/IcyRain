@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using IcyRain.Compression.LZ4.Internal;
+using IcyRain.Internal;
 
 //------------------------------------------------------------------------------
 
@@ -9,7 +10,6 @@ using IcyRain.Compression.LZ4.Internal;
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 // ReSharper disable BuiltInTypeReferenceStyle
 using size_t = System.UInt32;
-using uptr_t = System.UInt64;
 
 //------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ namespace IcyRain.Compression.LZ4.Engine
 {
     internal unsafe partial class LL
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4_sizeofStateHC() => sizeof(LZ4_streamHC_t);
 
         public static void LZ4_setCompressionLevel(
@@ -85,18 +85,18 @@ namespace IcyRain.Compression.LZ4.Engine
             LZ4_setCompressionLevel(LZ4_streamHCPtr, compressionLevel);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         private static uint HASH_FUNCTION(uint value) =>
             (value * 2654435761U) >> (MINMATCH * 8 - LZ4HC_HASH_LOG);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static ref ushort DELTANEXTU16(ushort* table, uint pos) =>
             ref table[(ushort)(pos)];
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint LZ4HC_hashPtr(void* ptr) => HASH_FUNCTION(Mem.Peek4(ptr));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static void LZ4HC_Insert(LZ4_streamHC_t* hc4, byte* ip)
         {
             ushort* chainTable = hc4->chainTable;
@@ -184,7 +184,10 @@ namespace IcyRain.Compression.LZ4.Engine
         public static int LZ4_loadDictHC(LZ4_streamHC_t* LZ4_streamHCPtr, byte* dictionary, int dictSize)
         {
             LZ4_streamHC_t* ctxPtr = LZ4_streamHCPtr;
+#if DEBUG
             Assert(LZ4_streamHCPtr != null);
+#endif
+
             if (dictSize > 64 * KB)
             {
                 dictionary += dictSize - 64 * KB;
@@ -203,37 +206,40 @@ namespace IcyRain.Compression.LZ4.Engine
             return dictSize;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint LZ4HC_rotl32(uint x, int r) => ((x << r) | (x >> (32 - r)));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static bool LZ4HC_protectDictEnd(uint dictLimit, uint matchIndex) =>
-            ((uint)((dictLimit - 1) - matchIndex) >= 3);
+            ((dictLimit - 1) - matchIndex >= 3);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_countBack(byte* ip, byte* match, byte* iMin, byte* mMin)
         {
             int back = 0;
             int min = (int)MAX(iMin - ip, mMin - match);
+#if DEBUG
             Assert(min <= 0);
             Assert(ip >= iMin);
             Assert((size_t)(ip - iMin) < (1U << 31));
             Assert(match >= mMin);
             Assert((size_t)(match - mMin) < (1U << 31));
-            while ((back > min)
-                && (ip[back - 1] == match[back - 1]))
+#endif
+            while ((back > min) && (ip[back - 1] == match[back - 1]))
                 back--;
+
             return back;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint LZ4HC_reverseCountPattern(byte* ip, byte* iLow, uint pattern)
         {
             byte* iStart = ip;
 
             while ((ip >= iLow + 4))
             {
-                if (Mem.Peek4(ip - 4) != pattern) break;
+                if (Mem.Peek4(ip - 4) != pattern)
+                    break;
 
                 ip -= 4;
             }
@@ -251,31 +257,38 @@ namespace IcyRain.Compression.LZ4.Engine
             return (uint)(iStart - ip);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint LZ4HC_rotatePattern(size_t rotate, uint pattern)
         {
             size_t bitsToRotate = (rotate & (sizeof(uint) - 1)) << 3;
+
             if (bitsToRotate == 0)
                 return pattern;
+
             return LZ4HC_rotl32(pattern, (int)bitsToRotate);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_literalsPrice(int litlen)
         {
             int price = litlen;
+#if DEBUG
             Assert(litlen >= 0);
+#endif
             if (litlen >= (int)RUN_MASK)
                 price += 1 + ((litlen - (int)RUN_MASK) / 255);
+
             return price;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4HC_sequencePrice(int litlen, int mlen)
         {
             int price = 1 + 2; /* token + 16-bit offset */
+#if DEBUG
             Assert(litlen >= 0);
             Assert(mlen >= MINMATCH);
+#endif
 
             price += LZ4HC_literalsPrice(litlen);
 

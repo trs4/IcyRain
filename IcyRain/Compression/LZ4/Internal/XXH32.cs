@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using IcyRain.Internal;
 
 namespace IcyRain.Compression.LZ4.Internal
 {
@@ -29,10 +26,10 @@ namespace IcyRain.Compression.LZ4.Internal
             public uint memsize;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         private static uint XXH32_rotl(uint x, int r) => (x << r) | (x >> (32 - r));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         private static uint XXH32_round(uint seed, uint input) =>
             XXH32_rotl(seed + input * PRIME32_2, 13) * PRIME32_1;
 

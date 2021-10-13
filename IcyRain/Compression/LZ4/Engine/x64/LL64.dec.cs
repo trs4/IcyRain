@@ -1,101 +1,13 @@
-using System;
 using System.Runtime.CompilerServices;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-#if BIT32
-using reg_t = System.UInt32;
-using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
-#else
-using reg_t = System.UInt64;
+using IcyRain.Internal;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
-#endif
 using size_t = System.UInt32;
-using uptr_t = System.UInt64;
-
-//------------------------------------------------------------------------------
 
 namespace IcyRain.Compression.LZ4.Engine
 {
-#if BIT32
-	internal unsafe partial class LL32
-#else
     internal unsafe partial class LL64
-#endif
     {
-#if LZ4_FAST_DEC_LOOP
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void LZ4_memcpy_using_offset_base(
-			byte* dstPtr, byte* srcPtr, byte* dstEnd, uint offset)
-		{
-			if (offset < 8)
-			{
-				dstPtr[0] = srcPtr[0];
-				dstPtr[1] = srcPtr[1];
-				dstPtr[2] = srcPtr[2];
-				dstPtr[3] = srcPtr[3];
-				srcPtr += inc32table[offset];
-				Mem.Copy4(dstPtr + 4, srcPtr);
-				srcPtr -= dec64table[offset];
-				dstPtr += 8;
-			}
-			else
-			{
-				Mem.Copy8(dstPtr, srcPtr);
-				dstPtr += 8;
-				srcPtr += 8;
-			}
-
-			Mem.WildCopy8(dstPtr, srcPtr, dstEnd);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void LZ4_memcpy_using_offset(byte* dstPtr, byte* srcPtr, byte* dstEnd, size_t offset)
-		{
-			var v = stackalloc byte[8];
-
-			Assert(dstEnd >= dstPtr + MINMATCH);
-			
-			// Mem.Poke4(dstPtr, 0); /* silence an msan warning when offset==0 */
-
-			switch (offset)
-			{
-				case 1:
-					Mem.ZBlk(v, *srcPtr, 8);
-					break;
-				case 2:
-					Mem.Copy2(v, srcPtr);
-					Mem.Copy2(&v[2], srcPtr);
-					Mem.Copy4(&v[4], &v[0]);
-					break;
-				case 4:
-					Mem.Copy4(v, srcPtr);
-					Mem.Copy4(&v[4], srcPtr);
-					break;
-				default:
-					LZ4_memcpy_using_offset_base(dstPtr, srcPtr, dstEnd, offset);
-					return;
-			}
-
-			Mem.Copy8(dstPtr, v);
-			dstPtr += 8;
-			
-			while (dstPtr < dstEnd)
-			{
-				Mem.Copy8(dstPtr, v);
-				dstPtr += 8;
-			}
-		}
-
-#endif
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4_decompress_generic(
             byte* src,
             byte* dst,
@@ -119,7 +31,7 @@ namespace IcyRain.Compression.LZ4.Engine
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int LZ4_decompress_generic(
             byte* src,
             byte* dst,
@@ -157,7 +69,9 @@ namespace IcyRain.Compression.LZ4.Engine
                 size_t length;
 
                 /* Special cases */
+#if DEBUG
                 Assert(lowPrefix <= op);
+#endif
                 if ((endOnInput) && ((outputSize == 0)))
                 {
                     /* Empty output buffer */
@@ -176,7 +90,9 @@ namespace IcyRain.Compression.LZ4.Engine
                     token = *ip++;
                     length = (size_t)(token >> ML_BITS); /* literal length */
 
+#if DEBUG
                     Assert(!endOnInput || ip <= iend); /* ip < iend before the increment */
+#endif
 
                     /* A two-stage shortcut for the most common case:
 					* 1) If the literal length is 0..14, and there is enough space,
@@ -204,7 +120,9 @@ namespace IcyRain.Compression.LZ4.Engine
                         offset = Mem.Peek2(ip);
                         ip += 2;
                         match = op - offset;
+#if DEBUG
                         Assert(match <= op); /* check overflow */
+#endif
 
                         /* Do not deal with overlapping matches. */
                         if ((length != ML_MASK)
@@ -259,25 +177,33 @@ namespace IcyRain.Compression.LZ4.Engine
                             /* Since we are partial decoding we may be in this block because of the output parsing
 							* restriction, which is not valid since the output buffer is allowed to be undersized.
 							*/
+#if DEBUG
                             Assert(endOnInput);
+#endif
                             /* If we're in this block because of the input parsing condition, then we must be on the
 							* last sequence (or invalid), so we must check that we exactly consume the input.
 							*/
                             if ((ip + length > iend - (2 + 1 + LASTLITERALS))
                                 && (ip + length != iend)) { goto _output_error; }
 
+#if DEBUG
                             Assert(ip + length <= iend);
+#endif
                             /* We are finishing in the middle of a literals segment.
 							* Break after the copy.
 							*/
                             if (cpy > oend)
                             {
                                 cpy = oend;
+#if DEBUG
                                 Assert(op <= oend);
+#endif
                                 length = (size_t)(oend - op);
                             }
 
+#if DEBUG
                             Assert(ip + length <= iend);
+#endif
                         }
                         else
                         {
@@ -380,13 +306,17 @@ namespace IcyRain.Compression.LZ4.Engine
                         continue;
                     }
 
+#if DEBUG
                     Assert(match >= lowPrefix);
+#endif
 
                     /* copy match within block */
                     cpy = op + length;
 
                     /* partialDecoding : may end anywhere within the block */
+#if DEBUG
                     Assert(op <= oend);
+#endif
                     if (partialDecoding && (cpy > oend - MATCH_SAFEGUARD_DISTANCE))
                     {
                         size_t mlen = MIN(length, (size_t)(oend - op));
@@ -538,12 +468,16 @@ namespace IcyRain.Compression.LZ4.Engine
                         source, dest, compressedSize, maxOutputSize);
                 }
 
+#if DEBUG
                 Assert(dictSize >= 0);
+#endif
                 return LZ4_decompress_safe_withSmallPrefix(
                     source, dest, compressedSize, maxOutputSize, (size_t)dictSize);
             }
 
+#if DEBUG
             Assert(dictSize >= 0);
+#endif
             return LZ4_decompress_safe_forceExtDict(
                 source, dest, compressedSize, maxOutputSize, dictStart, (size_t)dictSize);
         }
@@ -555,7 +489,7 @@ namespace IcyRain.Compression.LZ4.Engine
             return LZ4_decompress_generic(
                 src, dst, compressedSize, (int)minCapacity,
                 endCondition_directive.endOnInputSize, earlyEnd_directive.partial,
-                dict_directive.noDict, (byte*)dst, null, 0);
+                dict_directive.noDict, dst, null, 0);
         }
 
         public static int LZ4_decompress_safe_continue(
@@ -568,14 +502,16 @@ namespace IcyRain.Compression.LZ4.Engine
             if (lz4sd->prefixSize == 0)
             {
                 /* The first call, no dictionary yet. */
+#if DEBUG
                 Assert(lz4sd->extDictSize == 0);
+#endif
                 result = LZ4_decompress_safe(source, dest, compressedSize, maxOutputSize);
                 if (result <= 0) return result;
 
                 lz4sd->prefixSize = (size_t)result;
-                lz4sd->prefixEnd = (byte*)dest + result;
+                lz4sd->prefixEnd = dest + result;
             }
-            else if (lz4sd->prefixEnd == (byte*)dest)
+            else if (lz4sd->prefixEnd == dest)
             {
                 /* They're rolling the current segment. */
                 if (lz4sd->prefixSize >= 64 * KB - 1)
@@ -588,7 +524,9 @@ namespace IcyRain.Compression.LZ4.Engine
                     result = LZ4_decompress_safe_doubleDict(
                         source, dest, compressedSize, maxOutputSize, lz4sd->prefixSize,
                         lz4sd->externalDict, lz4sd->extDictSize);
-                if (result <= 0) return result;
+
+                if (result <= 0)
+                    return result;
 
                 lz4sd->prefixSize += (size_t)result;
                 lz4sd->prefixEnd += result;

@@ -1,36 +1,15 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-#if BIT32
-using reg_t = System.UInt32;
-using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
-#else
-using reg_t = System.UInt64;
+﻿using System.Runtime.CompilerServices;
+using IcyRain.Internal;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
-#endif
 using size_t = System.UInt32;
-using uptr_t = System.UInt64;
-
-//------------------------------------------------------------------------------
 
 namespace IcyRain.Compression.LZ4.Engine
 {
-#if BIT32
-	internal unsafe partial class LL32
-#else
     internal unsafe partial class LL64
-#endif
     {
         #region LZ4_compress_generic
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static int LZ4_compress_generic(
             LZ4_stream_t* cctx,
             byte* source,
@@ -45,13 +24,13 @@ namespace IcyRain.Compression.LZ4.Engine
             int acceleration)
         {
             int result;
-            byte* ip = (byte*)source;
+            byte* ip = source;
 
             uint startIndex = cctx->currentOffset;
-            byte* @base = (byte*)source - startIndex;
+            byte* @base = source - startIndex;
             byte* lowLimit;
 
-            LZ4_stream_t* dictCtx = (LZ4_stream_t*)cctx->dictCtx;
+            LZ4_stream_t* dictCtx = cctx->dictCtx;
             byte* dictionary =
                 dictDirective == dict_directive.usingDictCtx ? dictCtx->dictionary
                     : cctx->dictionary;
@@ -64,7 +43,7 @@ namespace IcyRain.Compression.LZ4.Engine
                 || (dictDirective == dict_directive.usingDictCtx);
             uint prefixIdxLimit = startIndex - dictSize;
             byte* dictEnd = dictionary + dictSize;
-            byte* anchor = (byte*)source;
+            byte* anchor = source;
             byte* iend = ip + inputSize;
             byte* mflimitPlusOne = iend - MFLIMIT + 1;
             byte* matchlimit = iend - LASTLITERALS;
@@ -90,12 +69,13 @@ namespace IcyRain.Compression.LZ4.Engine
 
             if ((tableType == tableType_t.byU16) && (inputSize >= LZ4_64Klimit)) { return 0; }
 
+#if DEBUG
             if (tableType == tableType_t.byPtr)
                 Assert(dictDirective == dict_directive.noDict);
-            Assert(acceleration >= 1);
 
-            lowLimit = (byte*)source
-                - (dictDirective == dict_directive.withPrefix64k ? dictSize : 0);
+            Assert(acceleration >= 1);
+#endif
+            lowLimit = source - (dictDirective == dict_directive.withPrefix64k ? dictSize : 0);
 
             /* Update context state */
             if (dictDirective == dict_directive.usingDictCtx)
@@ -140,10 +120,12 @@ namespace IcyRain.Compression.LZ4.Engine
                         forwardIp += step;
                         step = (searchMatchNb++ >> LZ4_skipTrigger);
 
-                        if ((forwardIp > mflimitPlusOne)) goto _last_literals;
+                        if (forwardIp > mflimitPlusOne)
+                            goto _last_literals;
 
+#if DEBUG
                         Assert(ip < mflimitPlusOne);
-
+#endif
                         match = LZ4_getPositionOnHash(h, cctx->hashTable, tableType, @base);
                         forwardH = LZ4_hashPosition(forwardIp, tableType);
                         LZ4_putPositionOnHash(ip, h, cctx->hashTable, tableType, @base);
@@ -162,23 +144,29 @@ namespace IcyRain.Compression.LZ4.Engine
                         uint h = forwardH;
                         uint current = (uint)(forwardIp - @base);
                         uint matchIndex = LZ4_getIndexOnHash(h, cctx->hashTable, tableType);
+#if DEBUG
                         Assert(matchIndex <= current);
                         Assert(forwardIp - @base < (2 * GB - 1));
+#endif
                         ip = forwardIp;
                         forwardIp += step;
                         step = (searchMatchNb++ >> LZ4_skipTrigger);
 
-                        if ((forwardIp > mflimitPlusOne)) goto _last_literals;
+                        if (forwardIp > mflimitPlusOne)
+                            goto _last_literals;
 
+#if DEBUG
                         Assert(ip < mflimitPlusOne);
+#endif
 
                         if (dictDirective == dict_directive.usingDictCtx)
                         {
                             if (matchIndex < startIndex)
                             {
+#if DEBUG
                                 Assert(tableType == tableType_t.byU32);
-                                matchIndex = LZ4_getIndexOnHash(
-                                    h, dictCtx->hashTable, tableType_t.byU32);
+#endif
+                                matchIndex = LZ4_getIndexOnHash(h, dictCtx->hashTable, tableType_t.byU32);
                                 match = dictBase + matchIndex;
                                 matchIndex += dictDelta;
                                 lowLimit = dictionary;
@@ -186,21 +174,23 @@ namespace IcyRain.Compression.LZ4.Engine
                             else
                             {
                                 match = @base + matchIndex;
-                                lowLimit = (byte*)source;
+                                lowLimit = source;
                             }
                         }
                         else if (dictDirective == dict_directive.usingExtDict)
                         {
                             if (matchIndex < startIndex)
                             {
+#if DEBUG
                                 Assert(startIndex - matchIndex >= MINMATCH);
+#endif
                                 match = dictBase + matchIndex;
                                 lowLimit = dictionary;
                             }
                             else
                             {
                                 match = @base + matchIndex;
-                                lowLimit = (byte*)source;
+                                lowLimit = source;
                             }
                         }
                         else
@@ -211,10 +201,12 @@ namespace IcyRain.Compression.LZ4.Engine
                         forwardH = LZ4_hashPosition(forwardIp, tableType);
                         LZ4_putIndexOnHash(current, h, cctx->hashTable, tableType);
 
-                        if ((dictIssue == dictIssue_directive.dictSmall)
-                            && (matchIndex < prefixIdxLimit)) { continue; }
+                        if (dictIssue == dictIssue_directive.dictSmall && matchIndex < prefixIdxLimit)
+                            continue;
 
+#if DEBUG
                         Assert(matchIndex < current);
+#endif
                         if (((tableType != tableType_t.byU16)
                                 || (LZ4_DISTANCE_MAX < LZ4_DISTANCE_ABSOLUTE_MAX))
                             && (matchIndex + LZ4_DISTANCE_MAX < current))
@@ -222,11 +214,15 @@ namespace IcyRain.Compression.LZ4.Engine
                             continue;
                         }
 
+#if DEBUG
                         Assert((current - matchIndex) <= LZ4_DISTANCE_MAX);
+#endif
 
                         if (Mem.Peek4(match) == Mem.Peek4(ip))
                         {
-                            if (maybe_extMem) offset = current - matchIndex;
+                            if (maybe_extMem)
+                                offset = current - matchIndex;
+
                             break;
                         }
                     }
@@ -291,13 +287,17 @@ namespace IcyRain.Compression.LZ4.Engine
                 if (maybe_extMem)
                 {
                     /* static test */
+#if DEBUG
                     Assert(offset <= LZ4_DISTANCE_MAX && offset > 0);
+#endif
                     Mem.Poke2(op, (ushort)offset);
                     op += 2;
                 }
                 else
                 {
+#if DEBUG
                     Assert(ip - match <= LZ4_DISTANCE_MAX);
+#endif
                     Mem.Poke2(op, (ushort)(ip - match));
                     op += 2;
                 }
@@ -311,13 +311,16 @@ namespace IcyRain.Compression.LZ4.Engine
                         && (lowLimit == dictionary) /* match within extDict */)
                     {
                         byte* limit = ip + (dictEnd - match);
+#if DEBUG
                         Assert(dictEnd > match);
+#endif
                         if (limit > matchlimit) limit = matchlimit;
                         matchCode = LZ4_count(ip + MINMATCH, match + MINMATCH, limit);
-                        ip += (uint)matchCode + MINMATCH;
+                        ip += matchCode + MINMATCH;
+
                         if (ip == limit)
                         {
-                            uint more = LZ4_count(limit, (byte*)source, matchlimit);
+                            uint more = LZ4_count(limit, source, matchlimit);
                             matchCode += more;
                             ip += more;
                         }
@@ -334,12 +337,14 @@ namespace IcyRain.Compression.LZ4.Engine
                         if (outputDirective == limitedOutput_directive.fillOutput)
                         {
                             /* Match description too long : reduce it */
-                            uint newMatchCode =
-                                15 - 1 + ((uint)(olimit - op) - 1 - LASTLITERALS) * 255;
+                            uint newMatchCode = 15 - 1 + ((uint)(olimit - op) - 1 - LASTLITERALS) * 255;
                             ip -= matchCode - newMatchCode;
+#if DEBUG
                             Assert(newMatchCode < matchCode);
+#endif
                             matchCode = newMatchCode;
-                            if ((ip <= filledIp))
+
+                            if (ip <= filledIp)
                             {
                                 /* We have already filled up to filledIp so if ip ends up less than filledIp
 								 * we have positions in the hash table beyond the current position. This is
@@ -356,7 +361,9 @@ namespace IcyRain.Compression.LZ4.Engine
                         }
                         else
                         {
+#if DEBUG
                             Assert(outputDirective == limitedOutput_directive.limitedOutput);
+#endif
                             return 0;
                         }
                     }
@@ -380,9 +387,11 @@ namespace IcyRain.Compression.LZ4.Engine
                         *token += (byte)(matchCode);
                 }
                 /* Ensure we have enough space for the last literals. */
+#if DEBUG
                 Assert(
                     !(outputDirective == limitedOutput_directive.fillOutput
                         && op + 1 + LASTLITERALS > olimit));
+#endif
 
                 anchor = ip;
 
@@ -411,7 +420,9 @@ namespace IcyRain.Compression.LZ4.Engine
                     uint h = LZ4_hashPosition(ip, tableType);
                     uint current = (uint)(ip - @base);
                     uint matchIndex = LZ4_getIndexOnHash(h, cctx->hashTable, tableType);
+#if DEBUG
                     Assert(matchIndex < current);
+#endif
                     if (dictDirective == dict_directive.usingDictCtx)
                     {
                         if (matchIndex < startIndex)
@@ -447,7 +458,9 @@ namespace IcyRain.Compression.LZ4.Engine
                     }
 
                     LZ4_putIndexOnHash(current, h, cctx->hashTable, tableType);
+#if DEBUG
                     Assert(matchIndex < current);
+#endif
                     if (((dictIssue != dictIssue_directive.dictSmall)
                             || (matchIndex >= prefixIdxLimit))
                         && (((tableType == tableType_t.byU16)
@@ -473,13 +486,17 @@ namespace IcyRain.Compression.LZ4.Engine
                 {
                     if (outputDirective == limitedOutput_directive.fillOutput)
                     {
+#if DEBUG
                         Assert(olimit >= op);
+#endif
                         lastRun = (size_t)(olimit - op) - 1;
                         lastRun -= (lastRun + 240) / 255;
                     }
                     else
                     {
+#if DEBUG
                         Assert(outputDirective == limitedOutput_directive.limitedOutput);
+#endif
                         return 0;
                     }
                 }
@@ -503,11 +520,13 @@ namespace IcyRain.Compression.LZ4.Engine
 
             if (outputDirective == limitedOutput_directive.fillOutput)
             {
-                *inputConsumed = (int)(((byte*)ip) - source);
+                *inputConsumed = (int)(ip - source);
             }
 
-            result = (int)(((byte*)op) - dest);
+            result = (int)(op - dest);
+#if DEBUG
             Assert(result > 0);
+#endif
             return result;
         }
 
@@ -515,11 +534,16 @@ namespace IcyRain.Compression.LZ4.Engine
 
         public static int LZ4_compress_fast_extState(
             LZ4_stream_t* state, byte* source, byte* dest, int inputSize, int maxOutputSize,
-            int acceleration)
+            int acceleration = 1)
         {
             var ctx = LZ4_initStream(state);
+#if DEBUG
             Assert(ctx != null);
-            if (acceleration < 1) acceleration = ACCELERATION_DEFAULT;
+#endif
+
+            if (acceleration < 1)
+                acceleration = ACCELERATION_DEFAULT;
+
             if (maxOutputSize >= LZ4_compressBound(inputSize))
             {
                 if (inputSize < LZ4_64Klimit)
@@ -557,6 +581,7 @@ namespace IcyRain.Compression.LZ4.Engine
                     var tableType = sizeof(void*) < 8 && source > (byte*)LZ4_DISTANCE_MAX
                         ? tableType_t.byPtr
                         : tableType_t.byU32;
+
                     return LZ4_compress_generic(
                         ctx, source, dest,
                         inputSize, null, maxOutputSize, limitedOutput_directive.limitedOutput,
@@ -566,109 +591,12 @@ namespace IcyRain.Compression.LZ4.Engine
             }
         }
 
-        public static int LZ4_compress_fast(
-            byte* source, byte* dest, int inputSize, int maxOutputSize, int acceleration)
+        public static int LZ4_compress_fast(byte* source, byte* dest, int inputSize, int maxOutputSize)
         {
             LZ4_stream_t ctx;
-            return LZ4_compress_fast_extState(
-                &ctx, source, dest, inputSize, maxOutputSize, acceleration);
+
+            return LZ4_compress_fast_extState(&ctx, source, dest, inputSize, maxOutputSize);
         }
 
-        public static int LZ4_compress_default(
-            byte* src, byte* dst, int srcSize, int maxOutputSize) =>
-            LZ4_compress_fast(src, dst, srcSize, maxOutputSize, 1);
-
-        public static int LZ4_compress_fast_continue(
-            LZ4_stream_t* LZ4_stream,
-            byte* source, byte* dest,
-            int inputSize, int maxOutputSize,
-            int acceleration)
-        {
-            const tableType_t tableType = tableType_t.byU32;
-            var streamPtr = LZ4_stream;
-            var dictEnd = streamPtr->dictionary + streamPtr->dictSize;
-
-            if (streamPtr->dirty) return 0;
-
-            LZ4_renormDictT(streamPtr, inputSize);
-            if (acceleration < 1) acceleration = ACCELERATION_DEFAULT;
-
-            if (streamPtr->dictSize - 1 < 4 - 1 && dictEnd != source)
-            {
-                streamPtr->dictSize = 0;
-                streamPtr->dictionary = source;
-                dictEnd = source;
-            }
-
-            {
-                var sourceEnd = source + inputSize;
-                if ((sourceEnd > streamPtr->dictionary) && (sourceEnd < dictEnd))
-                {
-                    streamPtr->dictSize = (uint)(dictEnd - sourceEnd);
-                    if (streamPtr->dictSize > 64 * KB) streamPtr->dictSize = 64 * KB;
-                    if (streamPtr->dictSize < 4) streamPtr->dictSize = 0;
-                    streamPtr->dictionary = dictEnd - streamPtr->dictSize;
-                }
-            }
-
-            if (dictEnd == source)
-            {
-                if (streamPtr->dictSize < 64 * KB && streamPtr->dictSize < streamPtr->currentOffset)
-                {
-                    return LZ4_compress_generic(
-                        streamPtr, source, dest, inputSize, null, maxOutputSize,
-                        limitedOutput_directive.limitedOutput, tableType,
-                        dict_directive.withPrefix64k, dictIssue_directive.dictSmall,
-                        acceleration);
-                }
-                else
-                {
-                    return LZ4_compress_generic(
-                        streamPtr, source, dest, inputSize, null, maxOutputSize,
-                        limitedOutput_directive.limitedOutput, tableType,
-                        dict_directive.withPrefix64k, dictIssue_directive.noDictIssue,
-                        acceleration);
-                }
-            }
-
-            {
-                int result;
-                if (streamPtr->dictCtx != null)
-                {
-                    if (inputSize > 4 * KB)
-                    {
-                        Mem.Copy((byte*)streamPtr, (byte*)streamPtr->dictCtx, sizeof(LZ4_stream_t));
-                        result = LZ4_compress_generic(
-                            streamPtr, source, dest, inputSize, null, maxOutputSize, limitedOutput_directive.limitedOutput,
-                            tableType, dict_directive.usingExtDict, dictIssue_directive.noDictIssue, acceleration);
-                    }
-                    else
-                    {
-                        result = LZ4_compress_generic(
-                            streamPtr, source, dest, inputSize, null, maxOutputSize, limitedOutput_directive.limitedOutput,
-                            tableType, dict_directive.usingDictCtx, dictIssue_directive.noDictIssue, acceleration);
-                    }
-                }
-                else
-                {
-                    if ((streamPtr->dictSize < 64 * KB) && (streamPtr->dictSize < streamPtr->currentOffset))
-                    {
-                        result = LZ4_compress_generic(
-                            streamPtr, source, dest, inputSize, null, maxOutputSize, limitedOutput_directive.limitedOutput,
-                            tableType, dict_directive.usingExtDict, dictIssue_directive.dictSmall, acceleration);
-                    }
-                    else
-                    {
-                        result = LZ4_compress_generic(
-                            streamPtr, source, dest, inputSize, null, maxOutputSize, limitedOutput_directive.limitedOutput,
-                            tableType, dict_directive.usingExtDict, dictIssue_directive.noDictIssue, acceleration);
-                    }
-                }
-
-                streamPtr->dictionary = source;
-                streamPtr->dictSize = (uint)inputSize;
-                return result;
-            }
-        }
     }
 }

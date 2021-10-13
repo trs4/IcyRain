@@ -2,63 +2,43 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using IcyRain.Compression.LZ4.Internal;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-using size_t = System.UInt32;
-using uptr_t = System.UInt64;
-
-//------------------------------------------------------------------------------
+using IcyRain.Internal;
 
 namespace IcyRain.Compression.LZ4.Engine
 {
     internal unsafe partial class LL
     {
-        // [StructLayout(LayoutKind.Sequential)]
-        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-
         [Conditional("DEBUG")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static void Assert(bool condition, string message = null)
         {
             if (!condition)
                 throw new ArgumentException(message ?? "Assert failed");
         }
 
-        public static bool Enforce32 { get; set; } = false;
-
-        /// <summary>Checks what algorithm should be used (32 vs 64 bit).</summary>
-        public static Algorithm Algorithm =>
-            Enforce32 || Mem.System32 ? Algorithm.X32 : Algorithm.X64;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         internal static int LZ4_compressBound(int isize) =>
             isize > LZ4_MAX_INPUT_SIZE ? 0 : isize + isize / 255 + 16;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         internal static int LZ4_decoderRingBufferSize(int isize) =>
             65536 + 14 + isize;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_hash4(uint sequence, tableType_t tableType)
         {
             var hashLog = tableType == tableType_t.byU16 ? LZ4_HASHLOG + 1 : LZ4_HASHLOG;
             return unchecked((sequence * 2654435761u) >> (MINMATCH * 8 - hashLog));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_hash5(ulong sequence, tableType_t tableType)
         {
             var hashLog = tableType == tableType_t.byU16 ? LZ4_HASHLOG + 1 : LZ4_HASHLOG;
             return unchecked((uint)(((sequence << 24) * 889523592379ul) >> (64 - hashLog)));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static void LZ4_clearHash(uint h, void* tableBase, tableType_t tableType)
         {
             switch (tableType)
@@ -72,13 +52,15 @@ namespace IcyRain.Compression.LZ4.Engine
                 case tableType_t.byU16:
                     ((ushort*)tableBase)[h] = 0;
                     return;
+#if DEBUG
                 default:
                     Assert(false);
                     return;
+#endif
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static void LZ4_putIndexOnHash(
             uint idx, uint h, void* tableBase, tableType_t tableType)
         {
@@ -88,16 +70,20 @@ namespace IcyRain.Compression.LZ4.Engine
                     ((uint*)tableBase)[h] = idx;
                     return;
                 case tableType_t.byU16:
+#if DEBUG
                     Assert(idx < 65536);
+#endif
                     ((ushort*)tableBase)[h] = (ushort)idx;
                     return;
+#if DEBUG
                 default:
                     Assert(false);
                     return;
+#endif
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static void LZ4_putPositionOnHash(
             byte* p, uint h, void* tableBase, tableType_t tableType, byte* srcBase)
         {
@@ -112,31 +98,41 @@ namespace IcyRain.Compression.LZ4.Engine
                 case tableType_t.byU16:
                     ((ushort*)tableBase)[h] = (ushort)(p - srcBase);
                     return;
+#if DEBUG
                 default:
                     Assert(false);
                     return;
+#endif
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_getIndexOnHash(uint h, void* tableBase, tableType_t tableType)
         {
+#if DEBUG
             Assert(LZ4_MEMORY_USAGE > 2);
+#endif
             switch (tableType)
             {
                 case tableType_t.byU32:
+#if DEBUG
                     Assert(h < (1U << (LZ4_MEMORY_USAGE - 2)));
+#endif
                     return ((uint*)tableBase)[h];
                 case tableType_t.byU16:
+#if DEBUG
                     Assert(h < (1U << (LZ4_MEMORY_USAGE - 1)));
+#endif
                     return ((ushort*)tableBase)[h];
                 default:
+#if DEBUG
                     Assert(false);
+#endif
                     return 0;
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static byte* LZ4_getPositionOnHash(uint h, void* tableBase, tableType_t tableType, byte* srcBase)
             => tableType switch
             {
@@ -145,22 +141,22 @@ namespace IcyRain.Compression.LZ4.Engine
                 _ => ((ushort*)tableBase)[h] + srcBase,
             };
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static int MIN(int a, int b) => a < b ? a : b;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint MIN(uint a, uint b) => a < b ? a : b;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static uint MAX(uint a, uint b) => a < b ? b : a;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static long MAX(long a, long b) => a < b ? b : a;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         public static long MIN(long a, long b) => a < b ? a : b;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_readVLE(
             byte** ip, byte* lencheck,
             bool loop_check, bool initial_check,
@@ -198,9 +194,7 @@ namespace IcyRain.Compression.LZ4.Engine
             var previousDictEnd = dict->dictionary + dict->dictSize;
 
             if ((uint)dictSize > 64 * KB)
-            {
                 dictSize = 64 * KB;
-            }
 
             if ((uint)dictSize > dict->dictSize) dictSize = (int)dict->dictSize;
 

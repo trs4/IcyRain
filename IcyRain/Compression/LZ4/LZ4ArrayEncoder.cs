@@ -39,7 +39,7 @@ namespace IcyRain.Compression.LZ4
 
                 fixed (byte* targetPtr = target)
                 {
-                    int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, targetPtr, size, size, 1);
+                    int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, targetPtr, size, size);
 
                     if (encodedLength > 0 && encodedLength < size)
                     {
