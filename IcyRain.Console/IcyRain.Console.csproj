@@ -1,16 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<DefineConstants></DefineConstants>
+		<IsPackable>false</IsPackable>
+		<NoWarn>CA1062</NoWarn>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net472;net5.0</TargetFrameworks>
-    <DefineConstants></DefineConstants>
-    <IsPackable>false</IsPackable>
-    <NoWarn>CA1062</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
-    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
+		<ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+	</ItemGroup>
 </Project>

@@ -67,9 +67,20 @@ namespace IcyRain.Benchmarks
                 => ProtoBuf.Serializer.Serialize(new TestBufferWriter(), value);
 
             public static T DeepClone<T>(T value)
-                => new TestBufferWriter().DeepCloneBuffer(value,
-                    (b, v) => ProtoBuf.Serializer.Serialize(b, v),
-                    s => ProtoBuf.Serializer.Deserialize<T>(s));
+            {
+                try
+                {
+                    return new TestBufferWriter().DeepCloneBuffer(value,
+                        (b, v) => ProtoBuf.Serializer.Serialize(b, v),
+                        s => ProtoBuf.Serializer.Deserialize<T>(s));
+                }
+                catch // %%TODO
+                {
+                    System.Threading.Thread.Sleep(100);
+                    return default;
+                }
+            }
+
         }
 
     }

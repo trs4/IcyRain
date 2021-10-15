@@ -1,21 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<DefineConstants></DefineConstants>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFrameworks>net472;net5.0</TargetFrameworks>
-    <DefineConstants></DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.13.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
-    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NUnit" Version="3.13.2" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
+		<ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+	</ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
 #endif
 
-#if NET5_0 && !BIT32
+#if NET5_0_OR_GREATER && !BIT32
 using System.Numerics;
 #endif
 
@@ -52,7 +52,7 @@ namespace IcyRain.Compression.LZ4.Engine
 
         protected const int ALGORITHM_ARCH = 8;
 
-#if NET5_0
+#if NET5_0_OR_GREATER
 
         [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_NbCommonBytes(ulong val) =>

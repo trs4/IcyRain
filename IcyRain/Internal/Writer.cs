@@ -540,7 +540,7 @@ namespace IcyRain.Internal
             fixed (byte* ptr = _span)
             {
                 *(long*)(ptr + _offset) = value.ToBinary();
-                *(ptr + _offset + 8) = isUtcTimeZone ? 1 : 0;
+                *(ptr + _offset + 8) = isUtcTimeZone ? (byte)1 : (byte)0;
             }
 
             _offset += 9;

@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<DefineConstants></DefineConstants>
+		<IsPackable>false</IsPackable>
+		<NoWarn>CA1062</NoWarn>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFrameworks>net472;net5.0</TargetFrameworks>
-    <DefineConstants></DefineConstants>
-    <IsPackable>false</IsPackable>
-    <NoWarn>CA1062</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Grpc.Core" Version="2.36.4" />
-    <PackageReference Include="Grpc.Core.Api" Version="2.36.4" />
-    <PackageReference Include="ZeroFormatter" Version="1.6.4" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Grpc.Core" Version="2.41.0" />
+		<PackageReference Include="Grpc.Core.Api" Version="2.41.0" />
+		<PackageReference Include="ZeroFormatter" Version="1.6.4" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+	</ItemGroup>
 </Project>
