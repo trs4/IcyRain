@@ -23,8 +23,11 @@ namespace IcyRain.Compression.LZ4
             fixed (byte* targetPtr = target)
             {
                 int encodedLength = LLxx.LZ4_compress_fast(sourcePtr + 1, targetPtr, size, size);
-
-                if (encodedLength <= 0 || encodedLength >= size)
+                int encodedSize = headerSize + encodedLength;
+#if DEBUG
+                DebugSize(encodedSize, spanOffset);
+#endif
+                if (encodedLength <= 0 || encodedSize >= spanOffset)
                 {
                     source[0] = 0;
                     Buffers.Return(target);
@@ -38,7 +41,7 @@ namespace IcyRain.Compression.LZ4
                 source[0] = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
                 Unsafe.CopyBlockUnaligned(ref source[1], ref *(byte*)&diffLength, (uint)sizeOfDiff);
 
-                spanOffset = headerSize + encodedLength;
+                spanOffset = encodedSize;
                 Buffers.Return(target);
             }
         }
@@ -89,6 +92,9 @@ namespace IcyRain.Compression.LZ4
         public static void ThrowExpectedException(int decodedLength, int expectedLength)
             => throw new InvalidOperationException($"Expected to decode {decodedLength} bytes but {expectedLength} has been decoded");
 
+        private static void DebugSize(int encodedSize, int size)
+            => System.Diagnostics.Debug.WriteLine($"LZ4 compress {(encodedSize <= 0 ? size : encodedSize) * 100.0 / size:0.0}%");
+
         #endregion
         #region Write
 
@@ -97,8 +103,11 @@ namespace IcyRain.Compression.LZ4
         {
             int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
             int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, destinationPtr + headerSize, size, size - headerSize);
-
-            if (encodedLength <= 0 || encodedLength >= size)
+            int encodedSize = headerSize + encodedLength;
+#if DEBUG
+            DebugSize(encodedSize, size);
+#endif
+            if (encodedLength <= 0 || encodedSize >= size)
             {
                 *destinationPtr = 0;
                 Unsafe.CopyBlock(destinationPtr + 1, sourcePtr, (uint)size);
@@ -111,7 +120,7 @@ namespace IcyRain.Compression.LZ4
             *destinationPtr = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
             Unsafe.CopyBlockUnaligned(destinationPtr + 1, (byte*)&diffLength, (uint)sizeOfDiff);
 
-            size = headerSize + encodedLength;
+            size = encodedSize;
         }
 
         #endregion

@@ -40,10 +40,11 @@ namespace IcyRain.Compression.LZ4
                 fixed (byte* targetPtr = target)
                 {
                     int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, targetPtr, size, size);
+                    int encodedSize = headerSize + encodedLength;
 
-                    if (encodedLength > 0 && encodedLength < size)
+                    if (encodedLength > 0 && encodedSize < size)
                     {
-                        result = new byte[headerSize + encodedLength];
+                        result = new byte[encodedSize];
 
                         fixed (byte* ptr = result)
                         {
