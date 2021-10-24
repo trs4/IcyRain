@@ -7,7 +7,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class BoolBenchmarks
+    public class BoolBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark, IGoogleProtobufBenchmark
     {
         private const bool Value = true;
 

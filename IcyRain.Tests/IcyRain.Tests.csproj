@@ -13,6 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\IcyRain.Benchmarks\IcyRain.Benchmarks.csproj" />
 		<ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
 		<ProjectReference Include="..\IcyRain\IcyRain.csproj" />
 	</ItemGroup>

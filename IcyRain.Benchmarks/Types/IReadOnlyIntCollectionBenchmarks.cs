@@ -1,23 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Order;
-using IcyRain.Internal;
 
 namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class BytesBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark, IGoogleProtobufBenchmark
+    public class IReadOnlyIntCollectionBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark
     {
-        private readonly byte[] Value;
+        private static readonly IReadOnlyCollection<int> Value;
 
-        private static readonly Google.Protobuf.MessageParser<Google.Protobuf.WellKnownTypes.BytesValue> _parser = new(() => new());
-
-        public BytesBenchmarks()
+        static IReadOnlyIntCollectionBenchmarks()
         {
-            Value = new byte[1024];
-            new Random().NextBytes(Value);
+            const int count = 1000;
+            var value = new int[count];
+            var random = new Random();
+
+            for (int i = 0; i < count; i++)
+                value[i] = random.Next(-5_000, 25_000);
+
+            Value = value;
         }
 
         #region IcyRain
@@ -70,25 +74,8 @@ namespace IcyRain.Benchmarks
         [Benchmark(Description = "protobuf-net"), BenchmarkCategory("Serialize")]
         public void ProtoBufNet_Ser() => Benchmark.ProtobufNet.Serialize(Value);
 
-        [Benchmark(Description = "protobuf-net"), BenchmarkCategory("Deep clone")]
-        public void ProtoBufNet_DeepClone() => Benchmark.ProtobufNet.DeepClone(Value);
-
-        #endregion
-        #region Google.Protobuf
-
-        [Benchmark(Description = "Google.Protobuf"), BenchmarkCategory("Serialize")]
-        public void GoogleProtobuf_Ser()
-        {
-            var value = new Google.Protobuf.WellKnownTypes.BytesValue() { Value = Google.Protobuf.ByteString.CopyFrom(Value) };
-            Google.Protobuf.MessageExtensions.WriteTo(value, new TestBufferWriter());
-        }
-
-        [Benchmark(Description = "Google.Protobuf"), BenchmarkCategory("Deep clone")]
-        public void GoogleProtobuf_DeepClone()
-        {
-            var value = new Google.Protobuf.WellKnownTypes.BytesValue() { Value = Google.Protobuf.ByteString.CopyFrom(Value) };
-            new TestBufferWriter().DeepCloneBuffer(value, (b, v) => Google.Protobuf.MessageExtensions.WriteTo(v, b), s => _parser.ParseFrom(s));
-        }
+        //[Benchmark(Description = "protobuf-net"), BenchmarkCategory("Deep clone")]
+        //public void ProtoBufNet_DeepClone() => Benchmark.ProtobufNet.DeepClone(Value);
 
         #endregion
     }

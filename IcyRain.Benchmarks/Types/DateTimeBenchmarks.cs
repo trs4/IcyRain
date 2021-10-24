@@ -8,7 +8,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class DateTimeBenchmarks
+    public class DateTimeBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark, IGoogleProtobufBenchmark
     {
         private static readonly DateTime Value = DateTime.Now;
 

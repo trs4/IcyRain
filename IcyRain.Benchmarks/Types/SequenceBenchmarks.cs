@@ -10,7 +10,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class SequenceBenchmarks
+    public class SequenceBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark
     {
         private readonly ReadOnlySequence<byte> Value;
 
@@ -50,6 +50,13 @@ namespace IcyRain.Benchmarks
         [Benchmark(Description = "ZeroFormatter"), BenchmarkCategory("Deep clone")]
         public void ZeroFormatter_DeepClone()
             => new TestBufferWriter().DeepCloneSequence(Value, v => ZeroFormatterSerializer.Serialize(v), b => ZeroFormatterSerializer.Deserialize<byte[]>(b));
+
+
+        [Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Serialize")]
+        public void ZeroFormatterLZ4_Ser() => Benchmark.ZeroFormatter.SerializeLZ4(Value);
+
+        [Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Deep clone")]
+        public void ZeroFormatterLZ4_DeepClone() => Benchmark.ZeroFormatter.DeepCloneLZ4(Value);
 
         #endregion
         #region MessagePack

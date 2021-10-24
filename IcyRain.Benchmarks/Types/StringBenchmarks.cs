@@ -7,7 +7,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class StringBenchmarks
+    public class StringBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark, IGoogleProtobufBenchmark
     {
         private static readonly Google.Protobuf.MessageParser<Google.Protobuf.WellKnownTypes.StringValue> _parser = new(() => new());
 
