@@ -15,20 +15,20 @@ namespace IcyRain.Compression.LZ4
         }
 
         [MethodImpl(Flags.HotPath)]
-        public static unsafe byte[] Encode(Span<byte> source)
+        public static unsafe byte[] Encode(in Span<byte> source)
         {
             fixed (byte* sourcePtr = source)
                 return Encode(sourcePtr, source.Length);
         }
 
         [MethodImpl(Flags.HotPath)]
-        public static unsafe byte[] Encode(ReadOnlySpan<byte> source)
+        public static unsafe byte[] Encode(in ReadOnlySpan<byte> source)
         {
             fixed (byte* sourcePtr = source)
                 return Encode(sourcePtr, source.Length);
         }
 
-        private static unsafe byte[] Encode(byte* sourcePtr, int size)
+        private static unsafe byte[] Encode(in byte* sourcePtr, int size)
         {
             byte[] result;
 

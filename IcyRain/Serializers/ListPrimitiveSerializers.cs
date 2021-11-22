@@ -1054,7 +1054,7 @@ namespace IcyRain.Serializers
                 var array = value.GetArray();
 
                 for (int i = 0; i < length; i++)
-                    writer.WriteDateTime(ref array[i]);
+                    writer.WriteDateTime(in array[i]);
             }
         }
 
@@ -1065,7 +1065,7 @@ namespace IcyRain.Serializers
             var array = value.GetArray();
 
             for (int i = 0; i < value.Count; i++)
-                writer.WriteDateTime(ref array[i]);
+                writer.WriteDateTime(in array[i]);
         }
 
         [MethodImpl(Flags.HotPath)]
@@ -1161,8 +1161,7 @@ namespace IcyRain.Serializers
                 for (int i = 0; i < length; i++)
                 {
                     var item = array[i];
-                    var dateTime = new DateTime(item.Ticks, DateTimeKind.Utc);
-                    writer.WriteDateTimeWithoutZone(ref dateTime);
+                    writer.WriteDateTimeWithoutZone(new DateTime(item.Ticks, DateTimeKind.Utc));
                     writer.WriteShort((short)item.Offset.TotalMinutes);
                 }
             }
@@ -1177,8 +1176,7 @@ namespace IcyRain.Serializers
             for (int i = 0; i < value.Count; i++)
             {
                 var item = array[i];
-                var dateTime = new DateTime(item.Ticks, DateTimeKind.Utc);
-                writer.WriteDateTimeWithoutZone(ref dateTime);
+                writer.WriteDateTimeWithoutZone(new DateTime(item.Ticks, DateTimeKind.Utc));
                 writer.WriteShort((short)item.Offset.TotalMinutes);
             }
         }

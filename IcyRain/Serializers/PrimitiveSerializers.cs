@@ -494,11 +494,11 @@ namespace IcyRain.Serializers
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void Serialize(ref Writer writer, Guid value)
-            => writer.WriteGuid(ref value);
+            => writer.WriteGuid(in value);
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void SerializeSpot(ref Writer writer, Guid value)
-            => writer.WriteGuid(ref value);
+            => writer.WriteGuid(in value);
 
         [MethodImpl(Flags.HotPath)]
         public override sealed Guid Deserialize(ref Reader reader)
@@ -528,11 +528,11 @@ namespace IcyRain.Serializers
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void Serialize(ref Writer writer, DateTime value)
-            => writer.WriteDateTime(ref value);
+            => writer.WriteDateTime(in value);
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void SerializeSpot(ref Writer writer, DateTime value)
-            => writer.WriteDateTime(ref value);
+            => writer.WriteDateTime(in value);
 
         [MethodImpl(Flags.HotPath)]
         public override sealed DateTime Deserialize(ref Reader reader)
@@ -564,7 +564,7 @@ namespace IcyRain.Serializers
         public override sealed void Serialize(ref Writer writer, DateTimeOffset value)
         {
             var dateTime = new DateTime(value.Ticks, DateTimeKind.Utc);
-            writer.WriteDateTimeWithoutZone(ref dateTime);
+            writer.WriteDateTimeWithoutZone(in dateTime);
             writer.WriteShort((short)value.Offset.TotalMinutes);
         }
 
@@ -572,7 +572,7 @@ namespace IcyRain.Serializers
         public override sealed void SerializeSpot(ref Writer writer, DateTimeOffset value)
         {
             var dateTime = new DateTime(value.Ticks, DateTimeKind.Utc);
-            writer.WriteDateTimeWithoutZone(ref dateTime);
+            writer.WriteDateTimeWithoutZone(in dateTime);
             writer.WriteShort((short)value.Offset.TotalMinutes);
         }
 
@@ -604,11 +604,11 @@ namespace IcyRain.Serializers
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void Serialize(ref Writer writer, TimeSpan value)
-            => writer.WriteTimeSpan(ref value);
+            => writer.WriteTimeSpan(in value);
 
         [MethodImpl(Flags.HotPath)]
         public override sealed void SerializeSpot(ref Writer writer, TimeSpan value)
-            => writer.WriteTimeSpan(ref value);
+            => writer.WriteTimeSpan(in value);
 
         [MethodImpl(Flags.HotPath)]
         public override sealed TimeSpan Deserialize(ref Reader reader)

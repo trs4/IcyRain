@@ -10,13 +10,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-		<PackageReference Include="Google.Protobuf" Version="3.18.1" />
-		<PackageReference Include="Grpc" Version="2.41.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.41.0">
+		<PackageReference Include="Google.Protobuf" Version="3.19.1" />
+		<PackageReference Include="Grpc" Version="2.42.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.42.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="K4os.Compression.LZ4" Version="1.2.13" />
+		<PackageReference Include="K4os.Compression.LZ4" Version="1.2.15" />
 		<PackageReference Include="MessagePack" Version="2.3.85" />
 		<PackageReference Include="protobuf-net" Version="3.0.101" />
 		<PackageReference Include="ZeroFormatter" Version="1.6.4" />

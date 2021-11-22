@@ -605,8 +605,7 @@ namespace IcyRain.Serializers
             if (value.HasValue)
             {
                 writer.WriteBoolTrue();
-                var guid = value.Value;
-                writer.WriteGuid(ref guid);
+                writer.WriteGuid(value.Value);
             }
             else
             {
@@ -651,8 +650,7 @@ namespace IcyRain.Serializers
             if (value.HasValue)
             {
                 writer.WriteBoolTrue();
-                var dateTime = value.Value;
-                writer.WriteDateTime(ref dateTime);
+                writer.WriteDateTime(value.Value);
             }
             else
             {
@@ -697,8 +695,7 @@ namespace IcyRain.Serializers
             if (value.HasValue)
             {
                 writer.WriteBoolTrue();
-                var dateTime = new DateTime(value.Value.Ticks, DateTimeKind.Utc);
-                writer.WriteDateTimeWithoutZone(ref dateTime);
+                writer.WriteDateTimeWithoutZone(new DateTime(value.Value.Ticks, DateTimeKind.Utc));
                 writer.WriteShort((short)value.Value.Offset.TotalMinutes);
             }
             else
@@ -744,8 +741,7 @@ namespace IcyRain.Serializers
             if (value.HasValue)
             {
                 writer.WriteBoolTrue();
-                var timeSpan = value.Value;
-                writer.WriteTimeSpan(ref timeSpan);
+                writer.WriteTimeSpan(value.Value);
             }
             else
             {

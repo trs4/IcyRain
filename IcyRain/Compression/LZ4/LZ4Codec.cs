@@ -10,7 +10,7 @@ namespace IcyRain.Compression.LZ4
     {
         #region Pikler
 
-        public static unsafe void Encode(Span<byte> source, ref int spanOffset)
+        public static unsafe void Encode(in Span<byte> source, ref int spanOffset)
         {
             if (spanOffset == 1)
                 return;
@@ -82,7 +82,7 @@ namespace IcyRain.Compression.LZ4
         }
 
         [MethodImpl(Flags.HotPath)]
-        public static unsafe int PeekN(byte* sourcePtr, int size)
+        public static unsafe int PeekN(in byte* sourcePtr, int size)
         {
             int result = default;
             Unsafe.CopyBlockUnaligned(&result, sourcePtr, (uint)size);
@@ -99,7 +99,7 @@ namespace IcyRain.Compression.LZ4
         #region Write
 
         /// <remarks>destinationPtr.Length = size + 1</remarks>
-        public static unsafe void Encode(byte* sourcePtr, byte* destinationPtr, ref int size)
+        public static unsafe void Encode(in byte* sourcePtr, in byte* destinationPtr, ref int size)
         {
             int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
             int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, destinationPtr + headerSize, size, size - headerSize);

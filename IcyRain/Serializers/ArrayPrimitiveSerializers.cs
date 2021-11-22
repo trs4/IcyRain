@@ -1049,7 +1049,7 @@ namespace IcyRain.Serializers
             if (length > 0)
             {
                 for (int i = 0; i < value.Length; i++)
-                    writer.WriteDateTime(ref value[i]);
+                    writer.WriteDateTime(in value[i]);
             }
         }
 
@@ -1061,7 +1061,7 @@ namespace IcyRain.Serializers
             if (value.Length > 0)
             {
                 for (int i = 0; i < value.Length; i++)
-                    writer.WriteDateTime(ref value[i]);
+                    writer.WriteDateTime(in value[i]);
             }
         }
 
@@ -1156,8 +1156,7 @@ namespace IcyRain.Serializers
                 for (int i = 0; i < value.Length; i++)
                 {
                     ref var item = ref value[i];
-                    var dateTime = new DateTime(item.Ticks, DateTimeKind.Utc);
-                    writer.WriteDateTimeWithoutZone(ref dateTime);
+                    writer.WriteDateTimeWithoutZone(new DateTime(item.Ticks, DateTimeKind.Utc));
                     writer.WriteShort((short)item.Offset.TotalMinutes);
                 }
             }
@@ -1173,8 +1172,7 @@ namespace IcyRain.Serializers
                 for (int i = 0; i < value.Length; i++)
                 {
                     ref var item = ref value[i];
-                    var dateTime = new DateTime(item.Ticks, DateTimeKind.Utc);
-                    writer.WriteDateTimeWithoutZone(ref dateTime);
+                    writer.WriteDateTimeWithoutZone(new DateTime(item.Ticks, DateTimeKind.Utc));
                     writer.WriteShort((short)item.Offset.TotalMinutes);
                 }
             }

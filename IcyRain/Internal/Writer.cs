@@ -15,7 +15,7 @@ namespace IcyRain.Internal
         private readonly Span<byte> _span;
 
         [MethodImpl(Flags.HotPath)]
-        internal Writer(Span<byte> span)
+        internal Writer(in Span<byte> span)
         {
             _offset = 0;
             _span = span;
@@ -23,7 +23,7 @@ namespace IcyRain.Internal
 
 #pragma warning disable CA1801 // Review unused parameters
         [MethodImpl(Flags.HotPath)]
-        internal Writer(Span<byte> span, bool forCompress)
+        internal Writer(in Span<byte> span, bool forCompress)
         {
             span[0] = 0;
             _offset = 1;
@@ -517,29 +517,31 @@ namespace IcyRain.Internal
 
         /// <summary>datetime size:8</summary>
         [MethodImpl(Flags.HotPath)]
-        public unsafe void WriteDateTimeWithoutZone(ref DateTime value)
+        public unsafe void WriteDateTimeWithoutZone(in DateTime value)
         {
-            if (value.Kind != DateTimeKind.Utc)
-                value = TimeZoneInfo.ConvertTime(value, TimeZoneInfo.Local, TimeZoneInfo.Utc);
+            long binaryValue = value.Kind == DateTimeKind.Utc
+                ? value.ToBinary()
+                : TimeZoneInfo.ConvertTime(value, TimeZoneInfo.Local, TimeZoneInfo.Utc).ToBinary();
 
             fixed (byte* ptr = _span)
-                *(long*)(ptr + _offset) = value.ToBinary();
+                *(long*)(ptr + _offset) = binaryValue;
 
             _offset += 8;
         }
 
         /// <summary>datetime size:9</summary>
         [MethodImpl(Flags.HotPath)]
-        public unsafe void WriteDateTime(ref DateTime value)
+        public unsafe void WriteDateTime(in DateTime value)
         {
             bool isUtcTimeZone = value.Kind == DateTimeKind.Utc;
 
-            if (!isUtcTimeZone)
-                value = TimeZoneInfo.ConvertTime(value, TimeZoneInfo.Local, TimeZoneInfo.Utc);
+            long binaryValue = isUtcTimeZone
+                ? value.ToBinary()
+                : TimeZoneInfo.ConvertTime(value, TimeZoneInfo.Local, TimeZoneInfo.Utc).ToBinary();
 
             fixed (byte* ptr = _span)
             {
-                *(long*)(ptr + _offset) = value.ToBinary();
+                *(long*)(ptr + _offset) = binaryValue;
                 *(ptr + _offset + 8) = isUtcTimeZone ? (byte)1 : (byte)0;
             }
 
@@ -593,7 +595,7 @@ namespace IcyRain.Internal
 
         /// <summary>guid size:16</summary>
         [MethodImpl(Flags.HotPath)]
-        public unsafe void WriteGuid(ref Guid value)
+        public unsafe void WriteGuid(in Guid value)
         {
             fixed (byte* ptr = _span)
                 *(Guid*)(ptr + _offset) = value;
@@ -630,7 +632,7 @@ namespace IcyRain.Internal
 
         /// <summary>timespan size:8</summary>
         [MethodImpl(Flags.HotPath)]
-        public void WriteTimeSpan(ref TimeSpan value)
+        public void WriteTimeSpan(in TimeSpan value)
             => WriteLong(value.Ticks);
 
         [MethodImpl(Flags.HotPath)]
