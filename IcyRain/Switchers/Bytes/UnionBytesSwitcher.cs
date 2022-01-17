@@ -42,29 +42,15 @@ namespace IcyRain.Switchers
         [MethodImpl(Flags.HotPath)]
         public sealed override T Deserialize(byte[] bytes, int offset, int count)
         {
-            try
-            {
-                var reader = new Reader(new ReadOnlyMemory<byte>(bytes, offset, count));
-                return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader);
-            }
-            finally
-            {
-                Buffers.ReturnWithCheck(bytes);
-            }
+            var reader = new Reader(new ReadOnlyMemory<byte>(bytes, offset, count));
+            return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader);
         }
 
         [MethodImpl(Flags.HotPath)]
         public sealed override T DeserializeInUTC(byte[] bytes, int offset, int count)
         {
-            try
-            {
-                var reader = new Reader(new ReadOnlyMemory<byte>(bytes, offset, count));
-                return Serializer<UnionResolver, T>.Instance.DeserializeInUTC(ref reader);
-            }
-            finally
-            {
-                Buffers.ReturnWithCheck(bytes);
-            }
+            var reader = new Reader(new ReadOnlyMemory<byte>(bytes, offset, count));
+            return Serializer<UnionResolver, T>.Instance.DeserializeInUTC(ref reader);
         }
 
         [MethodImpl(Flags.HotPath)]
@@ -73,29 +59,31 @@ namespace IcyRain.Switchers
             Reader reader;
             decodedLength = count;
 
+            if (count == 0)
+                return default;
+
+            var inputMemory = new ReadOnlyMemory<byte>(bytes, offset, count);
+
+            if (inputMemory.Span[0] == 0) // No compress
+            {
+                reader = new Reader(inputMemory, true);
+                return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader);
+            }
+
+            byte[] buffer = Buffers.Rent(count);
+            buffer.WriteTo(bytes, offset, count);
+
+            var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
+            reader = new Reader(memory);
+
             try
             {
-                if (count == 0)
-                    return default;
-
-                var inputMemory = new ReadOnlyMemory<byte>(bytes, offset, count);
-
-                if (inputMemory.Span[0] == 0) // No compress
-                {
-                    reader = new Reader(inputMemory, true);
-                    return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader);
-                }
-
-                byte[] buffer = Buffers.Rent(count);
-                buffer.WriteTo(bytes, offset, count);
-
-                var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
-                reader = new Reader(memory);
                 return Serializer<UnionResolver, T>.Instance.Deserialize(ref reader);
             }
             finally
             {
-                Buffers.ReturnWithCheck(bytes);
+                Buffers.Return(targetBuffer);
+                Buffers.Return(buffer);
             }
         }
 
@@ -105,29 +93,31 @@ namespace IcyRain.Switchers
             Reader reader;
             decodedLength = count;
 
+            if (count == 0)
+                return default;
+
+            var inputMemory = new ReadOnlyMemory<byte>(bytes, offset, count);
+
+            if (inputMemory.Span[0] == 0) // No compress
+            {
+                reader = new Reader(inputMemory, true);
+                return Serializer<UnionResolver, T>.Instance.DeserializeInUTC(ref reader);
+            }
+
+            byte[] buffer = Buffers.Rent(count);
+            buffer.WriteTo(bytes, offset, count);
+
+            var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
+            reader = new Reader(memory);
+
             try
             {
-                if (count == 0)
-                    return default;
-
-                var inputMemory = new ReadOnlyMemory<byte>(bytes, offset, count);
-
-                if (inputMemory.Span[0] == 0) // No compress
-                {
-                    reader = new Reader(inputMemory, true);
-                    return Serializer<UnionResolver, T>.Instance.DeserializeInUTC(ref reader);
-                }
-
-                byte[] buffer = Buffers.Rent(count);
-                buffer.WriteTo(bytes, offset, count);
-
-                var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
-                reader = new Reader(memory);
                 return Serializer<UnionResolver, T>.Instance.DeserializeInUTC(ref reader);
             }
             finally
             {
-                Buffers.ReturnWithCheck(bytes);
+                Buffers.Return(targetBuffer);
+                Buffers.Return(buffer);
             }
         }
 

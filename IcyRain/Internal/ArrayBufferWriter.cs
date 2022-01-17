@@ -43,6 +43,11 @@ namespace IcyRain.Internal
         public ReadOnlySequence<byte> ToSequence()
             => _buffer is null ? default : new ReadOnlySequence<byte>(_buffer, 0, Count);
 
-        public void Dispose() => Buffers.Return(_buffer);
+        public void Dispose()
+        {
+            Buffers.Return(_buffer);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

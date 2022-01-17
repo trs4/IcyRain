@@ -47,29 +47,15 @@ namespace IcyRain.Switchers
         [MethodImpl(Flags.HotPath)]
         public sealed override T Deserialize(ArraySegment<byte> segment)
         {
-            try
-            {
-                var reader = new Reader(segment);
-                return Serializer<Resolver, T>.Instance.Deserialize(ref reader);
-            }
-            finally
-            {
-                Buffers.Return(segment.Array);
-            }
+            var reader = new Reader(segment);
+            return Serializer<Resolver, T>.Instance.Deserialize(ref reader);
         }
 
         [MethodImpl(Flags.HotPath)]
         public sealed override T DeserializeInUTC(ArraySegment<byte> segment)
         {
-            try
-            {
-                var reader = new Reader(segment);
-                return Serializer<Resolver, T>.Instance.DeserializeInUTC(ref reader);
-            }
-            finally
-            {
-                Buffers.Return(segment.Array);
-            }
+            var reader = new Reader(segment);
+            return Serializer<Resolver, T>.Instance.DeserializeInUTC(ref reader);
         }
 
         [MethodImpl(Flags.HotPath)]
@@ -78,29 +64,31 @@ namespace IcyRain.Switchers
             Reader reader;
             decodedLength = segment.Count;
 
+            if (decodedLength == 0)
+                return default;
+
+            var inputMemory = new ReadOnlyMemory<byte>(segment.Array, segment.Offset, decodedLength);
+
+            if (inputMemory.Span[0] == 0) // No compress
+            {
+                reader = new Reader(inputMemory, true);
+                return Serializer<Resolver, T>.Instance.Deserialize(ref reader);
+            }
+
+            byte[] buffer = Buffers.Rent(decodedLength);
+            buffer.WriteTo(segment.Array, segment.Offset, decodedLength);
+
+            var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
+            reader = new Reader(memory);
+
             try
             {
-                if (decodedLength == 0)
-                    return default;
-
-                var inputMemory = new ReadOnlyMemory<byte>(segment.Array, segment.Offset, decodedLength);
-
-                if (inputMemory.Span[0] == 0) // No compress
-                {
-                    reader = new Reader(inputMemory, true);
-                    return Serializer<Resolver, T>.Instance.Deserialize(ref reader);
-                }
-
-                byte[] buffer = Buffers.Rent(decodedLength);
-                buffer.WriteTo(segment.Array, segment.Offset, decodedLength);
-
-                var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
-                reader = new Reader(memory);
                 return Serializer<Resolver, T>.Instance.Deserialize(ref reader);
             }
             finally
             {
-                Buffers.ReturnWithCheck(segment.Array);
+                Buffers.Return(targetBuffer);
+                Buffers.Return(buffer);
             }
         }
 
@@ -110,29 +98,31 @@ namespace IcyRain.Switchers
             Reader reader;
             decodedLength = segment.Count;
 
+            if (decodedLength == 0)
+                return default;
+
+            var inputMemory = new ReadOnlyMemory<byte>(segment.Array, segment.Offset, decodedLength);
+
+            if (inputMemory.Span[0] == 0) // No compress
+            {
+                reader = new Reader(inputMemory, true);
+                return Serializer<Resolver, T>.Instance.DeserializeInUTC(ref reader);
+            }
+
+            byte[] buffer = Buffers.Rent(decodedLength);
+            buffer.WriteTo(segment.Array, segment.Offset, decodedLength);
+
+            var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
+            reader = new Reader(memory);
+
             try
             {
-                if (decodedLength == 0)
-                    return default;
-
-                var inputMemory = new ReadOnlyMemory<byte>(segment.Array, segment.Offset, decodedLength);
-
-                if (inputMemory.Span[0] == 0) // No compress
-                {
-                    reader = new Reader(inputMemory, true);
-                    return Serializer<Resolver, T>.Instance.DeserializeInUTC(ref reader);
-                }
-
-                byte[] buffer = Buffers.Rent(decodedLength);
-                buffer.WriteTo(segment.Array, segment.Offset, decodedLength);
-
-                var (memory, targetBuffer) = LZ4Codec.Decode(buffer, ref decodedLength);
-                reader = new Reader(memory);
                 return Serializer<Resolver, T>.Instance.DeserializeInUTC(ref reader);
             }
             finally
             {
-                Buffers.ReturnWithCheck(segment.Array);
+                Buffers.Return(targetBuffer);
+                Buffers.Return(buffer);
             }
         }
 

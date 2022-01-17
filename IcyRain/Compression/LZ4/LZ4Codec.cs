@@ -59,7 +59,7 @@ namespace IcyRain.Compression.LZ4
                 sizeOfDiff = 4;
 
             ushort dataOffset = (ushort)(1 + sizeOfDiff);
-            int dataLength = span.Length - dataOffset;
+            int dataLength = decodedLength - dataOffset;
 
             fixed (byte* sourcePtr = span)
             {
@@ -72,7 +72,7 @@ namespace IcyRain.Compression.LZ4
                 byte[] target = Buffers.Rent(resultLength);
 
                 fixed (byte* targetPtr = target)
-                    decodedLength = LLxx.LZ4_decompress_safe(sourcePtr + dataOffset, targetPtr, span.Length - dataOffset, target.Length);
+                    decodedLength = LLxx.LZ4_decompress_safe(sourcePtr + dataOffset, targetPtr, dataLength, target.Length);
 
                 if (decodedLength != resultLength)
                     ThrowExpectedException(decodedLength, resultLength);

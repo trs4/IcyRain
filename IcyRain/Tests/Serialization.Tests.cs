@@ -69,7 +69,15 @@ namespace IcyRain
             public static T DeepCloneBytes<T>(T value)
             {
                 byte[] bytes = Serialize(value);
-                return Deserialize<T>(bytes);
+
+                try
+                {
+                    return Deserialize<T>(bytes);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(bytes);
+                }
             }
 
             /// <summary>Serialize and deserialize via byte array in UTC</summary>
@@ -80,7 +88,15 @@ namespace IcyRain
             public static T DeepCloneBytesInUTC<T>(T value)
             {
                 byte[] bytes = Serialize(value);
-                return DeserializeInUTC<T>(bytes);
+
+                try
+                {
+                    return DeserializeInUTC<T>(bytes);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(bytes);
+                }
             }
 
             /// <summary>Serialize and deserialize via byte array via LZ4</summary>
@@ -91,7 +107,15 @@ namespace IcyRain
             public static T DeepCloneBytesWithLZ4<T>(T value)
             {
                 byte[] bytes = SerializeWithLZ4(value, out _);
-                return DeserializeWithLZ4<T>(bytes, out _);
+
+                try
+                {
+                    return DeserializeWithLZ4<T>(bytes, out _);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(bytes);
+                }
             }
 
             /// <summary>Serialize and deserialize via byte array in UTC and via LZ4</summary>
@@ -102,7 +126,15 @@ namespace IcyRain
             public static T DeepCloneBytesInUTCWithLZ4<T>(T value)
             {
                 byte[] bytes = SerializeWithLZ4(value, out _);
-                return DeserializeInUTCWithLZ4<T>(bytes, out _);
+
+                try
+                {
+                    return DeserializeInUTCWithLZ4<T>(bytes, out _);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(bytes);
+                }
             }
 
             #endregion
@@ -116,7 +148,15 @@ namespace IcyRain
             public static T DeepCloneSegment<T>(T value)
             {
                 var segment = SerializeSegment(value);
-                return DeserializeSegment<T>(segment);
+
+                try
+                {
+                    return DeserializeSegment<T>(segment);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(segment.Array);
+                }
             }
 
             /// <summary>Serialize and deserialize via byte array segment in UTC</summary>
@@ -127,7 +167,15 @@ namespace IcyRain
             public static T DeepCloneSegmentInUTC<T>(T value)
             {
                 var segment = SerializeSegment(value);
-                return DeserializeSegmentInUTC<T>(segment);
+
+                try
+                {
+                    return DeserializeSegmentInUTC<T>(segment);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(segment.Array);
+                }
             }
 
             /// <summary>Serialize and deserialize via byte array segment via LZ4</summary>
@@ -138,7 +186,15 @@ namespace IcyRain
             public static T DeepCloneSegmentWithLZ4<T>(T value)
             {
                 var segment = SerializeSegmentWithLZ4(value, out _);
-                return DeserializeSegmentWithLZ4<T>(segment, out _);
+
+                try
+                {
+                    return DeserializeSegmentWithLZ4<T>(segment, out _);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(segment.Array);
+                }
             }
 
             /// <summary>Serialize and deserialize via byte array segment in UTC and via LZ4</summary>
@@ -149,7 +205,15 @@ namespace IcyRain
             public static T DeepCloneSegmentInUTCWithLZ4<T>(T value)
             {
                 var segment = SerializeSegmentWithLZ4(value, out _);
-                return DeserializeSegmentInUTCWithLZ4<T>(segment, out _);
+
+                try
+                {
+                    return DeserializeSegmentInUTCWithLZ4<T>(segment, out _);
+                }
+                finally
+                {
+                    Buffers.ReturnWithCheck(segment.Array);
+                }
             }
 
             #endregion

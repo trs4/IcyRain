@@ -272,28 +272,6 @@ namespace IcyRain.Internal
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static unsafe byte[] TransferToRentArrayWithLZ4Decompress(this Span<byte> value, out int decodedLength)
-        {
-            decodedLength = value.Length;
-
-            if (decodedLength <= 1)
-            {
-                decodedLength = 0;
-                return Array.Empty<byte>();
-            }
-
-            if (value[0] == 0)
-            {
-                decodedLength--;
-                byte[] result = Buffers.Rent(decodedLength);
-                value.Slice(1).TryCopyTo(result);
-                return result;
-            }
-
-            return LZ4ArrayDecoder.RentDecode(value, ref decodedLength);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static unsafe byte[] TransferToArrayWithLZ4Decompress(this ArraySegment<byte> value, out int decodedLength)
         {
             decodedLength = value.Count;
