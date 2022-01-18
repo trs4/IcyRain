@@ -14,7 +14,7 @@ namespace IcyRain.Benchmarks
 
         static DictionaryBenchmarks()
         {
-            const int count = 200;
+            const int count = 1000;
             Value = new Dictionary<int, string>(count);
             var random = new Random();
 

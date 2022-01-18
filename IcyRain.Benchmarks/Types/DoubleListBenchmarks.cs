@@ -14,7 +14,7 @@ namespace IcyRain.Benchmarks
 
         static DoubleListBenchmarks()
         {
-            const int count = 500;
+            const int count = 1000;
             Value = new List<double>(count);
             var random = new Random();
 

@@ -16,7 +16,7 @@ namespace IcyRain.Benchmarks
 
         public SequenceBenchmarks()
         {
-            var bytes = new byte[8192];
+            var bytes = new byte[10000];
             new Random().NextBytes(bytes);
             Value = new ReadOnlySequence<byte>(bytes);
         }

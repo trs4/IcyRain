@@ -16,7 +16,7 @@ namespace IcyRain.Benchmarks
 
         public BytesBenchmarks()
         {
-            Value = new byte[1024];
+            Value = new byte[10000];
             new Random().NextBytes(Value);
         }
 

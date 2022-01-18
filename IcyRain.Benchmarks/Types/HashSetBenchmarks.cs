@@ -14,7 +14,7 @@ namespace IcyRain.Benchmarks
 
         static HashSetBenchmarks()
         {
-            const int count = 200;
+            const int count = 1000;
             Value = new HashSet<int>(count);
             var random = new Random();
 
