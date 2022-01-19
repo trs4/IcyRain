@@ -10,7 +10,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class SequenceBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark
+    public class SequenceBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark //, IProtoBufNetBenchmark
     {
         private readonly ReadOnlySequence<byte> Value;
 
@@ -53,10 +53,10 @@ namespace IcyRain.Benchmarks
 
 
         [Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Serialize")]
-        public void ZeroFormatterLZ4_Ser() => Benchmark.ZeroFormatter.SerializeLZ4(Value);
+        public void ZeroFormatterLZ4_Ser() => Benchmark.ZeroFormatter.SerializeLZ4(Value.ToArray());
 
         [Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Deep clone")]
-        public void ZeroFormatterLZ4_DeepClone() => Benchmark.ZeroFormatter.DeepCloneLZ4(Value);
+        public void ZeroFormatterLZ4_DeepClone() => Benchmark.ZeroFormatter.DeepCloneLZ4(Value.ToArray());
 
         #endregion
         #region MessagePack
@@ -68,16 +68,16 @@ namespace IcyRain.Benchmarks
         public void MessagePack_DeepClone() => Benchmark.MessagePack.DeepClone(Value);
 
         #endregion
-        #region protobuf-net
+        //#region protobuf-net
 
-        [Benchmark(Description = "protobuf-net"), BenchmarkCategory("Serialize")]
-        public void ProtoBufNet_Ser()
-            => ProtoBuf.Serializer.Serialize(new TestBufferWriter(), Value.ToArray());
+        //[Benchmark(Description = "protobuf-net"), BenchmarkCategory("Serialize")]
+        //public void ProtoBufNet_Ser()
+        //    => ProtoBuf.Serializer.Serialize(new TestBufferWriter(), Value.ToArray());
 
-        [Benchmark(Description = "protobuf-net"), BenchmarkCategory("Deep clone")]
-        public void ProtoBufNet_DeepClone()
-            => new TestBufferWriter().DeepCloneSequence(Value, (b, v) => ProtoBuf.Serializer.Serialize(b, v), s => ProtoBuf.Serializer.Deserialize<byte[]>(s));
+        //[Benchmark(Description = "protobuf-net"), BenchmarkCategory("Deep clone")]
+        //public void ProtoBufNet_DeepClone()
+        //    => new TestBufferWriter().DeepCloneSequence(Value, (b, v) => ProtoBuf.Serializer.Serialize(b, v), s => ProtoBuf.Serializer.Deserialize<byte[]>(s));
 
-        #endregion
+        //#endregion
     }
 }

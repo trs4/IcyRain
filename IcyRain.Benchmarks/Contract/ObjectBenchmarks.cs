@@ -9,7 +9,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class ObjectBenchmarks
+    public class ObjectBenchmarks : IIcyRainBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark //, IZeroFormatterBenchmark
     {
         private static readonly TestData Value = new TestData
         {
@@ -52,22 +52,22 @@ namespace IcyRain.Benchmarks
         public void IcyRainLZ4UTC_DeepClone() => CleanupLazy(Benchmark.IcyRain.DeepCloneLZ4UTC(Value));
 
         #endregion
-        #region ZeroFormatter
+        //#region ZeroFormatter
 
-        [Benchmark(Description = "ZeroFormatter"), BenchmarkCategory("Serialize")]
-        public void ZeroFormatter_Ser() => Benchmark.ZeroFormatter.Serialize(Value);
+        //[Benchmark(Description = "ZeroFormatter"), BenchmarkCategory("Serialize")]
+        //public void ZeroFormatter_Ser() => Benchmark.ZeroFormatter.Serialize(Value);
 
-        [Benchmark(Description = "ZeroFormatter"), BenchmarkCategory("Deep clone")]
-        public void ZeroFormatter_DeepClone() => CleanupLazy(Benchmark.ZeroFormatter.DeepClone(Value));
+        //[Benchmark(Description = "ZeroFormatter"), BenchmarkCategory("Deep clone")]
+        //public void ZeroFormatter_DeepClone() => CleanupLazy(Benchmark.ZeroFormatter.DeepClone(Value));
 
 
-        [Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Serialize")]
-        public void ZeroFormatterLZ4_Ser() => Benchmark.ZeroFormatter.SerializeLZ4(Value);
+        //[Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Serialize")]
+        //public void ZeroFormatterLZ4_Ser() => Benchmark.ZeroFormatter.SerializeLZ4(Value);
 
-        [Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Deep clone")]
-        public void ZeroFormatterLZ4_DeepClone() => CleanupLazy(Benchmark.ZeroFormatter.DeepCloneLZ4(Value));
+        //[Benchmark(Description = "ZeroFormatter+LZ4"), BenchmarkCategory("Deep clone")]
+        //public void ZeroFormatterLZ4_DeepClone() => CleanupLazy(Benchmark.ZeroFormatter.DeepCloneLZ4(Value));
 
-        #endregion
+        //#endregion
         #region MessagePack
 
         [Benchmark(Description = "MessagePack"), BenchmarkCategory("Serialize")]

@@ -8,7 +8,7 @@ namespace IcyRain.Benchmarks
 {
     [MemoryDiagnoser, Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
-    public class StringListBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IMessagePackBenchmark, IProtoBufNetBenchmark
+    public class StringListBenchmarks : IIcyRainBenchmark, IZeroFormatterBenchmark, IProtoBufNetBenchmark //, IMessagePackBenchmark
     {
         private static readonly List<string> Value;
 
@@ -58,15 +58,15 @@ namespace IcyRain.Benchmarks
         public void ZeroFormatterLZ4_DeepClone() => Benchmark.ZeroFormatter.DeepCloneLZ4(Value);
 
         #endregion
-        #region MessagePack
+        //#region MessagePack
 
-        [Benchmark(Description = "MessagePack"), BenchmarkCategory("Serialize")]
-        public void MessagePack_Ser() => Benchmark.MessagePack.Serialize(Value);
+        //[Benchmark(Description = "MessagePack"), BenchmarkCategory("Serialize")]
+        //public void MessagePack_Ser() => Benchmark.MessagePack.Serialize(Value);
 
-        [Benchmark(Description = "MessagePack"), BenchmarkCategory("Deep clone")]
-        public void MessagePack_DeepClone() => Benchmark.MessagePack.DeepClone(Value);
+        //[Benchmark(Description = "MessagePack"), BenchmarkCategory("Deep clone")]
+        //public void MessagePack_DeepClone() => Benchmark.MessagePack.DeepClone(Value);
 
-        #endregion
+        //#endregion
         #region protobuf-net
 
         [Benchmark(Description = "protobuf-net"), BenchmarkCategory("Serialize")]
