@@ -1,44 +1,11 @@
-//------------------------------------------------------------------------------
-//
-// This file has been generated. All changes will be lost.
-//
-//------------------------------------------------------------------------------
-#define BIT32
-
 using System.Runtime.CompilerServices;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-#if BIT32
-using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
-#else
-using reg_t = System.UInt64;
-using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
-#endif
-
-#if NET5_0_OR_GREATER && !BIT32
-using System.Numerics;
-#endif
-
 using IcyRain.Internal;
-
-//------------------------------------------------------------------------------
+using Mem = IcyRain.Compression.LZ4.Internal.Mem32;
 
 namespace IcyRain.Compression.LZ4.Engine
 {
-#if BIT32
     internal unsafe partial class LL32 : LL
-#else
-	internal unsafe partial class LL64: LL
-#endif
     {
-#if BIT32
-
         protected const int ALGORITHM_ARCH = 4;
 
         private static readonly uint[] _DeBruijnBytePos = {
@@ -54,40 +21,6 @@ namespace IcyRain.Compression.LZ4.Engine
         protected static uint LZ4_NbCommonBytes(uint val) =>
             DeBruijnBytePos[
                 unchecked((uint)((int)val & -(int)val) * 0x077CB531U >> 27)];
-
-#else // BIT32
-		
-		protected const int ALGORITHM_ARCH = 8;
-		
-#if NET5_0_OR_GREATER
-		
-        [MethodImpl(Flags.HotPath)]
-		protected static uint LZ4_NbCommonBytes(ulong val) =>
-			((uint) BitOperations.TrailingZeroCount(val) >> 3) & 0x07;
-		
-#else // NET5_0
-
-		private static readonly uint[] _DeBruijnBytePos = {
-			0, 0, 0, 0, 0, 1, 1, 2,
-			0, 3, 1, 3, 1, 4, 2, 7,
-			0, 2, 3, 6, 1, 5, 3, 5,
-			1, 3, 4, 4, 2, 5, 6, 7,
-			7, 0, 1, 2, 3, 3, 4, 6,
-			2, 6, 5, 5, 3, 4, 5, 6,
-			7, 1, 2, 4, 6, 4, 4, 5,
-			7, 2, 6, 5, 7, 6, 7, 7,
-		};
-
-		private static readonly uint* DeBruijnBytePos = Mem.CloneArray(_DeBruijnBytePos);
-        
-        [MethodImpl(Flags.HotPath)]
-		protected static uint LZ4_NbCommonBytes(ulong val) =>
-			DeBruijnBytePos[
-				unchecked((ulong) ((long) val & -(long) val) * 0x0218A392CDABBD3Ful >> 58)];
-		
-#endif // NET5_0
-		
-#endif // BIT32
 
         [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_count(byte* pIn, byte* pMatch, byte* pInLimit)
@@ -118,11 +51,11 @@ namespace IcyRain.Compression.LZ4.Engine
 
 #if !BIT32
 
-			if (pIn < pInLimit - 3 && Mem.Peek4(pMatch) == Mem.Peek4(pIn))
-			{
-				pIn += 4;
-				pMatch += 4;
-			}
+            if (pIn < pInLimit - 3 && Mem.Peek4(pMatch) == Mem.Peek4(pIn))
+            {
+                pIn += 4;
+                pMatch += 4;
+            }
 
 #endif
 
@@ -142,8 +75,8 @@ namespace IcyRain.Compression.LZ4.Engine
         protected static uint LZ4_hashPosition(void* p, tableType_t tableType)
         {
 #if !BIT32
-			if (tableType != tableType_t.byU16)
-				return LZ4_hash5(Mem.PeekW(p), tableType);
+            if (tableType != tableType_t.byU16)
+                return LZ4_hash5(Mem.PeekW(p), tableType);
 #endif
             return LZ4_hash4(Mem.Peek4(p), tableType);
         }
@@ -158,62 +91,5 @@ namespace IcyRain.Compression.LZ4.Engine
             byte* p, void* tableBase, tableType_t tableType, byte* srcBase) =>
             LZ4_getPositionOnHash(LZ4_hashPosition(p, tableType), tableBase, tableType, srcBase);
 
-        #region dictionary
-
-        protected static void LZ4_renormDictT(LZ4_stream_t* LZ4_dict, int nextSize)
-        {
-#if DEBUG
-            Assert(nextSize >= 0);
-#endif
-            if (LZ4_dict->currentOffset + (uint)nextSize <= 0x80000000)
-                return;
-
-            var delta = LZ4_dict->currentOffset - 64 * KB;
-            var dictEnd = LZ4_dict->dictionary + LZ4_dict->dictSize;
-            for (var i = 0; i < LZ4_HASH_SIZE_U32; i++)
-            {
-                if (LZ4_dict->hashTable[i] < delta) LZ4_dict->hashTable[i] = 0;
-                else LZ4_dict->hashTable[i] -= delta;
-            }
-
-            LZ4_dict->currentOffset = 64 * KB;
-            if (LZ4_dict->dictSize > 64 * KB) LZ4_dict->dictSize = 64 * KB;
-            LZ4_dict->dictionary = dictEnd - LZ4_dict->dictSize;
-        }
-
-        public static int LZ4_loadDict(LZ4_stream_t* LZ4_dict, byte* dictionary, int dictSize)
-        {
-            const int HASH_UNIT = ALGORITHM_ARCH;
-            var dict = LZ4_dict;
-            const tableType_t tableType = tableType_t.byU32;
-            var p = dictionary;
-            var dictEnd = p + dictSize;
-
-            LZ4_initStream(LZ4_dict);
-
-            dict->currentOffset += 64 * KB;
-
-            if (dictSize < HASH_UNIT)
-            {
-                return 0;
-            }
-
-            if (dictEnd - p > 64 * KB) p = dictEnd - 64 * KB;
-            var @base = dictEnd - dict->currentOffset;
-
-            dict->dictionary = p;
-            dict->dictSize = (uint)(dictEnd - p);
-            dict->tableType = tableType;
-
-            while (p <= dictEnd - HASH_UNIT)
-            {
-                LZ4_putPosition(p, dict->hashTable, tableType, @base);
-                p += 3;
-            }
-
-            return (int)dict->dictSize;
-        }
-
-        #endregion
     }
 }

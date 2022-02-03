@@ -1,17 +1,4 @@
-using System;
 using System.Runtime.InteropServices;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-using size_t = System.UInt32;
-using uptr_t = System.UInt64;
-
-//------------------------------------------------------------------------------
 
 #pragma warning disable IDE1006 // Naming Styles
 namespace IcyRain.Compression.LZ4.Engine
@@ -64,10 +51,6 @@ namespace IcyRain.Compression.LZ4.Engine
         protected const int KB = 1 << 10;
         protected const int MB = 1 << 20;
         protected const uint GB = 1u << 30;
-
-        //???
-        // protected const int MAXD_LOG = 16;
-        // protected const int MAX_DISTANCE = (1 << MAXD_LOG) - 1;
 
         protected const int ML_BITS = 4;
         protected const uint ML_MASK = (1U << ML_BITS) - 1;

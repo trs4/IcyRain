@@ -1,13 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using IcyRain.Compression.LZ4.Internal;
 using IcyRain.Internal;
+#if DEBUG
+using System;
+using System.Diagnostics;
+#endif
 
 namespace IcyRain.Compression.LZ4.Engine
 {
     internal unsafe partial class LL
     {
+#if DEBUG
         [Conditional("DEBUG")]
         [MethodImpl(Flags.HotPath)]
         public static void Assert(bool condition, string message = null)
@@ -15,14 +18,11 @@ namespace IcyRain.Compression.LZ4.Engine
             if (!condition)
                 throw new ArgumentException(message ?? "Assert failed");
         }
+#endif
 
         [MethodImpl(Flags.HotPath)]
-        internal static int LZ4_compressBound(int isize) =>
-            isize > LZ4_MAX_INPUT_SIZE ? 0 : isize + isize / 255 + 16;
-
-        [MethodImpl(Flags.HotPath)]
-        internal static int LZ4_decoderRingBufferSize(int isize) =>
-            65536 + 14 + isize;
+        internal static int LZ4_compressBound(int isize)
+            => isize > LZ4_MAX_INPUT_SIZE ? 0 : isize + isize / 255 + 16;
 
         [MethodImpl(Flags.HotPath)]
         protected static uint LZ4_hash4(uint sequence, tableType_t tableType)
@@ -188,54 +188,10 @@ namespace IcyRain.Compression.LZ4.Engine
             return length;
         }
 
-        public static int LZ4_saveDict(LZ4_stream_t* LZ4_dict, byte* safeBuffer, int dictSize)
-        {
-            var dict = LZ4_dict;
-            var previousDictEnd = dict->dictionary + dict->dictSize;
-
-            if ((uint)dictSize > 64 * KB)
-                dictSize = 64 * KB;
-
-            if ((uint)dictSize > dict->dictSize) dictSize = (int)dict->dictSize;
-
-            Mem.Move(safeBuffer, previousDictEnd - dictSize, dictSize);
-
-            dict->dictionary = safeBuffer;
-            dict->dictSize = (uint)dictSize;
-
-            return dictSize;
-        }
-
-        public static LZ4_stream_t* LZ4_createStream() =>
-            (LZ4_stream_t*)Mem.AllocZero(sizeof(LZ4_stream_t));
-
         public static LZ4_stream_t* LZ4_initStream(LZ4_stream_t* buffer)
         {
             Mem.Zero((byte*)buffer, sizeof(LZ4_stream_t));
             return buffer;
-        }
-
-        public static void LZ4_freeStream(LZ4_stream_t* LZ4_stream)
-        {
-            if (LZ4_stream != null) Mem.Free(LZ4_stream);
-        }
-
-        public static LZ4_streamDecode_t* LZ4_createStreamDecode() =>
-            (LZ4_streamDecode_t*)Mem.AllocZero(sizeof(LZ4_streamDecode_t));
-
-        public static void LZ4_freeStreamDecode(LZ4_streamDecode_t* LZ4_stream)
-        {
-            if (LZ4_stream != null) Mem.Free(LZ4_stream);
-        }
-
-        public static void LZ4_setStreamDecode(
-            LZ4_streamDecode_t* LZ4_streamDecode, byte* dictionary, int dictSize)
-        {
-            var lz4sd = LZ4_streamDecode;
-            lz4sd->prefixSize = (uint)dictSize;
-            lz4sd->prefixEnd = dictionary + dictSize;
-            lz4sd->externalDict = null;
-            lz4sd->extDictSize = 0;
         }
 
         private static readonly uint[] _inc32table = { 0, 1, 2, 1, 0, 4, 4, 4 };

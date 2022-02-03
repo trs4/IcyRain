@@ -1,17 +1,4 @@
-using System;
 using System.Runtime.InteropServices;
-
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-using size_t = System.UInt32;
-using uptr_t = System.UInt64;
-
-//------------------------------------------------------------------------------
 
 #pragma warning disable IDE1006 // Naming Styles
 namespace IcyRain.Compression.LZ4.Engine
@@ -85,7 +72,9 @@ namespace IcyRain.Compression.LZ4.Engine
                 this.nbSearches = nbSearches;
                 this.targetLength = targetLength;
             }
+
         }
+
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

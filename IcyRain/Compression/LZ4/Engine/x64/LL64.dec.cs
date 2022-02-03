@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using IcyRain.Internal;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
-using size_t = System.UInt32;
 
 namespace IcyRain.Compression.LZ4.Engine
 {
@@ -18,7 +17,7 @@ namespace IcyRain.Compression.LZ4.Engine
             dict_directive dict,
             byte* lowPrefix,
             byte* dictStart,
-            size_t dictSize)
+            uint dictSize)
         {
             return LZ4_decompress_generic(
                 src, dst, srcSize, outputSize,
@@ -42,7 +41,7 @@ namespace IcyRain.Compression.LZ4.Engine
             dict_directive dict,
             byte* lowPrefix,
             byte* dictStart,
-            size_t dictSize)
+            uint dictSize)
         {
             if (src == null) { return -1; }
 
@@ -64,9 +63,9 @@ namespace IcyRain.Compression.LZ4.Engine
                 byte* shortoend = oend - (endOnInput ? 14 : 8) /*maxLL*/ - 18 /*maxML*/;
 
                 byte* match;
-                size_t offset;
+                uint offset;
                 uint token;
-                size_t length;
+                uint length;
 
                 /* Special cases */
 #if DEBUG
@@ -88,7 +87,7 @@ namespace IcyRain.Compression.LZ4.Engine
                 while (true)
                 {
                     token = *ip++;
-                    length = (size_t)(token >> ML_BITS); /* literal length */
+                    length = (uint)(token >> ML_BITS); /* literal length */
 
 #if DEBUG
                     Assert(!endOnInput || ip <= iend); /* ip < iend before the increment */
@@ -198,7 +197,7 @@ namespace IcyRain.Compression.LZ4.Engine
 #if DEBUG
                                 Assert(op <= oend);
 #endif
-                                length = (size_t)(oend - op);
+                                length = (uint)(oend - op);
                             }
 
 #if DEBUG
@@ -272,11 +271,11 @@ namespace IcyRain.Compression.LZ4.Engine
                     {
                         if ((op + length > oend - LASTLITERALS))
                         {
-                            if (partialDecoding) length = MIN(length, (size_t)(oend - op));
+                            if (partialDecoding) length = MIN(length, (uint)(oend - op));
                             else goto _output_error; /* doesn't respect parsing restriction */
                         }
 
-                        if (length <= (size_t)(lowPrefix - match))
+                        if (length <= (uint)(lowPrefix - match))
                         {
                             /* match fits entirely within external dictionary : just copy */
                             Mem.Move(op, dictEnd - (lowPrefix - match), (int)length);
@@ -285,11 +284,11 @@ namespace IcyRain.Compression.LZ4.Engine
                         else
                         {
                             /* match stretches into both external dictionary and current block */
-                            size_t copySize = (size_t)(lowPrefix - match);
-                            size_t restSize = length - copySize;
+                            uint copySize = (uint)(lowPrefix - match);
+                            uint restSize = length - copySize;
                             Mem.Copy(op, dictEnd - copySize, (int)copySize);
                             op += copySize;
-                            if (restSize > (size_t)(op - lowPrefix))
+                            if (restSize > (uint)(op - lowPrefix))
                             {
                                 /* overlap copy */
                                 byte* endOfMatch = op + restSize;
@@ -319,7 +318,7 @@ namespace IcyRain.Compression.LZ4.Engine
 #endif
                     if (partialDecoding && (cpy > oend - MATCH_SAFEGUARD_DISTANCE))
                     {
-                        size_t mlen = MIN(length, (size_t)(oend - op));
+                        uint mlen = MIN(length, (uint)(oend - op));
                         byte* matchEnd = match + mlen;
                         byte* copyEnd = op + mlen;
                         if (matchEnd > op)
@@ -409,143 +408,5 @@ namespace IcyRain.Compression.LZ4.Engine
                 (byte*)dest, null, 0);
         }
 
-        public static int LZ4_decompress_safe_withPrefix64k(
-            byte* source, byte* dest, int compressedSize, int maxOutputSize)
-        {
-            return LZ4_decompress_generic(
-                source, dest, compressedSize, maxOutputSize,
-                endCondition_directive.endOnInputSize, earlyEnd_directive.full,
-                dict_directive.withPrefix64k,
-                (byte*)dest - 64 * KB, null, 0);
-        }
-
-        public static int LZ4_decompress_safe_withSmallPrefix(
-            byte* source, byte* dest, int compressedSize, int maxOutputSize,
-            size_t prefixSize)
-        {
-            return LZ4_decompress_generic(
-                source, dest, compressedSize, maxOutputSize,
-                endCondition_directive.endOnInputSize, earlyEnd_directive.full,
-                dict_directive.noDict,
-                (byte*)dest - prefixSize, null, 0);
-        }
-
-        public static int LZ4_decompress_safe_doubleDict(
-            byte* source, byte* dest, int compressedSize, int maxOutputSize,
-            size_t prefixSize, void* dictStart, size_t dictSize)
-        {
-            return LZ4_decompress_generic(
-                source, dest, compressedSize, maxOutputSize,
-                endCondition_directive.endOnInputSize, earlyEnd_directive.full,
-                dict_directive.usingExtDict,
-                (byte*)dest - prefixSize, (byte*)dictStart, dictSize);
-        }
-
-        public static int LZ4_decompress_safe_forceExtDict(
-            byte* source, byte* dest,
-            int compressedSize, int maxOutputSize,
-            void* dictStart, size_t dictSize)
-        {
-            return LZ4_decompress_generic(
-                source, dest, compressedSize, maxOutputSize,
-                endCondition_directive.endOnInputSize, earlyEnd_directive.full,
-                dict_directive.usingExtDict,
-                (byte*)dest, (byte*)dictStart, dictSize);
-        }
-
-        public static int LZ4_decompress_safe_usingDict(
-            byte* source, byte* dest, int compressedSize, int maxOutputSize, byte* dictStart,
-            int dictSize)
-        {
-            if (dictSize == 0)
-                return LZ4_decompress_safe(source, dest, compressedSize, maxOutputSize);
-
-            if (dictStart + dictSize == dest)
-            {
-                if (dictSize >= 64 * KB - 1)
-                {
-                    return LZ4_decompress_safe_withPrefix64k(
-                        source, dest, compressedSize, maxOutputSize);
-                }
-
-#if DEBUG
-                Assert(dictSize >= 0);
-#endif
-                return LZ4_decompress_safe_withSmallPrefix(
-                    source, dest, compressedSize, maxOutputSize, (size_t)dictSize);
-            }
-
-#if DEBUG
-            Assert(dictSize >= 0);
-#endif
-            return LZ4_decompress_safe_forceExtDict(
-                source, dest, compressedSize, maxOutputSize, dictStart, (size_t)dictSize);
-        }
-
-        public static int LZ4_decompress_safe_partial(
-            byte* src, byte* dst, int compressedSize, int targetOutputSize, int dstCapacity)
-        {
-            var minCapacity = MIN((size_t)targetOutputSize, (size_t)dstCapacity);
-            return LZ4_decompress_generic(
-                src, dst, compressedSize, (int)minCapacity,
-                endCondition_directive.endOnInputSize, earlyEnd_directive.partial,
-                dict_directive.noDict, dst, null, 0);
-        }
-
-        public static int LZ4_decompress_safe_continue(
-            LZ4_streamDecode_t* LZ4_streamDecode, byte* source, byte* dest, int compressedSize,
-            int maxOutputSize)
-        {
-            var lz4sd = LZ4_streamDecode;
-            int result;
-
-            if (lz4sd->prefixSize == 0)
-            {
-                /* The first call, no dictionary yet. */
-#if DEBUG
-                Assert(lz4sd->extDictSize == 0);
-#endif
-                result = LZ4_decompress_safe(source, dest, compressedSize, maxOutputSize);
-                if (result <= 0) return result;
-
-                lz4sd->prefixSize = (size_t)result;
-                lz4sd->prefixEnd = dest + result;
-            }
-            else if (lz4sd->prefixEnd == dest)
-            {
-                /* They're rolling the current segment. */
-                if (lz4sd->prefixSize >= 64 * KB - 1)
-                    result = LZ4_decompress_safe_withPrefix64k(
-                        source, dest, compressedSize, maxOutputSize);
-                else if (lz4sd->extDictSize == 0)
-                    result = LZ4_decompress_safe_withSmallPrefix(
-                        source, dest, compressedSize, maxOutputSize, lz4sd->prefixSize);
-                else
-                    result = LZ4_decompress_safe_doubleDict(
-                        source, dest, compressedSize, maxOutputSize, lz4sd->prefixSize,
-                        lz4sd->externalDict, lz4sd->extDictSize);
-
-                if (result <= 0)
-                    return result;
-
-                lz4sd->prefixSize += (size_t)result;
-                lz4sd->prefixEnd += result;
-            }
-            else
-            {
-                /* The buffer wraps around, or they're switching to another buffer. */
-                lz4sd->extDictSize = lz4sd->prefixSize;
-                lz4sd->externalDict = lz4sd->prefixEnd - lz4sd->extDictSize;
-                result = LZ4_decompress_safe_forceExtDict(
-                    source, dest, compressedSize, maxOutputSize,
-                    lz4sd->externalDict, lz4sd->extDictSize);
-                if (result <= 0) return result;
-
-                lz4sd->prefixSize = (size_t)result;
-                lz4sd->prefixEnd = (byte*)dest + result;
-            }
-
-            return result;
-        }
     }
 }

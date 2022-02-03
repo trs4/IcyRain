@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using IcyRain.Internal;
 using Mem = IcyRain.Compression.LZ4.Internal.Mem64;
-using size_t = System.UInt32;
 
 namespace IcyRain.Compression.LZ4.Engine
 {
@@ -480,7 +479,7 @@ namespace IcyRain.Compression.LZ4.Engine
 
         _last_literals:
             {
-                var lastRun = (size_t)(iend - anchor);
+                var lastRun = (uint)(iend - anchor);
                 if ((outputDirective != 0) &&
                     (op + lastRun + 1 + ((lastRun + 255 - RUN_MASK) / 255) > olimit))
                 {
@@ -489,7 +488,7 @@ namespace IcyRain.Compression.LZ4.Engine
 #if DEBUG
                         Assert(olimit >= op);
 #endif
-                        lastRun = (size_t)(olimit - op) - 1;
+                        lastRun = (uint)(olimit - op) - 1;
                         lastRun -= (lastRun + 240) / 255;
                     }
                     else
@@ -503,7 +502,7 @@ namespace IcyRain.Compression.LZ4.Engine
 
                 if (lastRun >= RUN_MASK)
                 {
-                    var accumulator = (size_t)(lastRun - RUN_MASK);
+                    var accumulator = (uint)(lastRun - RUN_MASK);
                     *op++ = (byte)(RUN_MASK << ML_BITS);
                     for (; accumulator >= 255; accumulator -= 255) *op++ = 255;
                     *op++ = (byte)accumulator;

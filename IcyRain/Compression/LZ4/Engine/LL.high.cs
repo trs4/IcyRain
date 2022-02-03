@@ -2,35 +2,16 @@ using System.Runtime.CompilerServices;
 using IcyRain.Compression.LZ4.Internal;
 using IcyRain.Internal;
 
-//------------------------------------------------------------------------------
-
-// ReSharper disable IdentifierTypo
-// ReSharper disable InconsistentNaming
-// ReSharper disable AccessToStaticMemberViaDerivedType
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-// ReSharper disable BuiltInTypeReferenceStyle
-using size_t = System.UInt32;
-
-//------------------------------------------------------------------------------
-
 namespace IcyRain.Compression.LZ4.Engine
 {
     internal unsafe partial class LL
     {
-        [MethodImpl(Flags.HotPath)]
-        public static int LZ4_sizeofStateHC() => sizeof(LZ4_streamHC_t);
-
         public static void LZ4_setCompressionLevel(
             LZ4_streamHC_t* LZ4_streamHCPtr, int compressionLevel)
         {
             if (compressionLevel < 1) compressionLevel = LZ4HC_CLEVEL_DEFAULT;
             if (compressionLevel > LZ4HC_CLEVEL_MAX) compressionLevel = LZ4HC_CLEVEL_MAX;
             LZ4_streamHCPtr->compressionLevel = (short)compressionLevel;
-        }
-
-        public static void LZ4_favorDecompressionSpeed(LZ4_streamHC_t* LZ4_streamHCPtr, int favor)
-        {
-            LZ4_streamHCPtr->favorDecSpeed = (favor != 0);
         }
 
         public static LZ4_streamHC_t* LZ4_initStreamHC(void* buffer, int size)
@@ -50,23 +31,6 @@ namespace IcyRain.Compression.LZ4.Engine
 
         public static LZ4_streamHC_t* LZ4_initStreamHC(LZ4_streamHC_t* stream) =>
             LZ4_initStreamHC(stream, sizeof(LZ4_streamHC_t));
-
-        public static LZ4_streamHC_t* LZ4_createStreamHC()
-        {
-            LZ4_streamHC_t* LZ4_streamHCPtr = (LZ4_streamHC_t*)Mem.Alloc(sizeof(LZ4_streamHC_t));
-            if (LZ4_streamHCPtr == null) return null;
-
-            LZ4_initStreamHC(LZ4_streamHCPtr);
-            return LZ4_streamHCPtr;
-        }
-
-        public static int LZ4_freeStreamHC(LZ4_streamHC_t* LZ4_streamHCPtr)
-        {
-            if (LZ4_streamHCPtr == null) return 0;
-
-            Mem.Free(LZ4_streamHCPtr);
-            return 0;
-        }
 
         public static void LZ4_resetStreamHC_fast(
             LZ4_streamHC_t* LZ4_streamHCPtr, int compressionLevel)
@@ -162,25 +126,6 @@ namespace IcyRain.Compression.LZ4.Engine
             hc4->lowLimit = (uint)startingOffset;
         }
 
-        public static int LZ4_saveDictHC(
-            LZ4_streamHC_t* LZ4_streamHCPtr, byte* safeBuffer, int dictSize)
-        {
-            LZ4_streamHC_t* streamPtr = LZ4_streamHCPtr;
-            int prefixSize = (int)(streamPtr->end - (streamPtr->@base + streamPtr->dictLimit));
-            if (dictSize > 64 * KB) dictSize = 64 * KB;
-            if (dictSize < 4) dictSize = 0;
-            if (dictSize > prefixSize) dictSize = prefixSize;
-            Mem.Move(safeBuffer, streamPtr->end - dictSize, dictSize);
-            uint endIndex = (uint)(streamPtr->end - streamPtr->@base);
-            streamPtr->end = (byte*)safeBuffer + dictSize;
-            streamPtr->@base = streamPtr->end - endIndex;
-            streamPtr->dictLimit = endIndex - (uint)dictSize;
-            streamPtr->lowLimit = endIndex - (uint)dictSize;
-            if (streamPtr->nextToUpdate < streamPtr->dictLimit)
-                streamPtr->nextToUpdate = streamPtr->dictLimit;
-            return dictSize;
-        }
-
         public static int LZ4_loadDictHC(LZ4_streamHC_t* LZ4_streamHCPtr, byte* dictionary, int dictSize)
         {
             LZ4_streamHC_t* ctxPtr = LZ4_streamHCPtr;
@@ -221,9 +166,9 @@ namespace IcyRain.Compression.LZ4.Engine
 #if DEBUG
             Assert(min <= 0);
             Assert(ip >= iMin);
-            Assert((size_t)(ip - iMin) < (1U << 31));
+            Assert((uint)(ip - iMin) < (1U << 31));
             Assert(match >= mMin);
-            Assert((size_t)(match - mMin) < (1U << 31));
+            Assert((uint)(match - mMin) < (1U << 31));
 #endif
             while ((back > min) && (ip[back - 1] == match[back - 1]))
                 back--;
@@ -258,9 +203,9 @@ namespace IcyRain.Compression.LZ4.Engine
         }
 
         [MethodImpl(Flags.HotPath)]
-        public static uint LZ4HC_rotatePattern(size_t rotate, uint pattern)
+        public static uint LZ4HC_rotatePattern(uint rotate, uint pattern)
         {
-            size_t bitsToRotate = (rotate & (sizeof(uint) - 1)) << 3;
+            uint bitsToRotate = (rotate & (sizeof(uint) - 1)) << 3;
 
             if (bitsToRotate == 0)
                 return pattern;
