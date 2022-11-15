@@ -16,7 +16,7 @@ namespace IcyRain.Internal
         private readonly ReadOnlySequence<byte>.Enumerator _sequenceEnumerator;
 
         [MethodImpl(Flags.HotPath)]
-        internal Reader(in ReadOnlySequence<byte> sequence)
+        internal Reader(ReadOnlySequence<byte> sequence)
         {
             _offset = 0;
 
@@ -36,7 +36,7 @@ namespace IcyRain.Internal
         }
 
         [MethodImpl(Flags.HotPath)]
-        internal Reader(in ReadOnlyMemory<byte> memory)
+        internal Reader(ReadOnlyMemory<byte> memory)
         {
             _offset = 0;
             _currentMemory = memory;
@@ -46,7 +46,7 @@ namespace IcyRain.Internal
 
 #pragma warning disable CA1801 // Review unused parameters
         [MethodImpl(Flags.HotPath)]
-        internal Reader(in ReadOnlySequence<byte> sequence, bool forCompress)
+        internal Reader(ReadOnlySequence<byte> sequence, bool forCompress)
         {
             _offset = 1;
 
@@ -66,7 +66,7 @@ namespace IcyRain.Internal
         }
 
         [MethodImpl(Flags.HotPath)]
-        internal Reader(in ReadOnlyMemory<byte> memory, bool forCompress)
+        internal Reader(ReadOnlyMemory<byte> memory, bool forCompress)
         {
             _offset = 1;
             _currentMemory = memory;

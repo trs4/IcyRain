@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<TargetFrameworks>net472;net6.0;net7.0</TargetFrameworks>
 		<DefineConstants></DefineConstants>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<IsPackable>false</IsPackable>
@@ -9,16 +9,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-		<PackageReference Include="Google.Protobuf" Version="3.19.1" />
-		<PackageReference Include="Grpc" Version="2.42.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.42.0">
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+		<PackageReference Include="Google.Protobuf" Version="3.21.9" />
+		<PackageReference Include="Grpc" Version="2.46.5" />
+		<PackageReference Include="Grpc.Tools" Version="2.50.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="K4os.Compression.LZ4" Version="1.2.15" />
-		<PackageReference Include="MessagePack" Version="2.3.85" />
-		<PackageReference Include="protobuf-net" Version="3.0.101" />
+		<PackageReference Include="K4os.Compression.LZ4" Version="1.2.16" />
+		<PackageReference Include="MessagePack" Version="2.4.35" />
+		<PackageReference Include="protobuf-net" Version="3.1.25" />
 		<PackageReference Include="ZeroFormatter" Version="1.6.4" />
 	</ItemGroup>
 
