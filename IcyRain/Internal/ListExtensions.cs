@@ -78,6 +78,9 @@ namespace IcyRain.Internal
 
         [MethodImpl(Flags.HotPath)]
         public static List<T> CreateList<T>(this T[] array)
+#if NETFRAMEWORK
+            => new List<T>(array);
+#else
         {
             var list = new List<T>();
             var wrapper = new ListStruct { List = list };
@@ -85,6 +88,7 @@ namespace IcyRain.Internal
             wrapper.ListAccessor.Size = array.Length;
             return list;
         }
+#endif
 
         [StructLayout(LayoutKind.Explicit)]
         private struct ListStruct
