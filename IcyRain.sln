@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcyRain", "IcyRain\IcyRain.csproj", "{70EF0DF5-3A45-4E54-8C5F-FBE9F1D88599}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcyRain.Data", "IcyRain.Data\IcyRain.Data.csproj", "{711287E8-1260-47D2-94D9-ED1F4F78E3AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcyRain.Console", "IcyRain.Console\IcyRain.Console.csproj", "{D07BF0FC-45BC-4DBB-BF64-10DC0350DDB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IcyRain.Tables", "IcyRain.Tables\IcyRain.Tables.csproj", "{ED8B1737-E496-42A6-8546-F90BDA889E40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{D07BF0FC-45BC-4DBB-BF64-10DC0350DDB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D07BF0FC-45BC-4DBB-BF64-10DC0350DDB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D07BF0FC-45BC-4DBB-BF64-10DC0350DDB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8B1737-E496-42A6-8546-F90BDA889E40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8B1737-E496-42A6-8546-F90BDA889E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8B1737-E496-42A6-8546-F90BDA889E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8B1737-E496-42A6-8546-F90BDA889E40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,6 @@
 <RuleSet Name="New Rule Set" Description=" " ToolsVersion="17.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="Warning" />
-    <Rule Id="CA1002" Action="Warning" />
     <Rule Id="CA1003" Action="Warning" />
     <Rule Id="CA1004" Action="Warning" />
     <Rule Id="CA1005" Action="Warning" />
@@ -92,7 +91,6 @@
     <Rule Id="CA1713" Action="Warning" />
     <Rule Id="CA1714" Action="Warning" />
     <Rule Id="CA1715" Action="Warning" />
-    <Rule Id="CA1716" Action="Warning" />
     <Rule Id="CA1717" Action="Warning" />
     <Rule Id="CA1719" Action="Warning" />
     <Rule Id="CA1721" Action="Warning" />
@@ -239,7 +237,6 @@
     <Rule Id="CA1050" Action="Warning" />
     <Rule Id="CA1051" Action="Warning" />
     <Rule Id="CA1061" Action="Warning" />
-    <Rule Id="CA1062" Action="Warning" />
     <Rule Id="CA1064" Action="Warning" />
     <Rule Id="CA1304" Action="Warning" />
     <Rule Id="CA1305" Action="None" />
@@ -252,7 +249,7 @@
     <Rule Id="CA1711" Action="None" />
     <Rule Id="CA1712" Action="Warning" />
     <Rule Id="CA1715" Action="Warning" />
-    <Rule Id="CA1716" Action="Warning" />
+    <Rule Id="CA1716" Action="None" />
     <Rule Id="CA1720" Action="None" />
     <Rule Id="CA1721" Action="Warning" />
     <Rule Id="CA1725" Action="None" />
