@@ -1,46 +1,45 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 
-namespace IcyRain.Internal
+namespace IcyRain.Internal;
+
+/// <summary>Генератор динамической сборки</summary>
+public static class DynamicAssembly
 {
-    /// <summary>Генератор динамической сборки</summary>
-    public static class DynamicAssembly
+#if DEBUG && NETFRAMEWORK
+    private static readonly string _assemblyFileName = $"{ModuleName}.{System.DateTime.Now.Ticks}.dll";
+#endif
+    static DynamicAssembly()
     {
-#if DEBUG && NETFRAMEWORK
-        private static readonly string _assemblyFileName = $"{ModuleName}.{System.DateTime.Now.Ticks}.dll";
-#endif
-        static DynamicAssembly()
-        {
-            Assembly = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(ModuleName),
+        Assembly = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(ModuleName),
 #if NETFRAMEWORK
-                AssemblyBuilderAccess.RunAndSave);
+            AssemblyBuilderAccess.RunAndSave);
 #else
-                AssemblyBuilderAccess.Run);
+            AssemblyBuilderAccess.Run);
 #endif
-            Module = Assembly.DefineDynamicModule(Assembly.GetName().Name
+        Module = Assembly.DefineDynamicModule(Assembly.GetName().Name
 #if DEBUG && NETFRAMEWORK
-                , _assemblyFileName
+            , _assemblyFileName
 #endif
-                );
-        }
+            );
+    }
 
-        /// <summary>Имя модуля</summary>
-        public static string ModuleName => "IcyRain.Generated";
+    /// <summary>Имя модуля</summary>
+    public static string ModuleName => "IcyRain.Generated";
 
-        /// <summary>Генерируемая сборка</summary>
-        public static AssemblyBuilder Assembly { get; }
+    /// <summary>Генерируемая сборка</summary>
+    public static AssemblyBuilder Assembly { get; }
 
-        /// <summary>Генерируемый</summary>
-        internal static ModuleBuilder Module { get; }
+    /// <summary>Генерируемый</summary>
+    internal static ModuleBuilder Module { get; }
 #if DEBUG
-        /// <summary>Сохранить сборку в папку с запускаемой библиотекой</summary>
-        public static void Save()
-        {
+    /// <summary>Сохранить сборку в папку с запускаемой библиотекой</summary>
+    public static void Save()
+    {
 #if NETFRAMEWORK
-            System.Diagnostics.Debug.WriteLine(System.IO.Path.Combine(System.Environment.CurrentDirectory, _assemblyFileName));
-            Assembly.Save(_assemblyFileName);
-#endif
-        }
+        System.Diagnostics.Debug.WriteLine(System.IO.Path.Combine(System.Environment.CurrentDirectory, _assemblyFileName));
+        Assembly.Save(_assemblyFileName);
 #endif
     }
+#endif
 }

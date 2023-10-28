@@ -1,10 +1,9 @@
-﻿namespace IcyRain.Resolvers
-{
-    public class Resolver { }
+﻿namespace IcyRain.Resolvers;
 
-    public class UnionResolver : Resolver { }
+public class Resolver { }
 
-    public class UnionByteResolver : UnionResolver { }
+public class UnionResolver : Resolver { }
 
-    public class UnionUShortResolver : UnionResolver { }
-}
+public class UnionByteResolver : UnionResolver { }
+
+public class UnionUShortResolver : UnionResolver { }

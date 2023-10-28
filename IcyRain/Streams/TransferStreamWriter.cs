@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace IcyRain.Streams
+namespace IcyRain.Streams;
+
+public abstract class TransferStreamWriter
 {
-    public abstract class TransferStreamWriter
-    {
-        public abstract Task WriteAsync(StreamPart message);
-    }
+    public abstract Task WriteAsync(StreamPart message);
 }

@@ -1,7 +1,6 @@
-﻿namespace IcyRain.Serializers
+﻿namespace IcyRain.Serializers;
+
+public interface ISerializer
 {
-    public interface ISerializer
-    {
-        int? GetSize();
-    }
+    int? GetSize();
 }

@@ -1,10 +1,9 @@
-﻿namespace IcyRain.Resolvers
+﻿namespace IcyRain.Resolvers;
+
+internal enum ResolverType
 {
-    internal enum ResolverType
-    {
-        Default,
-        Union,
-        UnionByte,
-        UnionUShort,
-    }
+    Default,
+    Union,
+    UnionByte,
+    UnionUShort,
 }

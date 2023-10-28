@@ -1,7 +1,6 @@
-﻿namespace IcyRain.Serializers
+﻿namespace IcyRain.Serializers;
+
+internal interface IErrorSerializer
 {
-    internal interface IErrorSerializer
-    {
-        void Throw();
-    }
+    void Throw();
 }

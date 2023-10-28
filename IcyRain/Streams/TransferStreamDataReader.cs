@@ -1,7 +1,6 @@
-﻿namespace IcyRain.Streams
+﻿namespace IcyRain.Streams;
+
+public abstract class TransferStreamDataReader<T> : TransferStreamReader
 {
-    public abstract class TransferStreamDataReader<T> : TransferStreamReader
-    {
-        public abstract T Data { get; }
-    }
+    public abstract T Data { get; }
 }

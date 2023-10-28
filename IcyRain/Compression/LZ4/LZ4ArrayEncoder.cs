@@ -3,74 +3,73 @@ using System.Runtime.CompilerServices;
 using IcyRain.Compression.LZ4.Engine;
 using IcyRain.Internal;
 
-namespace IcyRain.Compression.LZ4
+namespace IcyRain.Compression.LZ4;
+
+internal static class LZ4ArrayEncoder
 {
-    internal static class LZ4ArrayEncoder
+    [MethodImpl(Flags.HotPath)]
+    public static unsafe byte[] Encode(byte[] source)
     {
-        [MethodImpl(Flags.HotPath)]
-        public static unsafe byte[] Encode(byte[] source)
-        {
-            fixed (byte* sourcePtr = source)
-                return Encode(sourcePtr, source.Length);
-        }
+        fixed (byte* sourcePtr = source)
+            return Encode(sourcePtr, source.Length);
+    }
 
-        [MethodImpl(Flags.HotPath)]
-        public static unsafe byte[] Encode(in Span<byte> source)
-        {
-            fixed (byte* sourcePtr = source)
-                return Encode(sourcePtr, source.Length);
-        }
+    [MethodImpl(Flags.HotPath)]
+    public static unsafe byte[] Encode(in Span<byte> source)
+    {
+        fixed (byte* sourcePtr = source)
+            return Encode(sourcePtr, source.Length);
+    }
 
-        [MethodImpl(Flags.HotPath)]
-        public static unsafe byte[] Encode(in ReadOnlySpan<byte> source)
-        {
-            fixed (byte* sourcePtr = source)
-                return Encode(sourcePtr, source.Length);
-        }
+    [MethodImpl(Flags.HotPath)]
+    public static unsafe byte[] Encode(in ReadOnlySpan<byte> source)
+    {
+        fixed (byte* sourcePtr = source)
+            return Encode(sourcePtr, source.Length);
+    }
 
-        private static unsafe byte[] Encode(in byte* sourcePtr, int size)
-        {
-            byte[] result;
+    private static unsafe byte[] Encode(in byte* sourcePtr, int size)
+    {
+        byte[] result;
 
-            if (size > Buffers.MinCompressSize)
+        if (size > Buffers.MinCompressSize)
+        {
+            int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
+            byte[] target = Buffers.Rent(size + 1);
+
+            fixed (byte* targetPtr = target)
             {
-                int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
-                byte[] target = Buffers.Rent(size + 1);
+                int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, targetPtr, size, size);
+                int encodedSize = headerSize + encodedLength;
 
-                fixed (byte* targetPtr = target)
+                if (encodedLength > 0 && encodedSize < size)
                 {
-                    int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, targetPtr, size, size);
-                    int encodedSize = headerSize + encodedLength;
+                    result = new byte[encodedSize];
 
-                    if (encodedLength > 0 && encodedSize < size)
+                    fixed (byte* ptr = result)
                     {
-                        result = new byte[encodedSize];
+                        Unsafe.CopyBlock(ptr + headerSize, targetPtr, (uint)encodedLength);
 
-                        fixed (byte* ptr = result)
-                        {
-                            Unsafe.CopyBlock(ptr + headerSize, targetPtr, (uint)encodedLength);
-
-                            int diffLength = size - encodedLength;
-                            int sizeOfDiff = headerSize - 1;
-                            result[0] = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
-                            Unsafe.CopyBlockUnaligned(ref result[1], ref *(byte*)&diffLength, (uint)sizeOfDiff);
-                        }
-
-                        Buffers.Return(target);
-                        return result;
+                        int diffLength = size - encodedLength;
+                        int sizeOfDiff = headerSize - 1;
+                        result[0] = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
+                        Unsafe.CopyBlockUnaligned(ref result[1], ref *(byte*)&diffLength, (uint)sizeOfDiff);
                     }
-                }
 
-                Buffers.Return(target);
+                    Buffers.Return(target);
+                    return result;
+                }
             }
 
-            result = new byte[size + 1];
-
-            fixed (byte* ptr = result)
-                Unsafe.CopyBlock(ptr + 1, sourcePtr, (uint)size);
-
-            return result;
+            Buffers.Return(target);
         }
 
+        result = new byte[size + 1];
+
+        fixed (byte* ptr = result)
+            Unsafe.CopyBlock(ptr + 1, sourcePtr, (uint)size);
+
+        return result;
     }
+
 }

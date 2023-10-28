@@ -1,8 +1,7 @@
-﻿namespace IcyRain.Benchmarks
+﻿namespace IcyRain.Benchmarks;
+
+public interface IMessagePackBenchmark
 {
-    public interface IMessagePackBenchmark
-    {
-        void MessagePack_Ser();
-        void MessagePack_DeepClone();
-    }
+    void MessagePack_Ser();
+    void MessagePack_DeepClone();
 }

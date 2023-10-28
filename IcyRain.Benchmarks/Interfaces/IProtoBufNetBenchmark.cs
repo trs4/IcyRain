@@ -1,8 +1,7 @@
-﻿namespace IcyRain.Benchmarks
+﻿namespace IcyRain.Benchmarks;
+
+public interface IProtoBufNetBenchmark
 {
-    public interface IProtoBufNetBenchmark
-    {
-        void ProtoBufNet_Ser();
-        void ProtoBufNet_DeepClone();
-    }
+    void ProtoBufNet_Ser();
+    void ProtoBufNet_DeepClone();
 }

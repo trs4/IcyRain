@@ -3,126 +3,125 @@ using System.Runtime.CompilerServices;
 using IcyRain.Compression.LZ4.Engine;
 using IcyRain.Internal;
 
-namespace IcyRain.Compression.LZ4
+namespace IcyRain.Compression.LZ4;
+
+/// <summary>Static class exposing LZ4 block compression methods</summary>
+internal static class LZ4Codec
 {
-    /// <summary>Static class exposing LZ4 block compression methods</summary>
-    internal static class LZ4Codec
+    #region Pikler
+
+    public static unsafe void Encode(in Span<byte> source, ref int spanOffset)
     {
-        #region Pikler
+        if (spanOffset == 1)
+            return;
 
-        public static unsafe void Encode(in Span<byte> source, ref int spanOffset)
+        int size = spanOffset - 1;
+        int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
+        byte[] target = Buffers.Rent(size);
+
+        fixed (byte* sourcePtr = source)
+        fixed (byte* targetPtr = target)
         {
-            if (spanOffset == 1)
-                return;
-
-            int size = spanOffset - 1;
-            int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
-            byte[] target = Buffers.Rent(size);
-
-            fixed (byte* sourcePtr = source)
-            fixed (byte* targetPtr = target)
-            {
-                int encodedLength = LLxx.LZ4_compress_fast(sourcePtr + 1, targetPtr, size, size);
-                int encodedSize = headerSize + encodedLength;
-#if DEBUG
-                DebugSize(encodedSize, spanOffset);
-#endif
-                if (encodedLength <= 0 || encodedSize >= spanOffset)
-                {
-                    source[0] = 0;
-                    Buffers.Return(target);
-                    return;
-                }
-
-                Unsafe.CopyBlock(sourcePtr + headerSize, targetPtr, (uint)encodedLength);
-
-                int diffLength = size - encodedLength;
-                int sizeOfDiff = headerSize - 1;
-                source[0] = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
-                Unsafe.CopyBlockUnaligned(ref source[1], ref *(byte*)&diffLength, (uint)sizeOfDiff);
-
-                spanOffset = encodedSize;
-                Buffers.Return(target);
-            }
-        }
-
-        public static unsafe (ReadOnlyMemory<byte>, byte[]) Decode(in ReadOnlyMemory<byte> source, ref int decodedLength)
-        {
-            var span = source.Span;
-
-            if ((span[0] & 0x07) != 0)
-                throw new InvalidOperationException("Header is corrupted");
-
-            int sizeOfDiff = (span[0] >> 6) & 0x3;
-
-            if (sizeOfDiff == 3)
-                sizeOfDiff = 4;
-
-            ushort dataOffset = (ushort)(1 + sizeOfDiff);
-            int dataLength = decodedLength - dataOffset;
-
-            fixed (byte* sourcePtr = span)
-            {
-                int resultDiff = sizeOfDiff == 0 ? 0 : PeekN(sourcePtr + 1, sizeOfDiff);
-
-                if (resultDiff == 0)
-                    return (source.Slice(dataOffset), null);
-
-                int resultLength = dataLength + resultDiff;
-                byte[] target = Buffers.Rent(resultLength);
-
-                fixed (byte* targetPtr = target)
-                    decodedLength = LLxx.LZ4_decompress_safe(sourcePtr + dataOffset, targetPtr, dataLength, target.Length);
-
-                if (decodedLength != resultLength)
-                    ThrowExpectedException(decodedLength, resultLength);
-
-                return (new ReadOnlyMemory<byte>(target, 0, decodedLength), target);
-            }
-        }
-
-        [MethodImpl(Flags.HotPath)]
-        public static unsafe int PeekN(in byte* sourcePtr, int size)
-        {
-            int result = default;
-            Unsafe.CopyBlockUnaligned(&result, sourcePtr, (uint)size);
-            return result;
-        }
-
-        public static void ThrowExpectedException(int decodedLength, int expectedLength)
-            => throw new InvalidOperationException($"Expected to decode {decodedLength} bytes but {expectedLength} has been decoded");
-
-        private static void DebugSize(int encodedSize, int size)
-            => System.Diagnostics.Debug.WriteLine($"LZ4 compress {(encodedSize <= 0 ? size : encodedSize) * 100.0 / size:0.0}%");
-
-        #endregion
-        #region Write
-
-        /// <remarks>destinationPtr.Length = size + 1</remarks>
-        public static unsafe void Encode(in byte* sourcePtr, in byte* destinationPtr, ref int size)
-        {
-            int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
-            int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, destinationPtr + headerSize, size, size - headerSize);
+            int encodedLength = LLxx.LZ4_compress_fast(sourcePtr + 1, targetPtr, size, size);
             int encodedSize = headerSize + encodedLength;
 #if DEBUG
-            DebugSize(encodedSize, size);
+            DebugSize(encodedSize, spanOffset);
 #endif
-            if (encodedLength <= 0 || encodedSize >= size)
+            if (encodedLength <= 0 || encodedSize >= spanOffset)
             {
-                *destinationPtr = 0;
-                Unsafe.CopyBlock(destinationPtr + 1, sourcePtr, (uint)size);
-                size++;
+                source[0] = 0;
+                Buffers.Return(target);
                 return;
             }
+
+            Unsafe.CopyBlock(sourcePtr + headerSize, targetPtr, (uint)encodedLength);
 
             int diffLength = size - encodedLength;
             int sizeOfDiff = headerSize - 1;
-            *destinationPtr = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
-            Unsafe.CopyBlockUnaligned(destinationPtr + 1, (byte*)&diffLength, (uint)sizeOfDiff);
+            source[0] = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
+            Unsafe.CopyBlockUnaligned(ref source[1], ref *(byte*)&diffLength, (uint)sizeOfDiff);
 
-            size = encodedSize;
+            spanOffset = encodedSize;
+            Buffers.Return(target);
+        }
+    }
+
+    public static unsafe (ReadOnlyMemory<byte>, byte[]) Decode(in ReadOnlyMemory<byte> source, ref int decodedLength)
+    {
+        var span = source.Span;
+
+        if ((span[0] & 0x07) != 0)
+            throw new InvalidOperationException("Header is corrupted");
+
+        int sizeOfDiff = (span[0] >> 6) & 0x3;
+
+        if (sizeOfDiff == 3)
+            sizeOfDiff = 4;
+
+        ushort dataOffset = (ushort)(1 + sizeOfDiff);
+        int dataLength = decodedLength - dataOffset;
+
+        fixed (byte* sourcePtr = span)
+        {
+            int resultDiff = sizeOfDiff == 0 ? 0 : PeekN(sourcePtr + 1, sizeOfDiff);
+
+            if (resultDiff == 0)
+                return (source.Slice(dataOffset), null);
+
+            int resultLength = dataLength + resultDiff;
+            byte[] target = Buffers.Rent(resultLength);
+
+            fixed (byte* targetPtr = target)
+                decodedLength = LLxx.LZ4_decompress_safe(sourcePtr + dataOffset, targetPtr, dataLength, target.Length);
+
+            if (decodedLength != resultLength)
+                ThrowExpectedException(decodedLength, resultLength);
+
+            return (new ReadOnlyMemory<byte>(target, 0, decodedLength), target);
+        }
+    }
+
+    [MethodImpl(Flags.HotPath)]
+    public static unsafe int PeekN(in byte* sourcePtr, int size)
+    {
+        int result = default;
+        Unsafe.CopyBlockUnaligned(&result, sourcePtr, (uint)size);
+        return result;
+    }
+
+    public static void ThrowExpectedException(int decodedLength, int expectedLength)
+        => throw new InvalidOperationException($"Expected to decode {decodedLength} bytes but {expectedLength} has been decoded");
+
+    private static void DebugSize(int encodedSize, int size)
+        => System.Diagnostics.Debug.WriteLine($"LZ4 compress {(encodedSize <= 0 ? size : encodedSize) * 100.0 / size:0.0}%");
+
+    #endregion
+    #region Write
+
+    /// <remarks>destinationPtr.Length = size + 1</remarks>
+    public static unsafe void Encode(in byte* sourcePtr, in byte* destinationPtr, ref int size)
+    {
+        int headerSize = sizeof(byte) + (size switch { > 0xffff or < 0 => 4, > 0xff => 2, _ => 1 });
+        int encodedLength = LLxx.LZ4_compress_fast(sourcePtr, destinationPtr + headerSize, size, size - headerSize);
+        int encodedSize = headerSize + encodedLength;
+#if DEBUG
+        DebugSize(encodedSize, size);
+#endif
+        if (encodedLength <= 0 || encodedSize >= size)
+        {
+            *destinationPtr = 0;
+            Unsafe.CopyBlock(destinationPtr + 1, sourcePtr, (uint)size);
+            size++;
+            return;
         }
 
-        #endregion
+        int diffLength = size - encodedLength;
+        int sizeOfDiff = headerSize - 1;
+        *destinationPtr = (byte)((0 & 0x07) | (((sizeOfDiff == 4 ? 3 : sizeOfDiff) & 0x3) << 6));
+        Unsafe.CopyBlockUnaligned(destinationPtr + 1, (byte*)&diffLength, (uint)sizeOfDiff);
+
+        size = encodedSize;
     }
+
+    #endregion
 }
