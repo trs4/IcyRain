@@ -47,6 +47,8 @@ public abstract class DataColumn<T> : DataColumn
 
     public override bool IsNull(in int row) => Get(row) is null;
 
+    public abstract List<T> GetValues(int count);
+
     protected virtual T GetDefaultValue() => default;
 
     protected sealed override int GetCount() => Values?.Count ?? 0;

@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using IcyRain.Tables.Internal;
 
@@ -11,6 +13,47 @@ public abstract class SingleDataColumn<T> : DataColumn<T>
 
     [DataMember(Order = 2, EmitDefaultValue = false)]
     public virtual T Fallback { get; set; }
+
+    public sealed override List<T> GetValues(int count)
+    {
+        if (count < 0)
+            throw new ArgumentNullException(nameof(count));
+
+        if (Values is null)
+            return GetNullValues(count);
+
+        int valuesCount = Values.Count;
+
+        if (count == valuesCount)
+            return new(Values);
+
+        var values = new List<T>(count);
+
+        if (count > valuesCount)
+        {
+            values.AddRange(Values);
+
+            for (int i = valuesCount; i < count; i++)
+                values.Add(Fallback);
+        }
+        else
+        {
+            for (int i = 0; i < count; i++)
+                values.Add(Values[i]);
+        }
+
+        return values;
+    }
+
+    private List<T> GetNullValues(int count)
+    {
+        var values = new List<T>(count);
+
+        for (int i = 0; i < count; i++)
+            values.Add(Fallback);
+
+        return values;
+    }
 
     [MethodImpl(Flags.HotPath)]
     public override T Get(in int row)
