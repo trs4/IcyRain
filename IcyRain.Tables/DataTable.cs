@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace IcyRain.Tables;
 
@@ -150,6 +151,79 @@ public class DataTable : Dictionary<string, DataColumn>
         {
             foreach (var column in Values.Where(c => c is not null))
                 column.Compress(RowCount);
+        }
+    }
+
+    public string GetView()
+    {
+        if (Count == 0)
+            return null;
+
+        var builder = new StringBuilder(2048);
+        BuildView(builder);
+        return builder.ToString();
+    }
+
+    internal void BuildView(StringBuilder builder)
+    {
+        int count = Count;
+
+        if (count == 0)
+            return;
+
+        var columns = new string[count][];
+        int[] pads = new int[count];
+        int index = 0;
+        int rowSize = RowCount + 1;
+
+        foreach (var pair in this)
+        {
+            var column = new string[rowSize];
+            column[0] = pair.Key;
+            columns[index] = column;
+            int padSize = pair.Key.Length;
+
+            if (pair.Value is not null)
+            {
+                for (int row = 0; row < RowCount; row++)
+                {
+                    string cell = pair.Value.GetString(row);
+
+                    if (cell is null)
+                        cell = "NULL";
+                    else if (pair.Value.Type == DataType.String)
+                    {
+                        if (cell.Contains('\n'))
+                        {
+                            cell = cell.Replace(Environment.NewLine, " ");
+
+                            if (cell.Contains('\n'))
+                                cell = cell.Replace('\n', ' ');
+                        }
+                    }
+
+                    column[row + 1] = cell;
+                    padSize = Math.Max(padSize, cell.Length);
+                }
+            }
+
+            pads[index] = padSize + 2;
+            index++;
+        }
+
+        for (int i = 0; i < rowSize; i++)
+        {
+            for (int j = 0; j < count; j++)
+            {
+                string cell = columns[i][j];
+                int padSize = pads[j];
+                builder.Append(cell);
+
+                for (int k = cell.Length; k < padSize; k++)
+                    builder.Append(' ');
+            }
+
+            builder.AppendLine();
         }
     }
 

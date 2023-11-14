@@ -15,6 +15,8 @@ public sealed class StringDataColumn : SingleDataColumn<string>
         set => base.Fallback = string.IsNullOrEmpty(value) ? null : value;
     }
 
+    public sealed override string GetString(in int row) => base.Get(row) ?? string.Empty;
+
     public sealed override string Get(in int row) => base.Get(row) ?? string.Empty;
 
     public sealed override void Set(in int row, in string value) => SetWithCheck(row, value, Values, Fallback, IsDefault);

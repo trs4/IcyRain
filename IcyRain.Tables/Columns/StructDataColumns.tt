@@ -33,7 +33,9 @@ public class <#= p.Item1 #>DataColumn : StructDataColumn<<#= p.Item2 #>>
 {
     public <#= p.Item1 #>DataColumn(int capacity) : base(capacity) { }
 
-    public override DataType Type => DataType.<#= p.Item1 #>;
+    public sealed override DataType Type => DataType.<#= p.Item1 #>;
+
+    public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
 [DataContract]
@@ -41,7 +43,9 @@ public class Nullable<#= p.Item1 #>DataColumn : NullableDataColumn<<#= p.Item2 #
 {
     public Nullable<#= p.Item1 #>DataColumn(int capacity) : base(capacity) { }
 
-    public override DataType Type => DataType.<#= p.Item1 #>;
+    public sealed override DataType Type => DataType.<#= p.Item1 #>;
+
+    public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
 
 <# } #>

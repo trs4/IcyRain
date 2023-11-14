@@ -20,6 +20,8 @@ public abstract class DataColumn
 
     public abstract object GetObject(in int row);
 
+    public abstract string GetString(in int row);
+
     public abstract void SetObject(in int row, object value);
 
     public abstract void Clear(in int row);

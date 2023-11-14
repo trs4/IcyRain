@@ -13,6 +13,8 @@ public sealed class NullableStringDataColumn : SingleDataColumn<string>
     
     public sealed override bool IsNullable => true;
 
+    public sealed override string GetString(in int row) => Get(row);
+
     [MethodImpl(Flags.HotPath)]
     protected sealed override bool Equals(string x, string y) => x == y;
 
