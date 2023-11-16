@@ -123,7 +123,11 @@ internal static class Types
         = typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle));
 
     public static readonly MethodInfo GetUninitializedObjectMethod
+#if NET8_0_OR_GREATER
+        = typeof(RuntimeHelpers).GetMethod(nameof(RuntimeHelpers.GetUninitializedObject));
+#else
         = typeof(FormatterServices).GetMethod(nameof(FormatterServices.GetUninitializedObject));
+#endif
 
     public static readonly FieldInfo DecimalZeroField
         = typeof(decimal).GetField(nameof(decimal.Zero));

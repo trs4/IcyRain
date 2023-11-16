@@ -127,7 +127,7 @@ public abstract class TransferStream : Stream
             throw new ArgumentOutOfRangeException(nameof(count));
 
         if (buffer.Length - offset < count)
-            throw new ArgumentException("buffer.Length");
+            throw new InvalidOperationException("buffer.Length");
 
         int readCount = 0;
 

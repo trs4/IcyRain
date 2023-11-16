@@ -232,8 +232,11 @@ public sealed class TestA1Serializer : Serializer<Resolver, TestA1>
         if (index == 255)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestA1)RuntimeHelpers.GetUninitializedObject(typeof(TestA1));
+#else
         var obj = (TestA1)FormatterServices.GetUninitializedObject(typeof(TestA1));
-
+#endif
         if (index == 1)
         {
             obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
@@ -250,8 +253,11 @@ public sealed class TestA1Serializer : Serializer<Resolver, TestA1>
         if (index == 255)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestA1)RuntimeHelpers.GetUninitializedObject(typeof(TestA1));
+#else
         var obj = (TestA1)FormatterServices.GetUninitializedObject(typeof(TestA1));
-
+#endif
         if (index == 1)
         {
             obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
@@ -334,8 +340,11 @@ public sealed class TestA2Serializer : Serializer<Resolver, TestA2>
         if (index == 0)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestA2)RuntimeHelpers.GetUninitializedObject(typeof(TestA2));
+#else
         var obj = (TestA2)FormatterServices.GetUninitializedObject(typeof(TestA2));
-
+#endif
         if (index == 1)
         {
             obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
@@ -364,8 +373,11 @@ public sealed class TestA2Serializer : Serializer<Resolver, TestA2>
         if (index == 0)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestA2)RuntimeHelpers.GetUninitializedObject(typeof(TestA2));
+#else
         var obj = (TestA2)FormatterServices.GetUninitializedObject(typeof(TestA2));
-
+#endif
         if (index == 1)
         {
             obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);
@@ -486,8 +498,11 @@ public sealed class TestA3Serializer : Serializer<Resolver, TestA3>
         if (index == 0)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestA3)RuntimeHelpers.GetUninitializedObject(typeof(TestA3));
+#else
         var obj = (TestA3)FormatterServices.GetUninitializedObject(typeof(TestA3));
-
+#endif
         if (index == 1)
         {
             obj.Property11 = _s_Property11Serializer.DeserializeSpot(ref reader);
@@ -534,8 +549,11 @@ public sealed class TestA3Serializer : Serializer<Resolver, TestA3>
         if (index == 0)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestA3)RuntimeHelpers.GetUninitializedObject(typeof(TestA3));
+#else
         var obj = (TestA3)FormatterServices.GetUninitializedObject(typeof(TestA3));
-
+#endif
         if (index == 1)
         {
             obj.Property11 = _s_Property11Serializer.DeserializeInUTCSpot(ref reader);

@@ -109,7 +109,11 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         if (index == 0)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestData)RuntimeHelpers.GetUninitializedObject(_s_Type);
+#else
         var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+#endif
 
         if (index == 1)
         {
@@ -151,7 +155,11 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         if (index == 0)
             return null;
 
+#if NET8_0_OR_GREATER
+        var obj = (TestData)RuntimeHelpers.GetUninitializedObject(_s_Type);
+#else
         var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+#endif
 
         if (index == 1)
         {
@@ -188,7 +196,11 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
 
     public override sealed TestData DeserializeSpot(ref Reader reader)
     {
+#if NET8_0_OR_GREATER
+        var obj = (TestData)RuntimeHelpers.GetUninitializedObject(_s_Type);
+#else
         var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+#endif
         int index = reader.ReadByte(); // Read 0 or 1 or 255
 
         if (index == 1)
@@ -226,7 +238,11 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
 
     public override sealed TestData DeserializeInUTCSpot(ref Reader reader)
     {
+#if NET8_0_OR_GREATER
+        var obj = (TestData)RuntimeHelpers.GetUninitializedObject(_s_Type);
+#else
         var obj = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
+#endif
         int index = reader.ReadByte(); // Read 0 or 1 or 255
 
         if (index == 1)
