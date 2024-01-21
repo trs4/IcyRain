@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFrameworks>net472;net8.0</TargetFrameworks>
-		<DefineConstants></DefineConstants>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<IsPackable>false</IsPackable>
-	</PropertyGroup>
+  <PropertyGroup>
+	<TargetFrameworks>net472;net8.0</TargetFrameworks>
+	<DefineConstants></DefineConstants>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="NSubstitute" Version="5.1.0" />
-		<PackageReference Include="NUnit" Version="3.14.0" />
-		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-	</ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="NSubstitute" Version="5.1.0" />
+	<PackageReference Include="NUnit" Version="3.14.0" />
+	<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\IcyRain.Benchmarks\IcyRain.Benchmarks.csproj" />
-		<ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
-		<ProjectReference Include="..\IcyRain\IcyRain.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+	<ProjectReference Include="..\IcyRain.Benchmarks\IcyRain.Benchmarks.csproj" />
+	<ProjectReference Include="..\IcyRain.Data\IcyRain.Data.csproj" />
+	<ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+  </ItemGroup>
 </Project>
