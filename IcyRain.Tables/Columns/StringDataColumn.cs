@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace IcyRain.Tables;
 
@@ -28,4 +30,43 @@ public sealed class StringDataColumn : SingleDataColumn<string>
     protected sealed override bool IsDefault(string value) => string.IsNullOrEmpty(value);
 
     public sealed override bool IsNull(in int row) => false;
+
+    public sealed override List<string> GetValues(int count)
+    {
+        if (count < 0)
+            throw new ArgumentNullException(nameof(count));
+
+        if (Values is null)
+            return GetNullValues(count);
+
+        int valuesCount = Values.Count;
+        var values = new List<string>(count);
+
+        if (count > valuesCount)
+        {
+            for (int i = 0; i < valuesCount; i++)
+                values.Add(Values[i] ?? string.Empty);
+
+            for (int i = valuesCount; i < count; i++)
+                values.Add(base.Fallback ?? string.Empty);
+        }
+        else
+        {
+            for (int i = 0; i < count; i++)
+                values.Add(Values[i] ?? string.Empty);
+        }
+
+        return values;
+    }
+
+    private List<string> GetNullValues(int count)
+    {
+        var values = new List<string>(count);
+
+        for (int i = 0; i < count; i++)
+            values.Add(base.Fallback ?? string.Empty);
+
+        return values;
+    }
+
 }

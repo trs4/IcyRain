@@ -14,7 +14,7 @@ public abstract class SingleDataColumn<T> : DataColumn<T>
     [DataMember(Order = 2, EmitDefaultValue = false)]
     public virtual T Fallback { get; set; }
 
-    public sealed override List<T> GetValues(int count)
+    public override List<T> GetValues(int count)
     {
         if (count < 0)
             throw new ArgumentNullException(nameof(count));
