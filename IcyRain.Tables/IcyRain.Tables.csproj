@@ -12,17 +12,4 @@
 	<PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-	<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	<None Update="Columns\StructDataColumns.tt">
-	  <Generator>TextTemplatingFileGenerator</Generator>
-	  <LastGenOutput>StructDataColumns.cs</LastGenOutput>
-	</None>
-	<Compile Update="Columns\StructDataColumns.cs">
-	  <DesignTime>True</DesignTime>
-	  <AutoGen>True</AutoGen>
-	  <DependentUpon>StructDataColumns.tt</DependentUpon>
-	</Compile>
-  </ItemGroup>
 </Project>

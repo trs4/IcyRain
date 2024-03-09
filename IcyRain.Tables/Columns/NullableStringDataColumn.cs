@@ -10,8 +10,10 @@ public sealed class NullableStringDataColumn : SingleDataColumn<string>
     public NullableStringDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.String;
-    
+
     public sealed override bool IsNullable => true;
+
+    public sealed override int GetInt(in int row) => int.Parse(Get(row));
 
     public sealed override string GetString(in int row) => Get(row);
 

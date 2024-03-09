@@ -10,6 +10,8 @@ public class BooleanDataColumn : StructDataColumn<bool>
 
     public sealed override DataType Type => DataType.Boolean;
 
+    public sealed override int GetInt(in int row) => Get(row) ? 1 : 0;
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -19,6 +21,8 @@ public class NullableBooleanDataColumn : NullableDataColumn<bool>
     public NullableBooleanDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Boolean;
+
+    public sealed override int GetInt(in int row) => Get(row) == true ? 1 : 0;
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -30,6 +34,8 @@ public class CharDataColumn : StructDataColumn<char>
 
     public sealed override DataType Type => DataType.Char;
 
+    public sealed override int GetInt(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -39,6 +45,8 @@ public class NullableCharDataColumn : NullableDataColumn<char>
     public NullableCharDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Char;
+
+    public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -50,6 +58,8 @@ public class SByteDataColumn : StructDataColumn<sbyte>
 
     public sealed override DataType Type => DataType.SByte;
 
+    public sealed override int GetInt(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -59,6 +69,8 @@ public class NullableSByteDataColumn : NullableDataColumn<sbyte>
     public NullableSByteDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.SByte;
+
+    public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -70,6 +82,8 @@ public class ByteDataColumn : StructDataColumn<byte>
 
     public sealed override DataType Type => DataType.Byte;
 
+    public sealed override int GetInt(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -79,6 +93,8 @@ public class NullableByteDataColumn : NullableDataColumn<byte>
     public NullableByteDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Byte;
+
+    public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -90,6 +106,8 @@ public class Int16DataColumn : StructDataColumn<short>
 
     public sealed override DataType Type => DataType.Int16;
 
+    public sealed override int GetInt(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -99,6 +117,8 @@ public class NullableInt16DataColumn : NullableDataColumn<short>
     public NullableInt16DataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Int16;
+
+    public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -110,6 +130,8 @@ public class UInt16DataColumn : StructDataColumn<ushort>
 
     public sealed override DataType Type => DataType.UInt16;
 
+    public sealed override int GetInt(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -119,6 +141,8 @@ public class NullableUInt16DataColumn : NullableDataColumn<ushort>
     public NullableUInt16DataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.UInt16;
+
+    public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -130,6 +154,8 @@ public class Int32DataColumn : StructDataColumn<int>
 
     public sealed override DataType Type => DataType.Int32;
 
+    public sealed override int GetInt(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -139,6 +165,8 @@ public class NullableInt32DataColumn : NullableDataColumn<int>
     public NullableInt32DataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Int32;
+
+    public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -150,6 +178,8 @@ public class UInt32DataColumn : StructDataColumn<uint>
 
     public sealed override DataType Type => DataType.UInt32;
 
+    public sealed override int GetInt(in int row) => (int)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -159,6 +189,8 @@ public class NullableUInt32DataColumn : NullableDataColumn<uint>
     public NullableUInt32DataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.UInt32;
+
+    public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -170,6 +202,8 @@ public class Int64DataColumn : StructDataColumn<long>
 
     public sealed override DataType Type => DataType.Int64;
 
+    public sealed override int GetInt(in int row) => (int)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -179,6 +213,8 @@ public class NullableInt64DataColumn : NullableDataColumn<long>
     public NullableInt64DataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Int64;
+
+    public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -190,6 +226,8 @@ public class UInt64DataColumn : StructDataColumn<ulong>
 
     public sealed override DataType Type => DataType.UInt64;
 
+    public sealed override int GetInt(in int row) => (int)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -199,6 +237,8 @@ public class NullableUInt64DataColumn : NullableDataColumn<ulong>
     public NullableUInt64DataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.UInt64;
+
+    public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -210,6 +250,8 @@ public class SingleDataColumn : StructDataColumn<float>
 
     public sealed override DataType Type => DataType.Single;
 
+    public sealed override int GetInt(in int row) => (int)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -219,6 +261,8 @@ public class NullableSingleDataColumn : NullableDataColumn<float>
     public NullableSingleDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Single;
+
+    public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -230,6 +274,8 @@ public class DoubleDataColumn : StructDataColumn<double>
 
     public sealed override DataType Type => DataType.Double;
 
+    public sealed override int GetInt(in int row) => (int)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -239,6 +285,8 @@ public class NullableDoubleDataColumn : NullableDataColumn<double>
     public NullableDoubleDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Double;
+
+    public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -250,6 +298,8 @@ public class DecimalDataColumn : StructDataColumn<decimal>
 
     public sealed override DataType Type => DataType.Decimal;
 
+    public sealed override int GetInt(in int row) => (int)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -259,6 +309,8 @@ public class NullableDecimalDataColumn : NullableDataColumn<decimal>
     public NullableDecimalDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Decimal;
+
+    public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -270,6 +322,8 @@ public class GuidDataColumn : StructDataColumn<Guid>
 
     public sealed override DataType Type => DataType.Guid;
 
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -279,6 +333,8 @@ public class NullableGuidDataColumn : NullableDataColumn<Guid>
     public NullableGuidDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.Guid;
+
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -290,6 +346,8 @@ public class DateTimeDataColumn : StructDataColumn<DateTime>
 
     public sealed override DataType Type => DataType.DateTime;
 
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -299,6 +357,8 @@ public class NullableDateTimeDataColumn : NullableDataColumn<DateTime>
     public NullableDateTimeDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.DateTime;
+
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }
@@ -310,6 +370,8 @@ public class TimeSpanDataColumn : StructDataColumn<TimeSpan>
 
     public sealed override DataType Type => DataType.TimeSpan;
 
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row).ToString();
 }
 
@@ -319,6 +381,8 @@ public class NullableTimeSpanDataColumn : NullableDataColumn<TimeSpan>
     public NullableTimeSpanDataColumn(int capacity) : base(capacity) { }
 
     public sealed override DataType Type => DataType.TimeSpan;
+
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
     public sealed override string GetString(in int row) => Get(row)?.ToString();
 }

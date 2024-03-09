@@ -178,7 +178,7 @@ internal static class Types
         if (type.IsEnum)
             return null;
 
-        return (Type.GetTypeCode(type)) switch
+        return Type.GetTypeCode(type) switch
         {
             TypeCode.Boolean => "bool",
             TypeCode.Char => "char",

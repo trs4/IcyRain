@@ -20,6 +20,8 @@ public abstract class DataColumn
 
     public abstract object GetObject(in int row);
 
+    public abstract int GetInt(in int row);
+
     public abstract string GetString(in int row);
 
     public abstract void SetObject(in int row, object value);
@@ -220,11 +222,13 @@ public abstract class DataColumn
         _ => throw new NotSupportedException(type.ToString()),
     };
 
+#pragma warning disable CA1859 // Use concrete types when possible for improved performance
     private static DataColumn CreateArray(DataType type, int capacity) => type switch
     {
         DataType.Byte => new ByteArrayDataColumn(capacity),
         _ => throw new NotSupportedException(type.ToString()),
     };
+#pragma warning restore CA1859 // Use concrete types when possible for improved performance
 
     public void Compress(in int tableRowCount)
     {

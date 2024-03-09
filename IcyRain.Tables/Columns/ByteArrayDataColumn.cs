@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace IcyRain.Tables;
 
@@ -9,5 +10,7 @@ public sealed class ByteArrayDataColumn : ArrayDataColumn<byte>
 
     public override DataType Type => DataType.Byte;
 
+    public sealed override int GetInt(in int row) => throw new NotSupportedException();
+    
     public sealed override string GetString(in int row) => "byte[]";
 }

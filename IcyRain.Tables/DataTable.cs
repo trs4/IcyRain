@@ -26,7 +26,7 @@ public class DataTable : Dictionary<string, DataColumn>
         set => _rowCapacity = Math.Max(0, value);
     }
 
-    public Dictionary<string, object> Tags => _tags ??= new();
+    public Dictionary<string, object> Tags => _tags ??= [];
 
     public BooleanDataColumn AddBooleanColumn(string name)
         => AddColumn(name, new BooleanDataColumn(_rowCapacity));
