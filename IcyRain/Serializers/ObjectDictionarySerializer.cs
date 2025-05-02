@@ -99,7 +99,7 @@ internal sealed class ObjectDictionarySerializer<TResolver, TKey, TValue, TDicti
 
         var value = _capacityConstructor is null
             ? new TDictionary()
-            : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
+            : (TDictionary)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
@@ -116,7 +116,7 @@ internal sealed class ObjectDictionarySerializer<TResolver, TKey, TValue, TDicti
 
         var value = _capacityConstructor is null
             ? new TDictionary()
-            : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
+            : (TDictionary)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
@@ -130,7 +130,7 @@ internal sealed class ObjectDictionarySerializer<TResolver, TKey, TValue, TDicti
 
         var value = _capacityConstructor is null
             ? new TDictionary()
-            : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
+            : (TDictionary)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
@@ -144,7 +144,7 @@ internal sealed class ObjectDictionarySerializer<TResolver, TKey, TValue, TDicti
 
         var value = _capacityConstructor is null
             ? new TDictionary()
-            : (TDictionary)_capacityConstructor.Invoke(new object[] { length });
+            : (TDictionary)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));

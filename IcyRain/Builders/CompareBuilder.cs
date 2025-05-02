@@ -41,13 +41,9 @@ internal static class CompareBuilder
             il.Emit(OpCodes.Brfalse_S, label);
         }
         else if (data.PropertyType.IsClass)
-        {
             EmitBool(il, label, data);
-        }
         else if (_map.TryGetValue(data.PropertyType, out var emitDelegate))
-        {
             emitDelegate(il, label, data);
-        }
         else
         {
             var method = (data.PropertyType.HasEquatableInterface() ? Types.IsEmptyEqutableStructMethod : Types.IsEmptyStructMethod)

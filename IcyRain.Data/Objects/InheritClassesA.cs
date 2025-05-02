@@ -471,7 +471,7 @@ public sealed class TestA3Serializer : Serializer<Resolver, TestA3>
             _s_Property33Serializer.SerializeSpot(ref writer, localProperty33.Value);
         }
 
-        if (value.Property34 != null)
+        if (value.Property34 is not null)
         {
             writer.WriteUShort(5);
             _s_Property34Serializer.SerializeSpot(ref writer, value.Property34);

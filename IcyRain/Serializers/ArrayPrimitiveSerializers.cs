@@ -38,34 +38,28 @@ internal sealed class ArrayBoolSerializer<TResolver> : Serializer<TResolver, boo
     public override sealed bool[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadBoolArray(length)
-            : (length == 0 ? Array.Empty<bool>() : null);
+        return length > 0 ? reader.ReadBoolArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed bool[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadBoolArray(length)
-            : (length == 0 ? Array.Empty<bool>() : null);
+        return length > 0 ? reader.ReadBoolArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed bool[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadBoolArray(length) : Array.Empty<bool>();
+        return length > 0 ? reader.ReadBoolArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed bool[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadBoolArray(length) : Array.Empty<bool>();
+        return length > 0 ? reader.ReadBoolArray(length) : [];
     }
 
 }
@@ -103,34 +97,28 @@ internal sealed class ArrayCharSerializer<TResolver> : Serializer<TResolver, cha
     public override sealed char[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadCharArray(length)
-            : (length == 0 ? Array.Empty<char>() : null);
+        return length > 0 ? reader.ReadCharArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed char[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadCharArray(length)
-            : (length == 0 ? Array.Empty<char>() : null);
+        return length > 0 ? reader.ReadCharArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed char[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadCharArray(length) : Array.Empty<char>();
+        return length > 0 ? reader.ReadCharArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed char[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadCharArray(length) : Array.Empty<char>();
+        return length > 0 ? reader.ReadCharArray(length) : [];
     }
 
 }
@@ -168,34 +156,28 @@ internal sealed class ArraySByteSerializer<TResolver> : Serializer<TResolver, sb
     public override sealed sbyte[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadSByteArray(length)
-            : (length == 0 ? Array.Empty<sbyte>() : null);
+        return length > 0 ? reader.ReadSByteArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed sbyte[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadSByteArray(length)
-            : (length == 0 ? Array.Empty<sbyte>() : null);
+        return length > 0 ? reader.ReadSByteArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed sbyte[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadSByteArray(length) : Array.Empty<sbyte>();
+        return length > 0 ? reader.ReadSByteArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed sbyte[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadSByteArray(length) : Array.Empty<sbyte>();
+        return length > 0 ? reader.ReadSByteArray(length) : [];
     }
 
 }
@@ -233,34 +215,28 @@ internal sealed class ArrayByteSerializer<TResolver> : Serializer<TResolver, byt
     public override sealed byte[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadByteArray(length)
-            : (length == 0 ? Array.Empty<byte>() : null);
+        return length > 0 ? reader.ReadByteArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed byte[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadByteArray(length)
-            : (length == 0 ? Array.Empty<byte>() : null);
+        return length > 0 ? reader.ReadByteArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed byte[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadByteArray(length) : Array.Empty<byte>();
+        return length > 0 ? reader.ReadByteArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed byte[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadByteArray(length) : Array.Empty<byte>();
+        return length > 0 ? reader.ReadByteArray(length) : [];
     }
 
 }
@@ -298,34 +274,28 @@ internal sealed class ArrayShortSerializer<TResolver> : Serializer<TResolver, sh
     public override sealed short[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadShortArray(length)
-            : (length == 0 ? Array.Empty<short>() : null);
+        return length > 0 ? reader.ReadShortArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed short[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadShortArray(length)
-            : (length == 0 ? Array.Empty<short>() : null);
+        return length > 0 ? reader.ReadShortArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed short[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadShortArray(length) : Array.Empty<short>();
+        return length > 0 ? reader.ReadShortArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed short[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadShortArray(length) : Array.Empty<short>();
+        return length > 0 ? reader.ReadShortArray(length) : [];
     }
 
 }
@@ -363,34 +333,28 @@ internal sealed class ArrayUShortSerializer<TResolver> : Serializer<TResolver, u
     public override sealed ushort[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUShortArray(length)
-            : (length == 0 ? Array.Empty<ushort>() : null);
+        return length > 0 ? reader.ReadUShortArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed ushort[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUShortArray(length)
-            : (length == 0 ? Array.Empty<ushort>() : null);
+        return length > 0 ? reader.ReadUShortArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed ushort[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUShortArray(length) : Array.Empty<ushort>();
+        return length > 0 ? reader.ReadUShortArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed ushort[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUShortArray(length) : Array.Empty<ushort>();
+        return length > 0 ? reader.ReadUShortArray(length) : [];
     }
 
 }
@@ -428,34 +392,28 @@ internal sealed class ArrayIntSerializer<TResolver> : Serializer<TResolver, int[
     public override sealed int[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadIntArray(length)
-            : (length == 0 ? Array.Empty<int>() : null);
+        return length > 0 ? reader.ReadIntArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed int[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadIntArray(length)
-            : (length == 0 ? Array.Empty<int>() : null);
+        return length > 0 ? reader.ReadIntArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed int[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadIntArray(length) : Array.Empty<int>();
+        return length > 0 ? reader.ReadIntArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed int[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadIntArray(length) : Array.Empty<int>();
+        return length > 0 ? reader.ReadIntArray(length) : [];
     }
 
 }
@@ -493,34 +451,28 @@ internal sealed class ArrayUIntSerializer<TResolver> : Serializer<TResolver, uin
     public override sealed uint[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUIntArray(length)
-            : (length == 0 ? Array.Empty<uint>() : null);
+        return length > 0 ? reader.ReadUIntArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed uint[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUIntArray(length)
-            : (length == 0 ? Array.Empty<uint>() : null);
+        return length > 0 ? reader.ReadUIntArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed uint[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUIntArray(length) : Array.Empty<uint>();
+        return length > 0 ? reader.ReadUIntArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed uint[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUIntArray(length) : Array.Empty<uint>();
+        return length > 0 ? reader.ReadUIntArray(length) : [];
     }
 
 }
@@ -558,34 +510,28 @@ internal sealed class ArrayLongSerializer<TResolver> : Serializer<TResolver, lon
     public override sealed long[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadLongArray(length)
-            : (length == 0 ? Array.Empty<long>() : null);
+        return length > 0 ? reader.ReadLongArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed long[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadLongArray(length)
-            : (length == 0 ? Array.Empty<long>() : null);
+        return length > 0 ? reader.ReadLongArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed long[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadLongArray(length) : Array.Empty<long>();
+        return length > 0 ? reader.ReadLongArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed long[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadLongArray(length) : Array.Empty<long>();
+        return length > 0 ? reader.ReadLongArray(length) : [];
     }
 
 }
@@ -623,34 +569,28 @@ internal sealed class ArrayULongSerializer<TResolver> : Serializer<TResolver, ul
     public override sealed ulong[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadULongArray(length)
-            : (length == 0 ? Array.Empty<ulong>() : null);
+        return length > 0 ? reader.ReadULongArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed ulong[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadULongArray(length)
-            : (length == 0 ? Array.Empty<ulong>() : null);
+        return length > 0 ? reader.ReadULongArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed ulong[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadULongArray(length) : Array.Empty<ulong>();
+        return length > 0 ? reader.ReadULongArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed ulong[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadULongArray(length) : Array.Empty<ulong>();
+        return length > 0 ? reader.ReadULongArray(length) : [];
     }
 
 }
@@ -688,34 +628,28 @@ internal sealed class ArrayFloatSerializer<TResolver> : Serializer<TResolver, fl
     public override sealed float[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadFloatArray(length)
-            : (length == 0 ? Array.Empty<float>() : null);
+        return length > 0 ? reader.ReadFloatArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed float[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadFloatArray(length)
-            : (length == 0 ? Array.Empty<float>() : null);
+        return length > 0 ? reader.ReadFloatArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed float[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadFloatArray(length) : Array.Empty<float>();
+        return length > 0 ? reader.ReadFloatArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed float[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadFloatArray(length) : Array.Empty<float>();
+        return length > 0 ? reader.ReadFloatArray(length) : [];
     }
 
 }
@@ -753,34 +687,28 @@ internal sealed class ArrayDoubleSerializer<TResolver> : Serializer<TResolver, d
     public override sealed double[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDoubleArray(length)
-            : (length == 0 ? Array.Empty<double>() : null);
+        return length > 0 ? reader.ReadDoubleArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed double[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDoubleArray(length)
-            : (length == 0 ? Array.Empty<double>() : null);
+        return length > 0 ? reader.ReadDoubleArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed double[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDoubleArray(length) : Array.Empty<double>();
+        return length > 0 ? reader.ReadDoubleArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed double[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDoubleArray(length) : Array.Empty<double>();
+        return length > 0 ? reader.ReadDoubleArray(length) : [];
     }
 
 }
@@ -818,34 +746,28 @@ internal sealed class ArrayDecimalSerializer<TResolver> : Serializer<TResolver, 
     public override sealed decimal[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDecimalArray(length)
-            : (length == 0 ? Array.Empty<decimal>() : null);
+        return length > 0 ? reader.ReadDecimalArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed decimal[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDecimalArray(length)
-            : (length == 0 ? Array.Empty<decimal>() : null);
+        return length > 0 ? reader.ReadDecimalArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed decimal[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDecimalArray(length) : Array.Empty<decimal>();
+        return length > 0 ? reader.ReadDecimalArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed decimal[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDecimalArray(length) : Array.Empty<decimal>();
+        return length > 0 ? reader.ReadDecimalArray(length) : [];
     }
 
 }
@@ -910,7 +832,7 @@ internal sealed class ArrayStringSerializer<TResolver> : Serializer<TResolver, s
             return value;
         }
 
-        return length == 0 ? Array.Empty<string>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -928,7 +850,7 @@ internal sealed class ArrayStringSerializer<TResolver> : Serializer<TResolver, s
             return value;
         }
 
-        return length == 0 ? Array.Empty<string>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -937,7 +859,7 @@ internal sealed class ArrayStringSerializer<TResolver> : Serializer<TResolver, s
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<string>();
+            return [];
 
         var value = new string[length];
 
@@ -953,7 +875,7 @@ internal sealed class ArrayStringSerializer<TResolver> : Serializer<TResolver, s
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<string>();
+            return [];
 
         var value = new string[length];
 
@@ -998,34 +920,28 @@ internal sealed class ArrayGuidSerializer<TResolver> : Serializer<TResolver, Gui
     public override sealed Guid[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadGuidArray(length)
-            : (length == 0 ? Array.Empty<Guid>() : null);
+        return length > 0 ? reader.ReadGuidArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed Guid[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadGuidArray(length)
-            : (length == 0 ? Array.Empty<Guid>() : null);
+        return length > 0 ? reader.ReadGuidArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed Guid[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadGuidArray(length) : Array.Empty<Guid>();
+        return length > 0 ? reader.ReadGuidArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed Guid[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadGuidArray(length) : Array.Empty<Guid>();
+        return length > 0 ? reader.ReadGuidArray(length) : [];
     }
 
 }
@@ -1080,7 +996,7 @@ internal sealed class ArrayDateTimeSerializer<TResolver> : Serializer<TResolver,
             return value;
         }
 
-        return length == 0 ? Array.Empty<DateTime>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1098,7 +1014,7 @@ internal sealed class ArrayDateTimeSerializer<TResolver> : Serializer<TResolver,
             return value;
         }
 
-        return length == 0 ? Array.Empty<DateTime>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1107,7 +1023,7 @@ internal sealed class ArrayDateTimeSerializer<TResolver> : Serializer<TResolver,
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<DateTime>();
+            return [];
 
         var value = new DateTime[length];
 
@@ -1123,7 +1039,7 @@ internal sealed class ArrayDateTimeSerializer<TResolver> : Serializer<TResolver,
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<DateTime>();
+            return [];
 
         var value = new DateTime[length];
 
@@ -1193,7 +1109,7 @@ internal sealed class ArrayDateTimeOffsetSerializer<TResolver> : Serializer<TRes
             return value;
         }
 
-        return length == 0 ? Array.Empty<DateTimeOffset>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1211,7 +1127,7 @@ internal sealed class ArrayDateTimeOffsetSerializer<TResolver> : Serializer<TRes
             return value;
         }
 
-        return length == 0 ? Array.Empty<DateTimeOffset>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1220,7 +1136,7 @@ internal sealed class ArrayDateTimeOffsetSerializer<TResolver> : Serializer<TRes
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<DateTimeOffset>();
+            return [];
 
         var value = new DateTimeOffset[length];
 
@@ -1236,7 +1152,7 @@ internal sealed class ArrayDateTimeOffsetSerializer<TResolver> : Serializer<TRes
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<DateTimeOffset>();
+            return [];
 
         var value = new DateTimeOffset[length];
 
@@ -1281,34 +1197,28 @@ internal sealed class ArrayTimeSpanSerializer<TResolver> : Serializer<TResolver,
     public override sealed TimeSpan[] Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadTimeSpanArray(length)
-            : (length == 0 ? Array.Empty<TimeSpan>() : null);
+        return length > 0 ? reader.ReadTimeSpanArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed TimeSpan[] DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadTimeSpanArray(length)
-            : (length == 0 ? Array.Empty<TimeSpan>() : null);
+        return length > 0 ? reader.ReadTimeSpanArray(length) : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed TimeSpan[] DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadTimeSpanArray(length) : Array.Empty<TimeSpan>();
+        return length > 0 ? reader.ReadTimeSpanArray(length) : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed TimeSpan[] DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadTimeSpanArray(length) : Array.Empty<TimeSpan>();
+        return length > 0 ? reader.ReadTimeSpanArray(length) : [];
     }
 
 }

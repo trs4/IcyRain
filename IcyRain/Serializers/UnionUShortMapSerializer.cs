@@ -47,18 +47,14 @@ public abstract class UnionUShortMapSerializer<T> : Serializer<UnionResolver, T>
     public override sealed void Serialize(ref Writer writer, T value)
     {
         if (value is null)
-        {
             writer.WriteUShort(0); // Empty object
-        }
         else if (_map.TryGetValue(value.GetType(), out var data))
         {
             writer.WriteUShort(data.Index);
             data.SerializeSpot(ref writer, value);
         }
         else
-        {
             throw new InvalidOperationException("Unknown type: " + value.GetType().FullName);
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, T value)
@@ -69,9 +65,7 @@ public abstract class UnionUShortMapSerializer<T> : Serializer<UnionResolver, T>
             data.SerializeSpot(ref writer, value);
         }
         else
-        {
             throw new InvalidOperationException("Unknown type: " + value.GetType().FullName);
-        }
     }
 
     public override sealed T Deserialize(ref Reader reader)

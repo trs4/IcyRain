@@ -17,7 +17,7 @@ internal unsafe partial class LL
     public static LZ4_streamHC_t* LZ4_initStreamHC(void* buffer, int size)
     {
         LZ4_streamHC_t* LZ4_streamHCPtr = (LZ4_streamHC_t*)buffer;
-        if (buffer == null) return null;
+        if (buffer is null) return null;
         if (size < sizeof(LZ4_streamHC_t)) return null;
 
         LZ4_streamHCPtr->end = (byte*)-1;
@@ -130,7 +130,7 @@ internal unsafe partial class LL
     {
         LZ4_streamHC_t* ctxPtr = LZ4_streamHCPtr;
 #if DEBUG
-        Assert(LZ4_streamHCPtr != null);
+        Assert(LZ4_streamHCPtr is not null);
 #endif
 
         if (dictSize > 64 * KB)

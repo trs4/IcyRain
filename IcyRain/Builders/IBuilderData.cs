@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using IcyRain.Serializers;
@@ -9,7 +10,7 @@ internal interface IBuilderData
 {
     Type Type { get; }
 
-    PropertyInfo[] Properties { get; }
+    List<PropertyInfo> Properties { get; }
 
     Type SerializerType { get; }
 

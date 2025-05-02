@@ -13,9 +13,9 @@ internal static class Naming
     public const string TypeField = "_s_Type";
     public const string Value = "value";
 
-    public static readonly string[] Serialize = new[] { "writer", "value" };
-    public static readonly ParameterAttributes[] SerializeParams = new[] { ParameterAttributes.None, ParameterAttributes.In };
-    public static readonly string[] Deserialize = new[] { "reader" };
+    public static readonly string[] Serialize = ["writer", "value"];
+    public static readonly ParameterAttributes[] SerializeParams = [ParameterAttributes.None, ParameterAttributes.In];
+    public static readonly string[] Deserialize = ["reader"];
 
     public static string GetName(Type type, bool isUnion = false, bool forSerializer = false)
     {
@@ -58,7 +58,11 @@ internal static class Naming
             else
                 builder.Append(type.Namespace.Replace(".", "_")).Append('_');
 
+#if NETFRAMEWORK
             builder.Append(type.Name.Substring(0, index)).Append("$G").Append(argumentTypes.Length);
+#else
+            builder.Append(type.Name.AsSpan(0, index)).Append("$G").Append(argumentTypes.Length);
+#endif
 
             foreach (var argumentType in argumentTypes)
             {

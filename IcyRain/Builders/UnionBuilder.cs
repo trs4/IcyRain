@@ -61,7 +61,7 @@ internal static class UnionBuilder
         // int GetCapacity(T value)
         {
             var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.GetCapacity), Flags.PublicOverrideMethod,
-                Types.Int, new[] { type })
+                Types.Int, [type])
                 .WithName(Naming.Value).WithAggressiveInlining();
 
             var il = method.GetILGenerator();
@@ -120,7 +120,7 @@ internal static class UnionBuilder
         // void SerializeSpot(ref Writer writer, T value)
         {
             var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.SerializeSpot), Flags.PublicOverrideMethod,
-                null, new[] { Types.WriterRef, type })
+                null, [Types.WriterRef, type])
                 .WithNames(Naming.Serialize);
 
             var il = method.GetILGenerator();
@@ -177,7 +177,7 @@ internal static class UnionBuilder
         // void Serialize(ref Writer writer, T value)
         {
             var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Serialize), Flags.PublicOverrideMethod,
-                null, new[] { Types.WriterRef, type })
+                null, [Types.WriterRef, type])
                 .WithNames(Naming.Serialize);
 
             var il = method.GetILGenerator();

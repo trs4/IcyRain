@@ -16,7 +16,7 @@ internal sealed class ContractData
 
         HasContract = attributes.OfType<DataContractAttribute>().Any();
         HasCollectionContract = attributes.OfType<CollectionDataContractAttribute>().Any();
-        KnownTypes = attributes.OfType<KnownTypeAttribute>().ToArray();
+        KnownTypes = [.. attributes.OfType<KnownTypeAttribute>()];
     }
 
 }

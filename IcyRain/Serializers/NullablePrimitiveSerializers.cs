@@ -23,9 +23,7 @@ internal sealed class NullableBoolSerializer<TResolver> : Serializer<TResolver, 
             writer.WriteBool(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, bool? value)
@@ -68,9 +66,7 @@ internal sealed class NullableCharSerializer<TResolver> : Serializer<TResolver, 
             writer.WriteChar(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, char? value)
@@ -113,9 +109,7 @@ internal sealed class NullableSByteSerializer<TResolver> : Serializer<TResolver,
             writer.WriteSByte(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, sbyte? value)
@@ -158,9 +152,7 @@ internal sealed class NullableByteSerializer<TResolver> : Serializer<TResolver, 
             writer.WriteByte(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, byte? value)
@@ -203,9 +195,7 @@ internal sealed class NullableShortSerializer<TResolver> : Serializer<TResolver,
             writer.WriteShort(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, short? value)
@@ -248,9 +238,7 @@ internal sealed class NullableUShortSerializer<TResolver> : Serializer<TResolver
             writer.WriteUShort(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, ushort? value)
@@ -293,9 +281,7 @@ internal sealed class NullableIntSerializer<TResolver> : Serializer<TResolver, i
             writer.WriteInt(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, int? value)
@@ -338,9 +324,7 @@ internal sealed class NullableUIntSerializer<TResolver> : Serializer<TResolver, 
             writer.WriteUInt(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, uint? value)
@@ -383,9 +367,7 @@ internal sealed class NullableLongSerializer<TResolver> : Serializer<TResolver, 
             writer.WriteLong(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, long? value)
@@ -428,9 +410,7 @@ internal sealed class NullableULongSerializer<TResolver> : Serializer<TResolver,
             writer.WriteULong(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, ulong? value)
@@ -473,9 +453,7 @@ internal sealed class NullableFloatSerializer<TResolver> : Serializer<TResolver,
             writer.WriteFloat(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, float? value)
@@ -518,9 +496,7 @@ internal sealed class NullableDoubleSerializer<TResolver> : Serializer<TResolver
             writer.WriteDouble(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, double? value)
@@ -563,9 +539,7 @@ internal sealed class NullableDecimalSerializer<TResolver> : Serializer<TResolve
             writer.WriteDecimal(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, decimal? value)
@@ -608,9 +582,7 @@ internal sealed class NullableGuidSerializer<TResolver> : Serializer<TResolver, 
             writer.WriteGuid(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, Guid? value)
@@ -653,9 +625,7 @@ internal sealed class NullableDateTimeSerializer<TResolver> : Serializer<TResolv
             writer.WriteDateTime(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, DateTime? value)
@@ -699,9 +669,7 @@ internal sealed class NullableDateTimeOffsetSerializer<TResolver> : Serializer<T
             writer.WriteShort((short)value.Value.Offset.TotalMinutes);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, DateTimeOffset? value)
@@ -744,9 +712,7 @@ internal sealed class NullableTimeSpanSerializer<TResolver> : Serializer<TResolv
             writer.WriteTimeSpan(value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, TimeSpan? value)
@@ -789,9 +755,7 @@ internal sealed class NullableIntPtrSerializer<TResolver> : Serializer<TResolver
             writer.WriteLong(value.Value.ToInt64());
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, IntPtr? value)
@@ -836,9 +800,7 @@ internal sealed class NullableUIntPtrSerializer<TResolver> : Serializer<TResolve
             writer.WriteULong(value.Value.ToUInt64());
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, UIntPtr? value)

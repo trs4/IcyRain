@@ -35,9 +35,7 @@ internal sealed class NullableSerializer<TResolver, T> : Serializer<TResolver, T
             _serializer.Serialize(ref writer, value.Value);
         }
         else
-        {
             writer.WriteBoolFalse();
-        }
     }
 
     public override sealed void SerializeSpot(ref Writer writer, T? value)

@@ -39,10 +39,8 @@ internal static class ResolverHelper
                         t = t.GetGenericArgumentValueType();
                         return t is not null && IsUnion(t);
                     }
-                    else
-                    {
-                        return false;
-                    }
+
+                    return false;
                 }
                 else if (t.IsClass && t.BaseType.IsSystemType())
                     return IsUnion(t.BaseType.GetGenericArgumentValueType() ?? t);
@@ -62,7 +60,7 @@ internal static class ResolverHelper
         else if (type.IsSystemType())
             return false;
 
-        return IsUnion(type, type, new HashSet<Type>());
+        return IsUnion(type, type, []);
     }
 
     private static bool IsUnion(Type resolverType, Type type, HashSet<Type> checkedTypes)
@@ -99,9 +97,7 @@ internal static class ResolverHelper
             while (true)
             {
                 if (t.IsArray)
-                {
                     t = t.GetElementType();
-                }
                 else if (t.IsSystemType())
                 {
                     if (t.IsGenericType)
@@ -113,22 +109,18 @@ internal static class ResolverHelper
                 {
                     var baseElementType = t.BaseType.GetGenericArgumentValueType();
 
-                    if (baseElementType != null && baseElementType != Types.Object)
+                    if (baseElementType is not null && baseElementType != Types.Object)
                         t = baseElementType;
 
                     break;
                 }
                 else if (t.IsGenericType)
-                {
                     t = t.GetGenericArguments()[0];
-                }
                 else
-                {
                     break;
-                }
             }
 
-            if (t != null && !t.IsSystemType())
+            if (t is not null && !t.IsSystemType())
                 propertyTypes.Add(t);
         }
 

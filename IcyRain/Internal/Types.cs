@@ -6,9 +6,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using IcyRain.Resolvers;
 using IcyRain.Serializers;
+#if NETFRAMEWORK
+using System.Runtime.Serialization;
+#endif
 
 namespace IcyRain.Internal;
 
@@ -75,7 +77,7 @@ internal static class Types
     public static readonly Type WriterRef = Writer.MakeByRefType();
     public static readonly Type Reader = typeof(Reader);
     public static readonly Type ReaderRef = Reader.MakeByRefType();
-    public static readonly Type[] Deserialize = new[] { ReaderRef };
+    public static readonly Type[] Deserialize = [ReaderRef];
 
     public static readonly Type Resolver = typeof(Resolver);
     public static readonly Type UnionResolver = typeof(UnionResolver);
@@ -123,10 +125,10 @@ internal static class Types
         = typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle));
 
     public static readonly MethodInfo GetUninitializedObjectMethod
-#if NET8_0_OR_GREATER
-        = typeof(RuntimeHelpers).GetMethod(nameof(RuntimeHelpers.GetUninitializedObject));
-#else
+#if NETFRAMEWORK
         = typeof(FormatterServices).GetMethod(nameof(FormatterServices.GetUninitializedObject));
+#else
+        = typeof(RuntimeHelpers).GetMethod(nameof(RuntimeHelpers.GetUninitializedObject));
 #endif
 
     public static readonly FieldInfo DecimalZeroField

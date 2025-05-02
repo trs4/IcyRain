@@ -31,7 +31,7 @@ public ref struct Writer
     }
 #pragma warning restore CA1801 // Review unused parameters
 
-    internal int Size
+    internal readonly int Size
     {
         [MethodImpl(Flags.HotPath)]
         get => _offset;

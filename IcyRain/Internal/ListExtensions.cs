@@ -35,11 +35,7 @@ internal static class ListExtensions
     [MethodImpl(Flags.HotPath)]
     public static bool TryGetArray<T>(this IEnumerable<T> enumerable, out T[] array)
     {
-        array = enumerable as T[];
-
-        if (array is null)
-            array = (enumerable as List<T>)?.GetArray();
-
+        array = enumerable as T[] ?? (enumerable as List<T>)?.GetArray();
         return array is not null;
     }
 
@@ -79,7 +75,7 @@ internal static class ListExtensions
     [MethodImpl(Flags.HotPath)]
     public static List<T> CreateList<T>(this T[] array)
 #if NETFRAMEWORK
-        => new List<T>(array);
+        => [.. array];
 #else
     {
         var list = new List<T>();

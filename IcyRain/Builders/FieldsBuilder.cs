@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using IcyRain.Internal;
@@ -9,11 +10,11 @@ namespace IcyRain.Builders;
 
 internal static class FieldsBuilder
 {
-    public static FieldData[] Build(TypeBuilder builder, PropertyInfo[] properties)
+    public static FieldData[] Build(TypeBuilder builder, List<PropertyInfo> properties)
     {
-        var fields = new FieldData[properties.Length];
+        var fields = new FieldData[properties.Count];
 
-        for (int i = 0; i < properties.Length; i++)
+        for (int i = 0; i < properties.Count; i++)
         {
             var property = properties[i];
             var propertyType = property.PropertyType;

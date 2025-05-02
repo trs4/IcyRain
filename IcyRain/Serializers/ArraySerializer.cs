@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
 
@@ -73,7 +72,7 @@ internal sealed class ArraySerializer<TResolver, T> : Serializer<TResolver, T[]>
             return value;
         }
 
-        return length == 0 ? Array.Empty<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed T[] DeserializeInUTC(ref Reader reader)
@@ -90,7 +89,7 @@ internal sealed class ArraySerializer<TResolver, T> : Serializer<TResolver, T[]>
             return value;
         }
 
-        return length == 0 ? Array.Empty<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed T[] DeserializeSpot(ref Reader reader)
@@ -98,7 +97,7 @@ internal sealed class ArraySerializer<TResolver, T> : Serializer<TResolver, T[]>
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<T>();
+            return [];
 
         var value = new T[length];
 
@@ -113,7 +112,7 @@ internal sealed class ArraySerializer<TResolver, T> : Serializer<TResolver, T[]>
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<T>();
+            return [];
 
         var value = new T[length];
 

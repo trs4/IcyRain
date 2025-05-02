@@ -39,34 +39,28 @@ internal sealed class ListBoolSerializer<TResolver> : Serializer<TResolver, List
     public override sealed List<bool> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadBoolArray(length).CreateList()
-            : (length == 0 ? new List<bool>() : null);
+        return length > 0 ? reader.ReadBoolArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<bool> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadBoolArray(length).CreateList()
-            : (length == 0 ? new List<bool>() : null);
+        return length > 0 ? reader.ReadBoolArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<bool> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadBoolArray(length).CreateList() : new List<bool>();
+        return length > 0 ? reader.ReadBoolArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<bool> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadBoolArray(length).CreateList() : new List<bool>();
+        return length > 0 ? reader.ReadBoolArray(length).CreateList() : [];
     }
 
 }
@@ -104,34 +98,28 @@ internal sealed class ListCharSerializer<TResolver> : Serializer<TResolver, List
     public override sealed List<char> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadCharArray(length).CreateList()
-            : (length == 0 ? new List<char>() : null);
+        return length > 0 ? reader.ReadCharArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<char> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadCharArray(length).CreateList()
-            : (length == 0 ? new List<char>() : null);
+        return length > 0 ? reader.ReadCharArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<char> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadCharArray(length).CreateList() : new List<char>();
+        return length > 0 ? reader.ReadCharArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<char> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadCharArray(length).CreateList() : new List<char>();
+        return length > 0 ? reader.ReadCharArray(length).CreateList() : [];
     }
 
 }
@@ -169,34 +157,28 @@ internal sealed class ListSByteSerializer<TResolver> : Serializer<TResolver, Lis
     public override sealed List<sbyte> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadSByteArray(length).CreateList()
-            : (length == 0 ? new List<sbyte>() : null);
+        return length > 0 ? reader.ReadSByteArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<sbyte> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadSByteArray(length).CreateList()
-            : (length == 0 ? new List<sbyte>() : null);
+        return length > 0 ? reader.ReadSByteArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<sbyte> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadSByteArray(length).CreateList() : new List<sbyte>();
+        return length > 0 ? reader.ReadSByteArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<sbyte> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadSByteArray(length).CreateList() : new List<sbyte>();
+        return length > 0 ? reader.ReadSByteArray(length).CreateList() : [];
     }
 
 }
@@ -234,34 +216,28 @@ internal sealed class ListByteSerializer<TResolver> : Serializer<TResolver, List
     public override sealed List<byte> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadByteArray(length).CreateList()
-            : (length == 0 ? new List<byte>() : null);
+        return length > 0 ? reader.ReadByteArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<byte> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadByteArray(length).CreateList()
-            : (length == 0 ? new List<byte>() : null);
+        return length > 0 ? reader.ReadByteArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<byte> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadByteArray(length).CreateList() : new List<byte>();
+        return length > 0 ? reader.ReadByteArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<byte> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadByteArray(length).CreateList() : new List<byte>();
+        return length > 0 ? reader.ReadByteArray(length).CreateList() : [];
     }
 
 }
@@ -299,34 +275,28 @@ internal sealed class ListShortSerializer<TResolver> : Serializer<TResolver, Lis
     public override sealed List<short> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadShortArray(length).CreateList()
-            : (length == 0 ? new List<short>() : null);
+        return length > 0 ? reader.ReadShortArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<short> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadShortArray(length).CreateList()
-            : (length == 0 ? new List<short>() : null);
+        return length > 0 ? reader.ReadShortArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<short> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadShortArray(length).CreateList() : new List<short>();
+        return length > 0 ? reader.ReadShortArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<short> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadShortArray(length).CreateList() : new List<short>();
+        return length > 0 ? reader.ReadShortArray(length).CreateList() : [];
     }
 
 }
@@ -364,34 +334,28 @@ internal sealed class ListUShortSerializer<TResolver> : Serializer<TResolver, Li
     public override sealed List<ushort> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUShortArray(length).CreateList()
-            : (length == 0 ? new List<ushort>() : null);
+        return length > 0 ? reader.ReadUShortArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<ushort> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUShortArray(length).CreateList()
-            : (length == 0 ? new List<ushort>() : null);
+        return length > 0 ? reader.ReadUShortArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<ushort> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUShortArray(length).CreateList() : new List<ushort>();
+        return length > 0 ? reader.ReadUShortArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<ushort> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUShortArray(length).CreateList() : new List<ushort>();
+        return length > 0 ? reader.ReadUShortArray(length).CreateList() : [];
     }
 
 }
@@ -429,34 +393,28 @@ internal sealed class ListIntSerializer<TResolver> : Serializer<TResolver, List<
     public override sealed List<int> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadIntArray(length).CreateList()
-            : (length == 0 ? new List<int>() : null);
+        return length > 0 ? reader.ReadIntArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<int> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadIntArray(length).CreateList()
-            : (length == 0 ? new List<int>() : null);
+        return length > 0 ? reader.ReadIntArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<int> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadIntArray(length).CreateList() : new List<int>();
+        return length > 0 ? reader.ReadIntArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<int> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadIntArray(length).CreateList() : new List<int>();
+        return length > 0 ? reader.ReadIntArray(length).CreateList() : [];
     }
 
 }
@@ -494,34 +452,28 @@ internal sealed class ListUIntSerializer<TResolver> : Serializer<TResolver, List
     public override sealed List<uint> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUIntArray(length).CreateList()
-            : (length == 0 ? new List<uint>() : null);
+        return length > 0 ? reader.ReadUIntArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<uint> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadUIntArray(length).CreateList()
-            : (length == 0 ? new List<uint>() : null);
+        return length > 0 ? reader.ReadUIntArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<uint> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUIntArray(length).CreateList() : new List<uint>();
+        return length > 0 ? reader.ReadUIntArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<uint> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadUIntArray(length).CreateList() : new List<uint>();
+        return length > 0 ? reader.ReadUIntArray(length).CreateList() : [];
     }
 
 }
@@ -559,34 +511,28 @@ internal sealed class ListLongSerializer<TResolver> : Serializer<TResolver, List
     public override sealed List<long> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadLongArray(length).CreateList()
-            : (length == 0 ? new List<long>() : null);
+        return length > 0 ? reader.ReadLongArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<long> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadLongArray(length).CreateList()
-            : (length == 0 ? new List<long>() : null);
+        return length > 0 ? reader.ReadLongArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<long> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadLongArray(length).CreateList() : new List<long>();
+        return length > 0 ? reader.ReadLongArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<long> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadLongArray(length).CreateList() : new List<long>();
+        return length > 0 ? reader.ReadLongArray(length).CreateList() : [];
     }
 
 }
@@ -624,34 +570,28 @@ internal sealed class ListULongSerializer<TResolver> : Serializer<TResolver, Lis
     public override sealed List<ulong> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadULongArray(length).CreateList()
-            : (length == 0 ? new List<ulong>() : null);
+        return length > 0 ? reader.ReadULongArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<ulong> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadULongArray(length).CreateList()
-            : (length == 0 ? new List<ulong>() : null);
+        return length > 0 ? reader.ReadULongArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<ulong> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadULongArray(length).CreateList() : new List<ulong>();
+        return length > 0 ? reader.ReadULongArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<ulong> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadULongArray(length).CreateList() : new List<ulong>();
+        return length > 0 ? reader.ReadULongArray(length).CreateList() : [];
     }
 
 }
@@ -689,34 +629,28 @@ internal sealed class ListFloatSerializer<TResolver> : Serializer<TResolver, Lis
     public override sealed List<float> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadFloatArray(length).CreateList()
-            : (length == 0 ? new List<float>() : null);
+        return length > 0 ? reader.ReadFloatArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<float> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadFloatArray(length).CreateList()
-            : (length == 0 ? new List<float>() : null);
+        return length > 0 ? reader.ReadFloatArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<float> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadFloatArray(length).CreateList() : new List<float>();
+        return length > 0 ? reader.ReadFloatArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<float> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadFloatArray(length).CreateList() : new List<float>();
+        return length > 0 ? reader.ReadFloatArray(length).CreateList() : [];
     }
 
 }
@@ -754,34 +688,28 @@ internal sealed class ListDoubleSerializer<TResolver> : Serializer<TResolver, Li
     public override sealed List<double> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDoubleArray(length).CreateList()
-            : (length == 0 ? new List<double>() : null);
+        return length > 0 ? reader.ReadDoubleArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<double> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDoubleArray(length).CreateList()
-            : (length == 0 ? new List<double>() : null);
+        return length > 0 ? reader.ReadDoubleArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<double> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDoubleArray(length).CreateList() : new List<double>();
+        return length > 0 ? reader.ReadDoubleArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<double> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDoubleArray(length).CreateList() : new List<double>();
+        return length > 0 ? reader.ReadDoubleArray(length).CreateList() : [];
     }
 
 }
@@ -819,34 +747,28 @@ internal sealed class ListDecimalSerializer<TResolver> : Serializer<TResolver, L
     public override sealed List<decimal> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDecimalArray(length).CreateList()
-            : (length == 0 ? new List<decimal>() : null);
+        return length > 0 ? reader.ReadDecimalArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<decimal> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadDecimalArray(length).CreateList()
-            : (length == 0 ? new List<decimal>() : null);
+        return length > 0 ? reader.ReadDecimalArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<decimal> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDecimalArray(length).CreateList() : new List<decimal>();
+        return length > 0 ? reader.ReadDecimalArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<decimal> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadDecimalArray(length).CreateList() : new List<decimal>();
+        return length > 0 ? reader.ReadDecimalArray(length).CreateList() : [];
     }
 
 }
@@ -913,7 +835,7 @@ internal sealed class ListStringSerializer<TResolver> : Serializer<TResolver, Li
             return value.CreateList();
         }
 
-        return length == 0 ? new List<string>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -931,7 +853,7 @@ internal sealed class ListStringSerializer<TResolver> : Serializer<TResolver, Li
             return value.CreateList();
         }
 
-        return length == 0 ? new List<string>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -940,7 +862,7 @@ internal sealed class ListStringSerializer<TResolver> : Serializer<TResolver, Li
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<string>();
+            return [];
 
         var value = new string[length];
 
@@ -956,7 +878,7 @@ internal sealed class ListStringSerializer<TResolver> : Serializer<TResolver, Li
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<string>();
+            return [];
 
         var value = new string[length];
 
@@ -1001,34 +923,28 @@ internal sealed class ListGuidSerializer<TResolver> : Serializer<TResolver, List
     public override sealed List<Guid> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadGuidArray(length).CreateList()
-            : (length == 0 ? new List<Guid>() : null);
+        return length > 0 ? reader.ReadGuidArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<Guid> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadGuidArray(length).CreateList()
-            : (length == 0 ? new List<Guid>() : null);
+        return length > 0 ? reader.ReadGuidArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<Guid> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadGuidArray(length).CreateList() : new List<Guid>();
+        return length > 0 ? reader.ReadGuidArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<Guid> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadGuidArray(length).CreateList() : new List<Guid>();
+        return length > 0 ? reader.ReadGuidArray(length).CreateList() : [];
     }
 
 }
@@ -1083,7 +999,7 @@ internal sealed class ListDateTimeSerializer<TResolver> : Serializer<TResolver, 
             return value.CreateList();
         }
 
-        return length == 0 ? new List<DateTime>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1101,7 +1017,7 @@ internal sealed class ListDateTimeSerializer<TResolver> : Serializer<TResolver, 
             return value.CreateList();
         }
 
-        return length == 0 ? new List<DateTime>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1110,7 +1026,7 @@ internal sealed class ListDateTimeSerializer<TResolver> : Serializer<TResolver, 
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<DateTime>();
+            return [];
 
         var value = new DateTime[length];
 
@@ -1126,7 +1042,7 @@ internal sealed class ListDateTimeSerializer<TResolver> : Serializer<TResolver, 
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<DateTime>();
+            return [];
 
         var value = new DateTime[length];
 
@@ -1196,7 +1112,7 @@ internal sealed class ListDateTimeOffsetSerializer<TResolver> : Serializer<TReso
             return value.CreateList();
         }
 
-        return length == 0 ? new List<DateTimeOffset>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1214,7 +1130,7 @@ internal sealed class ListDateTimeOffsetSerializer<TResolver> : Serializer<TReso
             return value.CreateList();
         }
 
-        return length == 0 ? new List<DateTimeOffset>() : null;
+        return length == 0 ? [] : null;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -1223,7 +1139,7 @@ internal sealed class ListDateTimeOffsetSerializer<TResolver> : Serializer<TReso
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<DateTimeOffset>();
+            return [];
 
         var value = new DateTimeOffset[length];
 
@@ -1239,7 +1155,7 @@ internal sealed class ListDateTimeOffsetSerializer<TResolver> : Serializer<TReso
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<DateTimeOffset>();
+            return [];
 
         var value = new DateTimeOffset[length];
 
@@ -1284,34 +1200,28 @@ internal sealed class ListTimeSpanSerializer<TResolver> : Serializer<TResolver, 
     public override sealed List<TimeSpan> Deserialize(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadTimeSpanArray(length).CreateList()
-            : (length == 0 ? new List<TimeSpan>() : null);
+        return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<TimeSpan> DeserializeInUTC(ref Reader reader)
     {
         int length = reader.ReadInt();
-
-        return length > 0
-            ? reader.ReadTimeSpanArray(length).CreateList()
-            : (length == 0 ? new List<TimeSpan>() : null);
+        return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : (length == 0 ? [] : null);
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<TimeSpan> DeserializeSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : new List<TimeSpan>();
+        return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : [];
     }
 
     [MethodImpl(Flags.HotPath)]
     public override sealed List<TimeSpan> DeserializeInUTCSpot(ref Reader reader)
     {
         int length = reader.ReadInt();
-        return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : new List<TimeSpan>();
+        return length > 0 ? reader.ReadTimeSpanArray(length).CreateList() : [];
     }
 
 }

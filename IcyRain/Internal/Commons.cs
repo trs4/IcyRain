@@ -39,7 +39,7 @@ internal static class Commons
     #region Inherit
 
     public static bool IsInherit(this Type type, Type baseType)
-        => type != null && (type == baseType || type.IsSubclassOf(baseType));
+        => type is not null && (type == baseType || type.IsSubclassOf(baseType));
 
     public static bool IsInherit<T>(this Type type)
         => type.IsInherit(typeof(T));
@@ -57,9 +57,7 @@ internal static class Commons
                 return genericTypes.Length == 1 && type.GetInterfaces().Contains(Types.IEnumerable) ? genericTypes[0] : null;
             }
             else if (type.IsArray)
-            {
                 return type.GetElementType();
-            }
 
             type = type.BaseType;
         }
@@ -90,17 +88,15 @@ internal static class Commons
                         enumerableType = interfaceType;
                 }
 
-                if (dictionaryType != null)
+                if (dictionaryType is not null)
                     return dictionaryType.GetGenericArguments()[1];
-                else if (enumerableType != null)
+                else if (enumerableType is not null)
                     return enumerableType.GetGenericArguments()[0];
                 else
                     return null;
             }
             else if (type.IsArray)
-            {
                 return type.GetElementType();
-            }
 
             type = type.BaseType;
         }
@@ -127,9 +123,7 @@ internal static class Commons
                 }
             }
             else if (type.IsArray)
-            {
-                return new[] { type.GetElementType() };
-            }
+                return [type.GetElementType()];
 
             type = type.BaseType;
         }
@@ -164,7 +158,7 @@ internal static class Commons
     }
 
     public static bool HasKnownTypes(this Type type)
-        => _knownTypes.GetOrAdd(type, GetKnownTypesCore).Types != null;
+        => _knownTypes.GetOrAdd(type, GetKnownTypesCore).Types is not null;
 
     private static (Type[] Types, Type BaseType) GetKnownTypesCore(Type type)
     {
@@ -178,14 +172,11 @@ internal static class Commons
         {
             foreach (var knownTypeAttribute in baseType.GetKnownTypeAttributes())
             {
-                if (subTypes is null)
-                    subTypes = new HashSet<Type>();
+                subTypes ??= [];
 
-                if (knownTypeAttribute.Type != null)
-                {
+                if (knownTypeAttribute.Type is not null)
                     subTypes.Add(knownTypeAttribute.Type);
-                }
-                else if (knownTypeAttribute.MethodName != null)
+                else if (knownTypeAttribute.MethodName is not null)
                 {
                     var methodTypes = baseType.GetMethod(knownTypeAttribute.MethodName, Flags.StaticPublicBindingFlags)
                         ?.Invoke(null, null) as IEnumerable<Type>
@@ -213,7 +204,7 @@ internal static class Commons
                 subTypes.Remove(subType);
         }
 
-        var types = subTypes.Count == 0 ? null : subTypes.OrderByDescending(t => GetDepth(t)).ThenBy(t => t.Name).ToArray();
+        var types = subTypes.Count == 0 ? null : subTypes.OrderByDescending(GetDepth).ThenBy(t => t.Name).ToArray();
         return (types, baseType);
     }
 
@@ -221,7 +212,7 @@ internal static class Commons
     {
         int count = 0;
 
-        while (type != null)
+        while (type is not null)
         {
             count++;
             type = type.BaseType;

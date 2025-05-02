@@ -120,7 +120,7 @@ internal static class Builder<TResolver>
                 baseType = baseType.BaseType;
 
             if (!baseType.HasKnownTypes())
-                knownTypes = Array.Empty<Type>();
+                knownTypes = [];
         }
 
         if (knownTypes is null)
@@ -149,7 +149,7 @@ internal static class Builder<TResolver>
 
     #region Maps
 
-    private static readonly Dictionary<Type, Func<object>> _primitiveMap = new Dictionary<Type, Func<object>>
+    private static readonly Dictionary<Type, Func<object>> _primitiveMap = new()
     {
         // Simple
         { typeof(bool), () => new BoolSerializer<TResolver>() },
@@ -244,7 +244,7 @@ internal static class Builder<TResolver>
         { typeof(List<TimeSpan>), () => new ListTimeSpanSerializer<TResolver>() },
     };
 
-    private static readonly Dictionary<Type, Type> _genericMap = new Dictionary<Type, Type>
+    private static readonly Dictionary<Type, Type> _genericMap = new()
     {
         { Types.Nullable, Types.NullableSerializer },
         { Types.List, Types.ListSerializer },

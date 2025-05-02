@@ -172,7 +172,7 @@ internal sealed class ArrayEnumSerializer<TResolver, T> : Serializer<TResolver, 
             return value;
         }
 
-        return length == 0 ? Array.Empty<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed T[] DeserializeInUTC(ref Reader reader)
@@ -189,7 +189,7 @@ internal sealed class ArrayEnumSerializer<TResolver, T> : Serializer<TResolver, 
             return value;
         }
 
-        return length == 0 ? Array.Empty<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed T[] DeserializeSpot(ref Reader reader)
@@ -197,7 +197,7 @@ internal sealed class ArrayEnumSerializer<TResolver, T> : Serializer<TResolver, 
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<T>();
+            return [];
 
         var value = new T[length];
 
@@ -212,7 +212,7 @@ internal sealed class ArrayEnumSerializer<TResolver, T> : Serializer<TResolver, 
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<T>();
+            return [];
 
         var value = new T[length];
 
@@ -285,7 +285,7 @@ internal sealed class ListEnumSerializer<TResolver, T> : Serializer<TResolver, L
             return value.CreateList();
         }
 
-        return length == 0 ? new List<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed List<T> DeserializeInUTC(ref Reader reader)
@@ -302,7 +302,7 @@ internal sealed class ListEnumSerializer<TResolver, T> : Serializer<TResolver, L
             return value.CreateList();
         }
 
-        return length == 0 ? new List<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed List<T> DeserializeSpot(ref Reader reader)
@@ -310,7 +310,7 @@ internal sealed class ListEnumSerializer<TResolver, T> : Serializer<TResolver, L
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<T>();
+            return [];
 
         var value = new T[length];
 
@@ -325,7 +325,7 @@ internal sealed class ListEnumSerializer<TResolver, T> : Serializer<TResolver, L
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<T>();
+            return [];
 
         var value = new T[length];
 
@@ -617,8 +617,13 @@ internal static class EnumTransformByteToByte<T>
     static EnumTransformByteToByte()
     {
         Func<byte, byte> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, byte>)) as Func<T, byte>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<byte, T>)) as Func<byte, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, byte>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<byte, T>>();
+#endif
     }
 }
 
@@ -632,7 +637,11 @@ internal static class EnumTransformByteToInt<T>
     static EnumTransformByteToInt()
     {
         Func<byte, int> transform = Transform;
+#if NETFRAMEWORK
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<byte, T>)) as Func<byte, T>;
+#else
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<byte, T>>();
+#endif
     }
 }
 
@@ -646,7 +655,11 @@ internal static class EnumTransformByteToUInt<T>
     static EnumTransformByteToUInt()
     {
         Func<byte, uint> transform = Transform;
+#if NETFRAMEWORK
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<byte, T>)) as Func<byte, T>;
+#else
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<byte, T>>();
+#endif
     }
 }
 
@@ -661,8 +674,13 @@ internal static class EnumTransformSByteToSByte<T>
     static EnumTransformSByteToSByte()
     {
         Func<sbyte, sbyte> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, sbyte>)) as Func<T, sbyte>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<sbyte, T>)) as Func<sbyte, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, sbyte>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<sbyte, T>>();
+#endif
     }
 }
 
@@ -676,7 +694,11 @@ internal static class EnumTransformSByteToInt<T>
     static EnumTransformSByteToInt()
     {
         Func<sbyte, int> transform = Transform;
+#if NETFRAMEWORK
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<sbyte, T>)) as Func<sbyte, T>;
+#else
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<sbyte, T>>();
+#endif
     }
 }
 
@@ -690,7 +712,11 @@ internal static class EnumTransformSByteToUInt<T>
     static EnumTransformSByteToUInt()
     {
         Func<sbyte, uint> transform = Transform;
+#if NETFRAMEWORK
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<sbyte, T>)) as Func<sbyte, T>;
+#else
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<sbyte, T>>();
+#endif
     }
 }
 
@@ -705,8 +731,13 @@ internal static class EnumTransformShortToShort<T>
     static EnumTransformShortToShort()
     {
         Func<short, short> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, short>)) as Func<T, short>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<short, T>)) as Func<short, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, short>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<short, T>>();
+#endif
     }
 }
 
@@ -720,7 +751,11 @@ internal static class EnumTransformShortToInt<T>
     static EnumTransformShortToInt()
     {
         Func<short, int> transform = Transform;
+#if NETFRAMEWORK
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<short, T>)) as Func<short, T>;
+#else
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<short, T>>();
+#endif
     }
 }
 
@@ -735,8 +770,13 @@ internal static class EnumTransformUShortToUShort<T>
     static EnumTransformUShortToUShort()
     {
         Func<ushort, ushort> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, ushort>)) as Func<T, ushort>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<ushort, T>)) as Func<ushort, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, ushort>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<ushort, T>>();
+#endif
     }
 }
 
@@ -750,7 +790,11 @@ internal static class EnumTransformUShortToUInt<T>
     static EnumTransformUShortToUInt()
     {
         Func<ushort, uint> transform = Transform;
+#if NETFRAMEWORK
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<ushort, T>)) as Func<ushort, T>;
+#else
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<ushort, T>>();
+#endif
     }
 }
 
@@ -764,7 +808,11 @@ internal static class EnumTransformIntToByte<T>
     static EnumTransformIntToByte()
     {
         Func<int, byte> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, byte>)) as Func<T, byte>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, byte>>();
+#endif
     }
 }
 
@@ -778,7 +826,11 @@ internal static class EnumTransformIntToSByte<T>
     static EnumTransformIntToSByte()
     {
         Func<int, sbyte> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, sbyte>)) as Func<T, sbyte>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, sbyte>>();
+#endif
     }
 }
 
@@ -792,7 +844,11 @@ internal static class EnumTransformIntToShort<T>
     static EnumTransformIntToShort()
     {
         Func<int, short> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, short>)) as Func<T, short>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, short>>();
+#endif
     }
 }
 
@@ -806,7 +862,11 @@ internal static class EnumTransformUIntToByte<T>
     static EnumTransformUIntToByte()
     {
         Func<uint, byte> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, byte>)) as Func<T, byte>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, byte>>();
+#endif
     }
 }
 
@@ -820,7 +880,11 @@ internal static class EnumTransformUIntToSByte<T>
     static EnumTransformUIntToSByte()
     {
         Func<uint, sbyte> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, sbyte>)) as Func<T, sbyte>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, sbyte>>();
+#endif
     }
 }
 
@@ -834,7 +898,11 @@ internal static class EnumTransformUIntToUShort<T>
     static EnumTransformUIntToUShort()
     {
         Func<uint, ushort> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, ushort>)) as Func<T, ushort>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, ushort>>();
+#endif
     }
 }
 
@@ -849,8 +917,13 @@ internal static class EnumTransformIntToInt<T>
     static EnumTransformIntToInt()
     {
         Func<int, int> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, int>)) as Func<T, int>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<int, T>)) as Func<int, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, int>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<int, T>>();
+#endif
     }
 }
 
@@ -865,8 +938,13 @@ internal static class EnumTransformUIntToUInt<T>
     static EnumTransformUIntToUInt()
     {
         Func<uint, uint> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, uint>)) as Func<T, uint>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<uint, T>)) as Func<uint, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, uint>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<uint, T>>();
+#endif
     }
 }
 
@@ -881,8 +959,13 @@ internal static class EnumTransformLongToLong<T>
     static EnumTransformLongToLong()
     {
         Func<long, long> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, long>)) as Func<T, long>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<long, T>)) as Func<long, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, long>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<long, T>>();
+#endif
     }
 }
 
@@ -897,8 +980,13 @@ internal static class EnumTransformULongToULong<T>
     static EnumTransformULongToULong()
     {
         Func<ulong, ulong> transform = Transform;
+#if NETFRAMEWORK
         Serialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<T, ulong>)) as Func<T, ulong>;
         Deserialize = transform.GetMethodInfo().CreateDelegate(typeof(Func<ulong, T>)) as Func<ulong, T>;
+#else
+        Serialize = transform.GetMethodInfo().CreateDelegate<Func<T, ulong>>();
+        Deserialize = transform.GetMethodInfo().CreateDelegate<Func<ulong, T>>();
+#endif
     }
 }
 

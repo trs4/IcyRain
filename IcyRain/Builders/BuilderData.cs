@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -57,7 +58,7 @@ internal sealed class BuilderData<TResolver> : IBuilderData
         };
 
         _serializerTypeInfo = SerializerType.GetTypeInfo();
-        IsBytePropertyIndexes = GetIsBytePropertyIndexes(Properties.Length);
+        IsBytePropertyIndexes = GetIsBytePropertyIndexes(Properties.Count);
         PropertyIndexSize = IsBytePropertyIndexes ? 1 : 2;
         WriteMethod = IsBytePropertyIndexes ? Types.WriteByte : Types.WriteUShort;
         ReadMethod = IsBytePropertyIndexes ? Types.ReadByte : Types.ReadUShort;
@@ -66,7 +67,7 @@ internal sealed class BuilderData<TResolver> : IBuilderData
 
     public Type Type { get; }
 
-    public PropertyInfo[] Properties { get; }
+    public List<PropertyInfo> Properties { get; }
 
     public Type SerializerType { get; }
 

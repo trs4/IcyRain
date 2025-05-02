@@ -20,10 +20,7 @@ public abstract class Serializer<TResolver, T> : ISerializer
 
         try
         {
-            serializer = (Serializer<TResolver, T>)Builder<TResolver>.Get<T>();
-
-            if (serializer is null)
-                serializer = new ErrorSerializer<TResolver, T>();
+            serializer = (Serializer<TResolver, T>)Builder<TResolver>.Get<T>() ?? new ErrorSerializer<TResolver, T>();
         }
         catch (Exception e)
         {

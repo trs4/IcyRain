@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
@@ -99,7 +98,7 @@ internal sealed class IEnumerableSerializer<TResolver, T> : Serializer<TResolver
             return value;
         }
 
-        return length == 0 ? Array.Empty<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed IEnumerable<T> DeserializeInUTC(ref Reader reader)
@@ -116,7 +115,7 @@ internal sealed class IEnumerableSerializer<TResolver, T> : Serializer<TResolver
             return value;
         }
 
-        return length == 0 ? Array.Empty<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed IEnumerable<T> DeserializeSpot(ref Reader reader)
@@ -124,7 +123,7 @@ internal sealed class IEnumerableSerializer<TResolver, T> : Serializer<TResolver
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<T>();
+            return [];
 
         var value = new T[length];
 
@@ -139,7 +138,7 @@ internal sealed class IEnumerableSerializer<TResolver, T> : Serializer<TResolver
         int length = reader.ReadInt();
 
         if (length == 0)
-            return Array.Empty<T>();
+            return [];
 
         var value = new T[length];
 

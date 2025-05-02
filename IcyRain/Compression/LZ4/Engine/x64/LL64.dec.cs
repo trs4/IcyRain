@@ -43,20 +43,20 @@ internal unsafe partial class LL64
         byte* dictStart,
         uint dictSize)
     {
-        if (src == null) { return -1; }
+        if (src is null) { return -1; }
 
         {
-            byte* ip = (byte*)src;
+            byte* ip = src;
             byte* iend = ip + srcSize;
 
-            byte* op = (byte*)dst;
+            byte* op = dst;
             byte* oend = op + outputSize;
             byte* cpy;
 
-            byte* dictEnd = (dictStart == null) ? null : dictStart + dictSize;
+            byte* dictEnd = dictStart is null ? null : dictStart + dictSize;
 
             bool safeDecode = endOnInput;
-            bool checkOffset = ((safeDecode) && (dictSize < (int)(64 * KB)));
+            bool checkOffset = safeDecode && (dictSize < 64 * KB);
 
             /* Set up the "end" pointers for the shortcut. */
             byte* shortiend = iend - (endOnInput ? 14 : 8) /*maxLL*/ - 2 /*offset*/;

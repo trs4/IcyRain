@@ -8,14 +8,10 @@ namespace IcyRain.Internal;
 internal static class BuilderExtensions
 {
     private static readonly CustomAttributeBuilder _aggressiveInliningBuilder
-        = new CustomAttributeBuilder(
-            typeof(MethodImplAttribute).GetConstructor(new[] { typeof(MethodImplOptions) }),
-            new object[] { Flags.HotPath });
+        = new CustomAttributeBuilder(typeof(MethodImplAttribute).GetConstructor([typeof(MethodImplOptions)]), [Flags.HotPath]);
 
     private static readonly CustomAttributeBuilder _isReadOnlyBuilder
-        = new CustomAttributeBuilder(
-            typeof(IsReadOnlyAttribute).GetConstructor(Type.EmptyTypes),
-            Array.Empty<object>());
+        = new CustomAttributeBuilder(typeof(IsReadOnlyAttribute).GetConstructor(Type.EmptyTypes), []);
 
     public static ConstructorBuilder WithName(this ConstructorBuilder constructor, string name)
     {

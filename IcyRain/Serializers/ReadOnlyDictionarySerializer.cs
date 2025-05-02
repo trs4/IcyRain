@@ -43,9 +43,7 @@ internal sealed class ReadOnlyDictionarySerializer<TResolver, TKey, TValue> : Se
         int capacity = 4;
 
         if (_keySize.HasValue)
-        {
             capacity += _keySize.Value * value.Count;
-        }
         else
         {
             foreach (var key in value.Keys)

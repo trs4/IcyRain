@@ -553,7 +553,7 @@ internal unsafe partial class LL32
         LZ4_stream_t state;
         var ctx = LZ4_initStream(&state);
 #if DEBUG
-        Assert(ctx != null);
+        Assert(ctx is not null);
 #endif
 
         if (maxOutputSize >= LZ4_compressBound(inputSize))

@@ -77,7 +77,7 @@ internal sealed class ObjectCollectionSerializer<TResolver, T, TCollection> : Se
 
         var value = _capacityConstructor is null
             ? new TCollection()
-            : (TCollection)_capacityConstructor.Invoke(new object[] { length });
+            : (TCollection)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_serializer.Deserialize(ref reader));
@@ -94,7 +94,7 @@ internal sealed class ObjectCollectionSerializer<TResolver, T, TCollection> : Se
 
         var value = _capacityConstructor is null
             ? new TCollection()
-            : (TCollection)_capacityConstructor.Invoke(new object[] { length });
+            : (TCollection)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_serializer.DeserializeInUTC(ref reader));
@@ -108,7 +108,7 @@ internal sealed class ObjectCollectionSerializer<TResolver, T, TCollection> : Se
 
         var value = _capacityConstructor is null
             ? new TCollection()
-            : (TCollection)_capacityConstructor.Invoke(new object[] { length });
+            : (TCollection)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_serializer.Deserialize(ref reader));
@@ -122,7 +122,7 @@ internal sealed class ObjectCollectionSerializer<TResolver, T, TCollection> : Se
 
         var value = _capacityConstructor is null
             ? new TCollection()
-            : (TCollection)_capacityConstructor.Invoke(new object[] { length });
+            : (TCollection)_capacityConstructor.Invoke([length]);
 
         for (int i = 0; i < length; i++)
             value.Add(_serializer.DeserializeInUTC(ref reader));

@@ -4,8 +4,8 @@ namespace IcyRain.Tests;
 
 public static class Tests<T>
 {
-    public static readonly Func<T, T>[] Functions = new Func<T, T>[]
-    {
+    public static readonly Func<T, T>[] Functions =
+    [
         // Generic
         Serialization.Tests.DeepClone,
         Serialization.Tests.DeepCloneBytes,
@@ -37,6 +37,6 @@ public static class Tests<T>
         Serialization.NonGeneric.Tests.DeepCloneInUTCWithLZ4,
         Serialization.NonGeneric.Tests.DeepCloneBytesInUTCWithLZ4,
         Serialization.NonGeneric.Tests.DeepCloneSegmentInUTCWithLZ4,
-    };
+    ];
 
 }

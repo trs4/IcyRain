@@ -11,7 +11,7 @@ namespace IcyRain.Builders;
 
 internal static class PropertiesFinder
 {
-    public static PropertyInfo[] Get(Type type)
+    public static List<PropertyInfo> Get(Type type)
     {
         var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
         var map = new Dictionary<int, PropertyInfo>(properties.Length);
@@ -22,7 +22,7 @@ internal static class PropertiesFinder
                 map.Add(dataMember.Order, property);
         }
 
-        return map.OrderBy(p => p.Key).Select(p => p.Value).ToArray();
+        return [.. map.OrderBy(p => p.Key).Select(p => p.Value)];
     }
 
     public static void Test(Type type)
@@ -71,11 +71,11 @@ internal static class PropertiesFinder
 
         var baseType = type.BaseType;
 
-        while (baseType != null)
+        while (baseType is not null)
         {
             var baseProperty = baseType.GetProperty(property.Name);
 
-            if (baseProperty != null)
+            if (baseProperty is not null)
             {
                 if (baseProperty.HasAttribute<IgnoreDataMemberAttribute>())
                     return false;

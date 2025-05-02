@@ -26,7 +26,7 @@ internal sealed class ArrayBufferWriter : IBufferWriter<byte>, IDisposable
     public byte[] ToArray()
     {
         if (_buffer is null)
-            return Array.Empty<byte>();
+            return [];
         else if (_buffer.Length == Count)
             return _buffer;
 

@@ -29,11 +29,11 @@ internal sealed class BytesSegmentSwitcher : SegmentSwitcher<byte[]>
 
     [MethodImpl(Flags.HotPath)]
     public sealed override byte[] Deserialize(ArraySegment<byte> segment)
-        => segment.Count == 0 ? Array.Empty<byte>() : (segment.Array.Length == segment.Count ? segment.Array : segment.TransferToArray());
+        => segment.Count == 0 ? [] : (segment.Array.Length == segment.Count ? segment.Array : segment.TransferToArray());
 
     [MethodImpl(Flags.HotPath)]
     public sealed override byte[] DeserializeInUTC(ArraySegment<byte> segment)
-        => segment.Count == 0 ? Array.Empty<byte>() : (segment.Array.Length == segment.Count ? segment.Array : segment.TransferToArray());
+        => segment.Count == 0 ? [] : (segment.Array.Length == segment.Count ? segment.Array : segment.TransferToArray());
 
     [MethodImpl(Flags.HotPath)]
     public sealed override byte[] DeserializeWithLZ4(ArraySegment<byte> segment, out int decodedLength)

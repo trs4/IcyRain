@@ -25,7 +25,7 @@ internal static class BufferExtensions
         long length = value.Length;
 
         if (length == 0)
-            return Array.Empty<byte>();
+            return [];
 
         byte[] result = new byte[length];
 
@@ -63,7 +63,7 @@ internal static class BufferExtensions
         int length = (int)value.Length;
 
         if (length == 0)
-            return Array.Empty<byte>();
+            return [];
 
         byte[] result = Buffers.Rent(length);
 
@@ -102,7 +102,7 @@ internal static class BufferExtensions
         decodedLength = length;
 
         if (length <= 1)
-            return Array.Empty<byte>();
+            return [];
 
         ReadOnlySpan<byte> span;
         int ptrValueOffset;
@@ -279,7 +279,7 @@ internal static class BufferExtensions
         if (decodedLength <= 1)
         {
             decodedLength = 0;
-            return Array.Empty<byte>();
+            return [];
         }
 
         byte[] result;
@@ -305,7 +305,7 @@ internal static class BufferExtensions
         if (decodedLength <= 1)
         {
             decodedLength = 0;
-            return Array.Empty<byte>();
+            return [];
         }
 
         if (value.Array[value.Offset] == 0)

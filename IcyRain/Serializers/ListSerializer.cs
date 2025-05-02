@@ -74,7 +74,7 @@ internal sealed class ListSerializer<TResolver, T> : Serializer<TResolver, List<
             return value.CreateList();
         }
 
-        return length == 0 ? new List<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed List<T> DeserializeInUTC(ref Reader reader)
@@ -91,7 +91,7 @@ internal sealed class ListSerializer<TResolver, T> : Serializer<TResolver, List<
             return value.CreateList();
         }
 
-        return length == 0 ? new List<T>() : null;
+        return length == 0 ? [] : null;
     }
 
     public override sealed List<T> DeserializeSpot(ref Reader reader)
@@ -99,7 +99,7 @@ internal sealed class ListSerializer<TResolver, T> : Serializer<TResolver, List<
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<T>();
+            return [];
 
         var value = new T[length];
 
@@ -114,7 +114,7 @@ internal sealed class ListSerializer<TResolver, T> : Serializer<TResolver, List<
         int length = reader.ReadInt();
 
         if (length == 0)
-            return new List<T>();
+            return [];
 
         var value = new T[length];
 
