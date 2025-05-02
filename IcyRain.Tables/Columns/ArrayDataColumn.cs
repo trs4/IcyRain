@@ -26,7 +26,7 @@ public abstract class ArrayDataColumn<T> : DataColumn<T[]>
         int valuesCount = Values.Count;
 
         if (count == valuesCount)
-            return new(Values);
+            return [.. Values];
 
         var values = new List<T[]>(count);
 
