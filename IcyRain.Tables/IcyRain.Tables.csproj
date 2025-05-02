@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-	<AssemblyName>IcyRain.Tables</AssemblyName>
-	<TargetFrameworks>net472;net6.0;net8.0</TargetFrameworks>
-	<DefineConstants></DefineConstants>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<PropertyGroup>
+		<AssemblyName>IcyRain.Tables</AssemblyName>
+		<TargetFrameworks>net472;net8.0;net9.0</TargetFrameworks>
+		<DefineConstants></DefineConstants>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-	<TieredPGO>true</TieredPGO>
+		<TieredPGO>true</TieredPGO>
 
-	<PackageId>IcyRain.Tables</PackageId>
-	<PackageTags>buffers;binary;serialization</PackageTags>
-	<PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
-  </PropertyGroup>
+		<PackageId>IcyRain.Tables</PackageId>
+		<PackageTags>buffers;binary;serialization</PackageTags>
+		<PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
+	</PropertyGroup>
 </Project>
