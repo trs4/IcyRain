@@ -29,7 +29,7 @@ public abstract class DataColumn<T> : DataColumn
         => Set(row, value, Values, default, IsDefault);
 
     [MethodImpl(Flags.HotPath)]
-    public override object GetObject(in int row) => Get(row);
+    public sealed override object GetObject(in int row) => Get(row);
 
     [MethodImpl(Flags.HotPath)]
     public override void SetObject(in int row, object value)

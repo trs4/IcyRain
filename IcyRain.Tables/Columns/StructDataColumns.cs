@@ -10,9 +10,73 @@ public class BooleanDataColumn : StructDataColumn<bool>
 
     public sealed override DataType Type => DataType.Boolean;
 
+    public sealed override bool GetBool(in int row) => Get(row);
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row);
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => Get(row) ? (sbyte)1 : (sbyte)0;
+
+    public sealed override sbyte? GetNullableSByte(in int row) => Get(row) ? (sbyte)1 : (sbyte)0;
+
+    public sealed override byte GetByte(in int row) => Get(row) ? (byte)1 : (byte)0;
+
+    public sealed override byte? GetNullableByte(in int row) => Get(row) ? (byte)1 : (byte)0;
+
+    public sealed override short GetShort(in int row) => Get(row) ? (short)1 : (short)0;
+
+    public sealed override short? GetNullableShort(in int row) => Get(row) ? (short)1 : (short)0;
+
+    public sealed override ushort GetUShort(in int row) => Get(row) ? (ushort)1 : (ushort)0;
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row) ? (ushort)1 : (ushort)0;
+
     public sealed override int GetInt(in int row) => Get(row) ? 1 : 0;
 
+    public sealed override int? GetNullableInt(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override uint GetUInt(in int row) => Get(row) ? (uint)1 : 0;
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row) ? (uint)1 : 0;
+
+    public sealed override long GetLong(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override long? GetNullableLong(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override ulong GetULong(in int row) => Get(row) ? (ulong)1 : 0;
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row) ? (ulong)1 : 0;
+
+    public sealed override float GetFloat(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override double GetDouble(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override decimal GetDecimal(in int row) => Get(row) ? 1 : 0;
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row) ? 1 : 0;
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -22,9 +86,73 @@ public class NullableBooleanDataColumn : NullableDataColumn<bool>
 
     public sealed override DataType Type => DataType.Boolean;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row);
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => Get(row) == true ? (sbyte)1 : (sbyte)0;
+
+    public sealed override sbyte? GetNullableSByte(in int row) => Get(row) == true ? (sbyte)1 : (sbyte)0;
+
+    public sealed override byte GetByte(in int row) => Get(row) == true ? (byte)1 : (byte)0;
+
+    public sealed override byte? GetNullableByte(in int row) => Get(row) == true ? (byte)1 : (byte)0;
+
+    public sealed override short GetShort(in int row) => Get(row) == true ? (short)1 : (short)0;
+
+    public sealed override short? GetNullableShort(in int row) => Get(row) == true ? (short)1 : (short)0;
+
+    public sealed override ushort GetUShort(in int row) => Get(row) == true ? (ushort)1 : (ushort)0;
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row) == true ? (ushort)1 : (ushort)0;
+
     public sealed override int GetInt(in int row) => Get(row) == true ? 1 : 0;
 
+    public sealed override int? GetNullableInt(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override uint GetUInt(in int row) => Get(row) == true ? (uint)1 : 0;
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row) == true ? (uint)1 : 0;
+
+    public sealed override long GetLong(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override long? GetNullableLong(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override ulong GetULong(in int row) => Get(row) == true ? (ulong)1 : 0;
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row) == true ? (ulong)1 : 0;
+
+    public sealed override float GetFloat(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override double GetDouble(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override decimal GetDecimal(in int row) => Get(row) == true ? 1 : 0;
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row) == true ? 1 : 0;
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -34,9 +162,73 @@ public class CharDataColumn : StructDataColumn<char>
 
     public sealed override DataType Type => DataType.Char;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row);
+
     public sealed override int GetInt(in int row) => Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -46,9 +238,73 @@ public class NullableCharDataColumn : NullableDataColumn<char>
 
     public sealed override DataType Type => DataType.Char;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row);
+
     public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -58,9 +314,73 @@ public class SByteDataColumn : StructDataColumn<sbyte>
 
     public sealed override DataType Type => DataType.SByte;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -70,9 +390,73 @@ public class NullableSByteDataColumn : NullableDataColumn<sbyte>
 
     public sealed override DataType Type => DataType.SByte;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -82,9 +466,73 @@ public class ByteDataColumn : StructDataColumn<byte>
 
     public sealed override DataType Type => DataType.Byte;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => Get(row);
+
+    public sealed override short GetShort(in int row) => Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => Get(row);
+
+    public sealed override ushort GetUShort(in int row) => Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row);
+
     public sealed override int GetInt(in int row) => Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -94,9 +542,73 @@ public class NullableByteDataColumn : NullableDataColumn<byte>
 
     public sealed override DataType Type => DataType.Byte;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => Get(row);
+
+    public sealed override short GetShort(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => Get(row);
+
+    public sealed override ushort GetUShort(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row);
+
     public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -106,9 +618,73 @@ public class Int16DataColumn : StructDataColumn<short>
 
     public sealed override DataType Type => DataType.Int16;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -118,9 +694,73 @@ public class NullableInt16DataColumn : NullableDataColumn<short>
 
     public sealed override DataType Type => DataType.Int16;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -130,9 +770,73 @@ public class UInt16DataColumn : StructDataColumn<ushort>
 
     public sealed override DataType Type => DataType.UInt16;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row);
+
     public sealed override int GetInt(in int row) => Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -142,9 +846,73 @@ public class NullableUInt16DataColumn : NullableDataColumn<ushort>
 
     public sealed override DataType Type => DataType.UInt16;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => Get(row);
+
     public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -154,9 +922,73 @@ public class Int32DataColumn : StructDataColumn<int>
 
     public sealed override DataType Type => DataType.Int32;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -166,9 +998,73 @@ public class NullableInt32DataColumn : NullableDataColumn<int>
 
     public sealed override DataType Type => DataType.Int32;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -178,9 +1074,73 @@ public class UInt32DataColumn : StructDataColumn<uint>
 
     public sealed override DataType Type => DataType.UInt32;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -190,9 +1150,73 @@ public class NullableUInt32DataColumn : NullableDataColumn<uint>
 
     public sealed override DataType Type => DataType.UInt32;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => (int?)Get(row);
+
+    public sealed override uint GetUInt(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -202,9 +1226,73 @@ public class Int64DataColumn : StructDataColumn<long>
 
     public sealed override DataType Type => DataType.Int64;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -214,9 +1302,73 @@ public class NullableInt64DataColumn : NullableDataColumn<long>
 
     public sealed override DataType Type => DataType.Int64;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -226,9 +1378,73 @@ public class UInt64DataColumn : StructDataColumn<ulong>
 
     public sealed override DataType Type => DataType.UInt64;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => (long)Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -238,9 +1454,73 @@ public class NullableUInt64DataColumn : NullableDataColumn<ulong>
 
     public sealed override DataType Type => DataType.UInt64;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => (int?)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => (long?)Get(row);
+
+    public sealed override ulong GetULong(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -250,9 +1530,73 @@ public class SingleDataColumn : StructDataColumn<float>
 
     public sealed override DataType Type => DataType.Single;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => (long)Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => (decimal)Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => (decimal)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -262,9 +1606,73 @@ public class NullableSingleDataColumn : NullableDataColumn<float>
 
     public sealed override DataType Type => DataType.Single;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => (int?)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => (long?)Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => (decimal)Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => (decimal?)Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -274,9 +1682,73 @@ public class DoubleDataColumn : StructDataColumn<double>
 
     public sealed override DataType Type => DataType.Double;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => (long)Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => (float)Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => (float)Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => (decimal)Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => (decimal)Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -286,9 +1758,73 @@ public class NullableDoubleDataColumn : NullableDataColumn<double>
 
     public sealed override DataType Type => DataType.Double;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => (int?)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => (long?)Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => (float)Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => (float?)Get(row);
+
+    public sealed override double GetDouble(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => (decimal)Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => (decimal?)Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -298,9 +1834,73 @@ public class DecimalDataColumn : StructDataColumn<decimal>
 
     public sealed override DataType Type => DataType.Decimal;
 
+    public sealed override bool GetBool(in int row) => Get(row) != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row) != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row);
+
+    public sealed override char? GetNullableChar(in int row) => (char)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row);
+
+    public sealed override byte? GetNullableByte(in int row) => (byte)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row);
+
+    public sealed override short? GetNullableShort(in int row) => (short)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row);
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row);
 
+    public sealed override int? GetNullableInt(in int row) => (int)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row);
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row);
+
+    public sealed override long? GetNullableLong(in int row) => (long)Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row);
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong)Get(row);
+
+    public sealed override float GetFloat(in int row) => (float)Get(row);
+
+    public sealed override float? GetNullableFloat(in int row) => (float)Get(row);
+
+    public sealed override double GetDouble(in int row) => (double)Get(row);
+
+    public sealed override double? GetNullableDouble(in int row) => (double)Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row);
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -310,9 +1910,73 @@ public class NullableDecimalDataColumn : NullableDataColumn<decimal>
 
     public sealed override DataType Type => DataType.Decimal;
 
+    public sealed override bool GetBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override bool? GetNullableBool(in int row) => Get(row).GetValueOrDefault() != 0;
+
+    public sealed override char GetChar(in int row) => (char)Get(row).GetValueOrDefault();
+
+    public sealed override char? GetNullableChar(in int row) => (char?)Get(row);
+
+    public sealed override sbyte GetSByte(in int row) => (sbyte)Get(row).GetValueOrDefault();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => (sbyte?)Get(row);
+
+    public sealed override byte GetByte(in int row) => (byte)Get(row).GetValueOrDefault();
+
+    public sealed override byte? GetNullableByte(in int row) => (byte?)Get(row);
+
+    public sealed override short GetShort(in int row) => (short)Get(row).GetValueOrDefault();
+
+    public sealed override short? GetNullableShort(in int row) => (short?)Get(row);
+
+    public sealed override ushort GetUShort(in int row) => (ushort)Get(row).GetValueOrDefault();
+
+    public sealed override ushort? GetNullableUShort(in int row) => (ushort?)Get(row);
+
     public sealed override int GetInt(in int row) => (int)Get(row).GetValueOrDefault();
 
+    public sealed override int? GetNullableInt(in int row) => (int?)Get(row);
+
+    public sealed override uint GetUInt(in int row) => (uint)Get(row).GetValueOrDefault();
+
+    public sealed override uint? GetNullableUInt(in int row) => (uint?)Get(row);
+
+    public sealed override long GetLong(in int row) => (long)Get(row).GetValueOrDefault();
+
+    public sealed override long? GetNullableLong(in int row) => (long?)Get(row);
+
+    public sealed override ulong GetULong(in int row) => (ulong)Get(row).GetValueOrDefault();
+
+    public sealed override ulong? GetNullableULong(in int row) => (ulong?)Get(row);
+
+    public sealed override float GetFloat(in int row) => (float)Get(row).GetValueOrDefault();
+
+    public sealed override float? GetNullableFloat(in int row) => (float?)Get(row);
+
+    public sealed override double GetDouble(in int row) => (double)Get(row).GetValueOrDefault();
+
+    public sealed override double? GetNullableDouble(in int row) => (double?)Get(row);
+
+    public sealed override decimal GetDecimal(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => Get(row);
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -322,9 +1986,73 @@ public class GuidDataColumn : StructDataColumn<Guid>
 
     public sealed override DataType Type => DataType.Guid;
 
+    public sealed override bool GetBool(in int row) => throw new NotSupportedException();
+
+    public sealed override bool? GetNullableBool(in int row) => throw new NotSupportedException();
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte GetByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte? GetNullableByte(in int row) => throw new NotSupportedException();
+
+    public sealed override short GetShort(in int row) => throw new NotSupportedException();
+
+    public sealed override short? GetNullableShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort GetUShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort? GetNullableUShort(in int row) => throw new NotSupportedException();
+
     public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
+    public sealed override int? GetNullableInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint GetUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint? GetNullableUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override long GetLong(in int row) => throw new NotSupportedException();
+
+    public sealed override long? GetNullableLong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong GetULong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong? GetNullableULong(in int row) => throw new NotSupportedException();
+
+    public sealed override float GetFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override float? GetNullableFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override double GetDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override double? GetNullableDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal GetDecimal(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => Get(row);
+
+    public sealed override Guid? GetNullableGuid(in int row) => Get(row);
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => Get(row).ToByteArray();
 }
 
 [DataContract]
@@ -334,9 +2062,73 @@ public class NullableGuidDataColumn : NullableDataColumn<Guid>
 
     public sealed override DataType Type => DataType.Guid;
 
+    public sealed override bool GetBool(in int row) => throw new NotSupportedException();
+
+    public sealed override bool? GetNullableBool(in int row) => throw new NotSupportedException();
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte GetByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte? GetNullableByte(in int row) => throw new NotSupportedException();
+
+    public sealed override short GetShort(in int row) => throw new NotSupportedException();
+
+    public sealed override short? GetNullableShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort GetUShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort? GetNullableUShort(in int row) => throw new NotSupportedException();
+
     public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
+    public sealed override int? GetNullableInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint GetUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint? GetNullableUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override long GetLong(in int row) => throw new NotSupportedException();
+
+    public sealed override long? GetNullableLong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong GetULong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong? GetNullableULong(in int row) => throw new NotSupportedException();
+
+    public sealed override float GetFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override float? GetNullableFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override double GetDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override double? GetNullableDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal GetDecimal(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override Guid? GetNullableGuid(in int row) => Get(row);
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => Get(row)?.ToByteArray();
 }
 
 [DataContract]
@@ -346,9 +2138,73 @@ public class DateTimeDataColumn : StructDataColumn<DateTime>
 
     public sealed override DataType Type => DataType.DateTime;
 
+    public sealed override bool GetBool(in int row) => throw new NotSupportedException();
+
+    public sealed override bool? GetNullableBool(in int row) => throw new NotSupportedException();
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte GetByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte? GetNullableByte(in int row) => throw new NotSupportedException();
+
+    public sealed override short GetShort(in int row) => throw new NotSupportedException();
+
+    public sealed override short? GetNullableShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort GetUShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort? GetNullableUShort(in int row) => throw new NotSupportedException();
+
     public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
+    public sealed override int? GetNullableInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint GetUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint? GetNullableUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override long GetLong(in int row) => Get(row).Ticks;
+
+    public sealed override long? GetNullableLong(in int row) => Get(row).Ticks;
+
+    public sealed override ulong GetULong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong? GetNullableULong(in int row) => throw new NotSupportedException();
+
+    public sealed override float GetFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override float? GetNullableFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override double GetDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override double? GetNullableDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal GetDecimal(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => Get(row);
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => Get(row);
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -358,9 +2214,73 @@ public class NullableDateTimeDataColumn : NullableDataColumn<DateTime>
 
     public sealed override DataType Type => DataType.DateTime;
 
+    public sealed override bool GetBool(in int row) => throw new NotSupportedException();
+
+    public sealed override bool? GetNullableBool(in int row) => throw new NotSupportedException();
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte GetByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte? GetNullableByte(in int row) => throw new NotSupportedException();
+
+    public sealed override short GetShort(in int row) => throw new NotSupportedException();
+
+    public sealed override short? GetNullableShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort GetUShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort? GetNullableUShort(in int row) => throw new NotSupportedException();
+
     public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
+    public sealed override int? GetNullableInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint GetUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint? GetNullableUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault().Ticks;
+
+    public sealed override long? GetNullableLong(in int row) => Get(row)?.Ticks;
+
+    public sealed override ulong GetULong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong? GetNullableULong(in int row) => throw new NotSupportedException();
+
+    public sealed override float GetFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override float? GetNullableFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override double GetDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override double? GetNullableDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal GetDecimal(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => Get(row);
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => throw new NotSupportedException();
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -370,9 +2290,73 @@ public class TimeSpanDataColumn : StructDataColumn<TimeSpan>
 
     public sealed override DataType Type => DataType.TimeSpan;
 
+    public sealed override bool GetBool(in int row) => throw new NotSupportedException();
+
+    public sealed override bool? GetNullableBool(in int row) => throw new NotSupportedException();
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte GetByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte? GetNullableByte(in int row) => throw new NotSupportedException();
+
+    public sealed override short GetShort(in int row) => throw new NotSupportedException();
+
+    public sealed override short? GetNullableShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort GetUShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort? GetNullableUShort(in int row) => throw new NotSupportedException();
+
     public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
+    public sealed override int? GetNullableInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint GetUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint? GetNullableUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override long GetLong(in int row) => Get(row).Ticks;
+
+    public sealed override long? GetNullableLong(in int row) => Get(row).Ticks;
+
+    public sealed override ulong GetULong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong? GetNullableULong(in int row) => throw new NotSupportedException();
+
+    public sealed override float GetFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override float? GetNullableFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override double GetDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override double? GetNullableDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal GetDecimal(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row).ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => Get(row);
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => Get(row);
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
 [DataContract]
@@ -382,8 +2366,72 @@ public class NullableTimeSpanDataColumn : NullableDataColumn<TimeSpan>
 
     public sealed override DataType Type => DataType.TimeSpan;
 
+    public sealed override bool GetBool(in int row) => throw new NotSupportedException();
+
+    public sealed override bool? GetNullableBool(in int row) => throw new NotSupportedException();
+
+    public sealed override char GetChar(in int row) => throw new NotSupportedException();
+
+    public sealed override char? GetNullableChar(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte GetSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override sbyte? GetNullableSByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte GetByte(in int row) => throw new NotSupportedException();
+
+    public sealed override byte? GetNullableByte(in int row) => throw new NotSupportedException();
+
+    public sealed override short GetShort(in int row) => throw new NotSupportedException();
+
+    public sealed override short? GetNullableShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort GetUShort(in int row) => throw new NotSupportedException();
+
+    public sealed override ushort? GetNullableUShort(in int row) => throw new NotSupportedException();
+
     public sealed override int GetInt(in int row) => throw new NotSupportedException();
 
+    public sealed override int? GetNullableInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint GetUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override uint? GetNullableUInt(in int row) => throw new NotSupportedException();
+
+    public sealed override long GetLong(in int row) => Get(row).GetValueOrDefault().Ticks;
+
+    public sealed override long? GetNullableLong(in int row) => Get(row)?.Ticks;
+
+    public sealed override ulong GetULong(in int row) => throw new NotSupportedException();
+
+    public sealed override ulong? GetNullableULong(in int row) => throw new NotSupportedException();
+
+    public sealed override float GetFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override float? GetNullableFloat(in int row) => throw new NotSupportedException();
+
+    public sealed override double GetDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override double? GetNullableDouble(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal GetDecimal(in int row) => throw new NotSupportedException();
+
+    public sealed override decimal? GetNullableDecimal(in int row) => throw new NotSupportedException();
+
     public sealed override string GetString(in int row) => Get(row)?.ToString();
+
+    public sealed override Guid GetGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override Guid? GetNullableGuid(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime GetDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override DateTime? GetNullableDateTime(in int row) => throw new NotSupportedException();
+
+    public sealed override TimeSpan GetTimeSpan(in int row) => Get(row).GetValueOrDefault();
+
+    public sealed override TimeSpan? GetNullableTimeSpan(in int row) => Get(row);
+
+    public sealed override byte[] GetByteArray(in int row) => throw new NotSupportedException();
 }
 
