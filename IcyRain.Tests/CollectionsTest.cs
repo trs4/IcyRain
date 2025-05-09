@@ -37,14 +37,14 @@ public class CollectionsTest
         {
             var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.TryGetValue(2, out string value) && value == "1");
-            Assert.IsTrue(clone.TryGetValue(5, out value) && value == "2");
-            Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
-            Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
-            Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
-            Assert.IsTrue(clone.TryGetValue(4, out value) && value == "7");
+            Assert.That(clone is not null);
+            Assert.That(data.Count == clone.Count);
+            Assert.That(clone.TryGetValue(2, out string value) && value == "1");
+            Assert.That(clone.TryGetValue(5, out value) && value == "2");
+            Assert.That(clone.TryGetValue(10, out value) && value == "3");
+            Assert.That(clone.TryGetValue(9, out value) && value == "4");
+            Assert.That(clone.TryGetValue(3, out value) && value == "5");
+            Assert.That(clone.TryGetValue(4, out value) && value == "7");
         }
     }
 
@@ -67,14 +67,14 @@ public class CollectionsTest
         {
             var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.TryGetValue(2, out string value) && value == "1");
-            Assert.IsTrue(clone.TryGetValue(5, out value) && value == "2");
-            Assert.IsTrue(clone.TryGetValue(10, out value) && value == "3");
-            Assert.IsTrue(clone.TryGetValue(9, out value) && value == "4");
-            Assert.IsTrue(clone.TryGetValue(3, out value) && value == "5");
-            Assert.IsTrue(clone.TryGetValue(4, out value) && value == "6");
+            Assert.That(clone is not null);
+            Assert.That(data.Count == clone.Count);
+            Assert.That(clone.TryGetValue(2, out string value) && value == "1");
+            Assert.That(clone.TryGetValue(5, out value) && value == "2");
+            Assert.That(clone.TryGetValue(10, out value) && value == "3");
+            Assert.That(clone.TryGetValue(9, out value) && value == "4");
+            Assert.That(clone.TryGetValue(3, out value) && value == "5");
+            Assert.That(clone.TryGetValue(4, out value) && value == "6");
         }
     }
 
@@ -87,13 +87,13 @@ public class CollectionsTest
         {
             var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.Contains(2));
-            Assert.IsTrue(clone.Contains(7));
-            Assert.IsTrue(clone.Contains(8));
-            Assert.IsTrue(clone.Contains(3));
-            Assert.IsTrue(clone.Contains(4));
+            Assert.That(clone is not null);
+            Assert.That(data.Count == clone.Count);
+            Assert.That(clone.Contains(2));
+            Assert.That(clone.Contains(7));
+            Assert.That(clone.Contains(8));
+            Assert.That(clone.Contains(3));
+            Assert.That(clone.Contains(4));
         }
     }
 
@@ -107,13 +107,13 @@ public class CollectionsTest
         {
             var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Count, clone.Count);
-            Assert.IsTrue(clone.Contains(2));
-            Assert.IsTrue(clone.Contains(7));
-            Assert.IsTrue(clone.Contains(8));
-            Assert.IsTrue(clone.Contains(3));
-            Assert.IsTrue(clone.Contains(4));
+            Assert.That(clone is not null);
+            Assert.That(data.Count == clone.Count);
+            Assert.That(clone.Contains(2));
+            Assert.That(clone.Contains(7));
+            Assert.That(clone.Contains(8));
+            Assert.That(clone.Contains(3));
+            Assert.That(clone.Contains(4));
         }
     }
 
@@ -126,9 +126,8 @@ public class CollectionsTest
         {
             var clone = deepClone(data);
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Key, clone.Key);
-            Assert.AreEqual(data.Value, clone.Value);
+            Assert.That(data.Key == clone.Key);
+            Assert.That(data.Value == clone.Value);
         }
     }
 

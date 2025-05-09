@@ -17,10 +17,10 @@ public class SerializationTest
         foreach (var deepClone in Tests<Version>.Functions)
         {
             var result = deepClone(value);
-            Assert.AreEqual(value.Major, result.Major);
-            Assert.AreEqual(value.Minor, result.Minor);
-            Assert.AreEqual(value.Build, result.Build);
-            Assert.AreEqual(value.Revision, result.Revision);
+            Assert.That(value.Major == result.Major);
+            Assert.That(value.Minor == result.Minor);
+            Assert.That(value.Build == result.Build);
+            Assert.That(value.Revision == result.Revision);
         }
     }
 
@@ -32,7 +32,7 @@ public class SerializationTest
         foreach (var deepClone in Tests<IPAddress>.Functions)
         {
             var result = deepClone(value);
-            Assert.AreEqual(value.ToString(), result.ToString());
+            Assert.That(value.ToString() == result.ToString());
         }
     }
 
@@ -44,8 +44,8 @@ public class SerializationTest
         foreach (var deepClone in Tests<IPEndPoint>.Functions)
         {
             var result = deepClone(value);
-            Assert.AreEqual(value.Address.ToString(), result.Address.ToString());
-            Assert.AreEqual(value.Port, result.Port);
+            Assert.That(value.Address.ToString() == result.Address.ToString());
+            Assert.That(value.Port == result.Port);
         }
     }
 
@@ -89,8 +89,8 @@ public class SerializationTest
         {
             var cloneList = deepClone(list);
 
-            Assert.IsNotNull(cloneList);
-            Assert.AreEqual(list.Count, cloneList.Count);
+            Assert.That(cloneList is not null);
+            Assert.That(list.Count == cloneList.Count);
 
             for (int i = 0; i < 100; i++)
             {
@@ -102,34 +102,34 @@ public class SerializationTest
 
     private static void Check(Delegate deepClone, TestData data, TestData clone)
     {
-        Assert.IsNotNull(clone);
-        Assert.AreEqual(data.Property1, clone.Property1);
-        Assert.AreEqual(data.Property2, clone.Property2);
-        Assert.AreEqual(data.Property3, clone.Property3);
+        Assert.That(clone is not null);
+        Assert.That(data.Property1 == clone.Property1);
+        Assert.That(data.Property2 == clone.Property2);
+        Assert.That(data.Property3 == clone.Property3);
         Check(deepClone, data.Property4, clone.Property4);
-        Assert.AreEqual(data.Property5, clone.Property5);
+        Assert.That(data.Property5 == clone.Property5);
     }
 
     private static void Check(Delegate deepClone, SealedData data, SealedData clone)
     {
-        Assert.IsNotNull(clone);
-        Assert.AreEqual(data.Property1, clone.Property1);
-        Assert.AreEqual(data.Property2, clone.Property2);
-        Assert.AreEqual(data.Property3, clone.Property3);
+        Assert.That(clone is not null);
+        Assert.That(data.Property1 == clone.Property1);
+        Assert.That(data.Property2 == clone.Property2);
+        Assert.That(data.Property3 == clone.Property3);
         Check(deepClone, data.Property4, clone.Property4);
-        Assert.AreEqual(data.Property5, clone.Property5);
+        Assert.That(data.Property5 == clone.Property5);
     }
 
     private static void Check(Delegate deepClone, DateTime data, DateTime clone)
     {
         if (deepClone.Method.Name.Contains("InUTC"))
         {
-            Assert.AreEqual(DateTimeKind.Utc, clone.Kind);
-            Assert.AreEqual(data, clone.ToLocalTime());
+            Assert.That(DateTimeKind.Utc == clone.Kind);
+            Assert.That(data == clone.ToLocalTime());
         }
         else
         {
-            Assert.AreEqual(data, clone);
+            Assert.That(data == clone);
         }
     }
 
@@ -166,9 +166,9 @@ public class SerializationTest
         {
             var clone = deepClone(data) as TestB3;
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Property11, clone.Property11);
-            Assert.AreEqual(data.Property31, clone.Property31);
+            Assert.That(clone is not null);
+            Assert.That(data.Property11 == clone.Property11);
+            Assert.That(data.Property31 == clone.Property31);
             Check(deepClone, data.Property32, clone.Property32);
         }
     }
@@ -194,17 +194,17 @@ public class SerializationTest
         {
             var clone = deepClone(data) as TestA25;
 
-            Assert.IsNotNull(clone);
-            Assert.AreEqual(data.Property11, clone.Property11);
-            Assert.AreEqual(data.Property31, clone.Property31);
+            Assert.That(clone is not null);
+            Assert.That(data.Property11 == clone.Property11);
+            Assert.That(data.Property31 == clone.Property31);
             Check(deepClone, data.Property32, clone.Property32);
 
-            Assert.AreEqual(data.Property33, clone.Property33);
-            Assert.AreEqual(data.Property34, clone.Property34);
+            Assert.That(data.Property33 == clone.Property33);
+            Assert.That(data.Property34 == clone.Property34);
 
-            Assert.AreEqual(data.Property35.GetType(), clone.Property35?.GetType());
-            Assert.AreEqual(data.Property35.Property11, clone.Property35.Property11);
-            Assert.AreEqual((data.Property35 as TestB3).Property31, (clone.Property35 as TestB3).Property31);
+            Assert.That(data.Property35.GetType() == clone.Property35?.GetType());
+            Assert.That(data.Property35.Property11 == clone.Property35.Property11);
+            Assert.That((data.Property35 as TestB3).Property31 == (clone.Property35 as TestB3).Property31);
             Check(deepClone, (data.Property35 as TestB3).Property32, (clone.Property35 as TestB3).Property32);
         }
     }

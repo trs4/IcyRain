@@ -11,12 +11,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void BoolArray()
     {
-        bool[] value = new bool[] { true, false, true, true };
+        bool[] value = [true, false, true, true];
 
         foreach (var deepClone in Tests<bool[]>.Functions)
         {
             bool[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -26,12 +26,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void CharArray()
     {
-        char[] value = new char[] { 't', 'r', '9', 'ц' };
+        char[] value = ['t', 'r', '9', 'ц'];
 
         foreach (var deepClone in Tests<char[]>.Functions)
         {
             char[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -41,12 +41,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void SByteArray()
     {
-        sbyte[] value = new sbyte[] { 0, 34, 3, 7 };
+        sbyte[] value = [0, 34, 3, 7];
 
         foreach (var deepClone in Tests<sbyte[]>.Functions)
         {
             sbyte[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -56,12 +56,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void ByteArray()
     {
-        byte[] value = new byte[] { 25, 34, 3, 7 };
+        byte[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<byte[]>.Functions)
         {
             byte[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -71,12 +71,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void ShortArray()
     {
-        short[] value = new short[] { 25, 34, 3, 7 };
+        short[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<short[]>.Functions)
         {
             short[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -86,12 +86,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void UShortArray()
     {
-        ushort[] value = new ushort[] { 25, 34, 3, 7 };
+        ushort[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<ushort[]>.Functions)
         {
             ushort[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -101,12 +101,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void IntArray()
     {
-        int[] value = new int[] { 25, 34, 3, 7 };
+        int[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<int[]>.Functions)
         {
             int[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -116,12 +116,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void UIntArray()
     {
-        uint[] value = new uint[] { 25, 34, 3, 7 };
+        uint[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<uint[]>.Functions)
         {
             uint[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -131,12 +131,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void LongArray()
     {
-        long[] value = new long[] { 25, 34, 3, 7 };
+        long[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<long[]>.Functions)
         {
             long[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -146,12 +146,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void ULongArray()
     {
-        ulong[] value = new ulong[] { 25, 34, 3, 7 };
+        ulong[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<ulong[]>.Functions)
         {
             ulong[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -161,12 +161,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void FloatArray()
     {
-        float[] value = new float[] { 25, 34, 3, 7 };
+        float[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<float[]>.Functions)
         {
             float[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -176,12 +176,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void DoubleArray()
     {
-        double[] value = new double[] { 25, 34, 3, 7 };
+        double[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<double[]>.Functions)
         {
             double[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -191,12 +191,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void DecimalArray()
     {
-        decimal[] value = new decimal[] { 25, 34, 3, 7 };
+        decimal[] value = [25, 34, 3, 7];
 
         foreach (var deepClone in Tests<decimal[]>.Functions)
         {
             decimal[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -206,16 +206,16 @@ public class ArrayPrimitiveTest
     [Test]
     public void DateTimeArray()
     {
-        DateTime[] value = new DateTime[]
-        {
+        DateTime[] value =
+        [
             new DateTime(2021, 1, 26, 23, 1, 0, DateTimeKind.Utc),
             new DateTime(2000, 1, 4, 10, 7, 0, DateTimeKind.Utc),
-        };
+        ];
 
         foreach (var deepClone in Tests<DateTime[]>.Functions)
         {
             DateTime[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -225,15 +225,15 @@ public class ArrayPrimitiveTest
     [Test]
     public void DateTimeOffsetArray()
     {
-        DateTimeOffset[] value = new DateTimeOffset[]
-        {
+        DateTimeOffset[] value =
+        [
             new DateTime(2021, 1, 26, 23, 1, 0, DateTimeKind.Utc),
-        };
+        ];
 
         foreach (var deepClone in Tests<DateTimeOffset[]>.Functions)
         {
             DateTimeOffset[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -243,12 +243,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void StringArray()
     {
-        string[] value = new string[] { "25тестtest", null, string.Empty, "t34" };
+        string[] value = ["25тестtest", null, string.Empty, "t34"];
 
         foreach (var deepClone in Tests<string[]>.Functions)
         {
             string[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -258,12 +258,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void GuidArray()
     {
-        Guid[] value = new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+        Guid[] value = [Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()];
 
         foreach (var deepClone in Tests<Guid[]>.Functions)
         {
             Guid[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -273,12 +273,12 @@ public class ArrayPrimitiveTest
     [Test]
     public void TimeSpanArray()
     {
-        TimeSpan[] value = new TimeSpan[] { new TimeSpan(23, 12, 8), new TimeSpan(10, 4, 8) };
+        TimeSpan[] value = [new TimeSpan(23, 12, 8), new TimeSpan(10, 4, 8)];
 
         foreach (var deepClone in Tests<TimeSpan[]>.Functions)
         {
             TimeSpan[] result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 

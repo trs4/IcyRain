@@ -15,7 +15,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<bool>.Functions)
         {
             bool result = deepClone(true);
-            Assert.IsTrue(result);
+            Assert.That(result);
         }
     }
 
@@ -25,7 +25,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<bool>.Functions)
         {
             bool result = deepClone(false);
-            Assert.IsFalse(result);
+            Assert.That(!result);
         }
     }
 
@@ -40,7 +40,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<char>.Functions)
         {
             char result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -52,7 +52,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<char>.Functions)
         {
             char result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -67,7 +67,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<sbyte>.Functions)
         {
             sbyte result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -79,7 +79,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<sbyte>.Functions)
         {
             sbyte result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -94,7 +94,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<byte>.Functions)
         {
             byte result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -106,7 +106,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<byte>.Functions)
         {
             byte result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -121,7 +121,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<short>.Functions)
         {
             short result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -133,7 +133,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<short>.Functions)
         {
             short result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -148,7 +148,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ushort>.Functions)
         {
             ushort result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -160,7 +160,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ushort>.Functions)
         {
             ushort result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -175,7 +175,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<int>.Functions)
         {
             int result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -187,7 +187,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<int>.Functions)
         {
             int result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -202,7 +202,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<uint>.Functions)
         {
             uint result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -214,7 +214,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<uint>.Functions)
         {
             uint result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -229,7 +229,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<long>.Functions)
         {
             long result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -241,7 +241,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<long>.Functions)
         {
             long result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -256,7 +256,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ulong>.Functions)
         {
             ulong result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -268,7 +268,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ulong>.Functions)
         {
             ulong result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -283,7 +283,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<float>.Functions)
         {
             float result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -295,7 +295,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<float>.Functions)
         {
             float result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -310,7 +310,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<double>.Functions)
         {
             double result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -322,7 +322,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<double>.Functions)
         {
             double result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -337,7 +337,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<decimal>.Functions)
         {
             decimal result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -349,7 +349,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<decimal>.Functions)
         {
             decimal result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -365,8 +365,8 @@ public class PrimitiveTest
         {
             DateTime result = deepClone(value);
 
-            Assert.AreEqual(value, result);
-            Assert.AreEqual(value.Kind, result.Kind);
+            Assert.That(value == result);
+            Assert.That(value.Kind == result.Kind);
         }
     }
 
@@ -381,15 +381,15 @@ public class PrimitiveTest
 
             if (deepClone.Method.Name.Contains("InUTC"))
             {
-                Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+                Assert.That(DateTimeKind.Utc == result.Kind);
                 result = result.ToLocalTime();
             }
             else
             {
-                Assert.AreEqual(value.Kind, result.Kind);
+                Assert.That(value.Kind == result.Kind);
             }
 
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -401,8 +401,8 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<DateTime>.Functions)
         {
             DateTime result = deepClone(value);
-            Assert.AreEqual(value, result);
-            Assert.AreEqual(value.Kind, result.Kind);
+            Assert.That(value == result);
+            Assert.That(value.Kind == result.Kind);
         }
     }
 
@@ -417,7 +417,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<DateTimeOffset>.Functions)
         {
             DateTimeOffset result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -429,7 +429,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<DateTimeOffset>.Functions)
         {
             DateTimeOffset result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -444,7 +444,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<string>.Functions)
         {
             string result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -456,7 +456,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<string>.Functions)
         {
             string result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -471,7 +471,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<Guid>.Functions)
         {
             Guid result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -483,7 +483,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<Guid>.Functions)
         {
             Guid result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -498,7 +498,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<TimeSpan>.Functions)
         {
             TimeSpan result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -510,7 +510,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<TimeSpan>.Functions)
         {
             TimeSpan result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -525,7 +525,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<IntPtr>.Functions)
         {
             IntPtr result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -537,7 +537,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<IntPtr>.Functions)
         {
             IntPtr result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -552,7 +552,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<UIntPtr>.Functions)
         {
             UIntPtr result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -564,7 +564,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<UIntPtr>.Functions)
         {
             UIntPtr result = deepClone(value);
-            Assert.AreEqual(value, result);
+            Assert.That(value == result);
         }
     }
 
@@ -579,19 +579,19 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ArraySegment<byte>>.Functions)
         {
             ArraySegment<byte> result = deepClone(value);
-            Assert.IsTrue(result.Array is null || result.Array.Length == 0);
+            Assert.That(result.Array is null || result.Array.Length == 0);
         }
     }
 
     [Test]
     public void ArraySegment2()
     {
-        ArraySegment<byte> value = new ArraySegment<byte>(new byte[] { 1, 5, 0, 9 });
+        ArraySegment<byte> value = new ArraySegment<byte>([1, 5, 0, 9]);
 
         foreach (var deepClone in Tests<ArraySegment<byte>>.Functions)
         {
             ArraySegment<byte> result = deepClone(value);
-            Assert.IsTrue(value.Array.SequenceEqual(result));
+            Assert.That(value.Array.SequenceEqual(result));
         }
     }
 
@@ -606,7 +606,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<Memory<byte>>.Functions)
         {
             Memory<byte> result = deepClone(value);
-            Assert.IsTrue(result.IsEmpty);
+            Assert.That(result.IsEmpty);
         }
     }
 
@@ -618,7 +618,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<Memory<byte>>.Functions)
         {
             Memory<byte> result = deepClone(value);
-            Assert.IsTrue(value.ToArray().SequenceEqual(result.ToArray()));
+            Assert.That(value.ToArray().SequenceEqual(result.ToArray()));
         }
     }
 
@@ -633,7 +633,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ReadOnlyMemory<byte>>.Functions)
         {
             ReadOnlyMemory<byte> result = deepClone(value);
-            Assert.IsTrue(result.IsEmpty);
+            Assert.That(result.IsEmpty);
         }
     }
 
@@ -645,7 +645,7 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ReadOnlyMemory<byte>>.Functions)
         {
             ReadOnlyMemory<byte> result = deepClone(value);
-            Assert.IsTrue(value.ToArray().SequenceEqual(result.ToArray()));
+            Assert.That(value.ToArray().SequenceEqual(result.ToArray()));
         }
     }
 
@@ -660,19 +660,19 @@ public class PrimitiveTest
         foreach (var deepClone in Tests<ReadOnlySequence<byte>>.Functions)
         {
             ReadOnlySequence<byte> result = deepClone(value);
-            Assert.IsTrue(result.IsEmpty);
+            Assert.That(result.IsEmpty);
         }
     }
 
     [Test]
     public void ReadOnlySequence2()
     {
-        ReadOnlySequence<byte> value = new ReadOnlySequence<byte>(new byte[] { 1, 5, 0, 9 });
+        ReadOnlySequence<byte> value = new ReadOnlySequence<byte>([1, 5, 0, 9]);
 
         foreach (var deepClone in Tests<ReadOnlySequence<byte>>.Functions)
         {
             ReadOnlySequence<byte> result = deepClone(value);
-            Assert.IsTrue(value.ToArray().SequenceEqual(result.ToArray()));
+            Assert.That(value.ToArray().SequenceEqual(result.ToArray()));
         }
     }
 

@@ -17,7 +17,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<bool>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -32,7 +32,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<char>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -47,7 +47,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<sbyte>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -62,7 +62,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<byte>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -77,7 +77,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<short>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -92,7 +92,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<ushort>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -107,7 +107,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<int>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -122,7 +122,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<uint>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -137,7 +137,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<long>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -152,7 +152,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<ulong>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -167,7 +167,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<float>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -182,7 +182,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<double>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -197,7 +197,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<decimal>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -216,7 +216,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<DateTime>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -234,7 +234,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<DateTimeOffset>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -249,7 +249,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<string>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -264,7 +264,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<Guid>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 
@@ -279,7 +279,7 @@ public class ListPrimitiveTest
         foreach (var deepClone in Tests<List<TimeSpan>>.Functions)
         {
             var result = deepClone(value);
-            Assert.IsTrue(value.SequenceEqual(result));
+            Assert.That(value.SequenceEqual(result));
         }
     }
 

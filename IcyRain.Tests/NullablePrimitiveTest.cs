@@ -16,7 +16,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<bool?>.Functions)
         {
             bool? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && result.Value);
+            Assert.That(result.HasValue && result.Value);
         }
     }
 
@@ -28,7 +28,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<bool?>.Functions)
         {
             bool? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && !result.Value);
+            Assert.That(result.HasValue && !result.Value);
         }
     }
 
@@ -40,7 +40,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<bool?>.Functions)
         {
             bool? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -55,7 +55,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<char?>.Functions)
         {
             char? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -67,7 +67,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<char?>.Functions)
         {
             char? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -82,7 +82,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<sbyte?>.Functions)
         {
             sbyte? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -94,7 +94,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<sbyte?>.Functions)
         {
             sbyte? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -109,7 +109,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<byte?>.Functions)
         {
             byte? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -121,7 +121,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<byte?>.Functions)
         {
             byte? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -136,7 +136,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<short?>.Functions)
         {
             short? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -148,7 +148,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<short?>.Functions)
         {
             short? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -163,7 +163,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ushort?>.Functions)
         {
             ushort? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -175,7 +175,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ushort?>.Functions)
         {
             ushort? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -190,7 +190,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<int?>.Functions)
         {
             int? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -202,7 +202,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<int?>.Functions)
         {
             int? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -217,7 +217,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<uint?>.Functions)
         {
             uint? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -229,7 +229,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<uint?>.Functions)
         {
             uint? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -244,7 +244,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<long?>.Functions)
         {
             long? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -256,7 +256,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<long?>.Functions)
         {
             long? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -271,7 +271,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ulong?>.Functions)
         {
             ulong? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -283,7 +283,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ulong?>.Functions)
         {
             ulong? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -298,7 +298,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<float?>.Functions)
         {
             float? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -310,7 +310,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<float?>.Functions)
         {
             float? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -325,7 +325,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<double?>.Functions)
         {
             double? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -337,7 +337,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<double?>.Functions)
         {
             double? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -352,7 +352,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<decimal?>.Functions)
         {
             decimal? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -364,7 +364,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<decimal?>.Functions)
         {
             decimal? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -379,7 +379,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<DateTime?>.Functions)
         {
             DateTime? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -391,8 +391,8 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<DateTime?>.Functions)
         {
             DateTime? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
-            Assert.AreEqual(value.Value.Kind, result.Value.Kind);
+            Assert.That(result.HasValue && value.Value == result.Value);
+            Assert.That(value.Value.Kind == result.Value.Kind);
         }
     }
 
@@ -407,7 +407,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<DateTimeOffset?>.Functions)
         {
             DateTimeOffset? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -419,7 +419,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<DateTimeOffset?>.Functions)
         {
             DateTimeOffset? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -434,7 +434,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<Guid?>.Functions)
         {
             Guid? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -446,7 +446,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<Guid?>.Functions)
         {
             Guid? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -461,7 +461,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<TimeSpan?>.Functions)
         {
             TimeSpan? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -473,7 +473,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<TimeSpan?>.Functions)
         {
             TimeSpan? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value == result.Value);
+            Assert.That(result.HasValue && value.Value == result.Value);
         }
     }
 
@@ -488,7 +488,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<IntPtr?>.Functions)
         {
             IntPtr? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -500,7 +500,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<IntPtr?>.Functions)
         {
             IntPtr? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToInt64() == result.Value.ToInt64());
+            Assert.That(result.HasValue && value.Value.ToInt64() == result.Value.ToInt64());
         }
     }
 
@@ -515,7 +515,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<UIntPtr?>.Functions)
         {
             UIntPtr? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -527,7 +527,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<UIntPtr?>.Functions)
         {
             UIntPtr? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToUInt64() == result.Value.ToUInt64());
+            Assert.That(result.HasValue && value.Value.ToUInt64() == result.Value.ToUInt64());
         }
     }
 
@@ -542,19 +542,19 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ArraySegment<byte>?>.Functions)
         {
             ArraySegment<byte>? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
     [Test]
     public void ArraySegment2()
     {
-        ArraySegment<byte>? value = new ArraySegment<byte>(new byte[] { 1, 5, 0, 9 });
+        ArraySegment<byte>? value = new ArraySegment<byte>([1, 5, 0, 9]);
 
         foreach (var deepClone in Tests<ArraySegment<byte>?>.Functions)
         {
             ArraySegment<byte>? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.Array.SequenceEqual(result.Value));
+            Assert.That(result.HasValue && value.Value.Array.SequenceEqual(result.Value));
         }
     }
 
@@ -569,7 +569,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<Memory<byte>?>.Functions)
         {
             Memory<byte>? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -581,7 +581,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<Memory<byte>?>.Functions)
         {
             Memory<byte>? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
+            Assert.That(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
         }
     }
 
@@ -596,7 +596,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ReadOnlyMemory<byte>?>.Functions)
         {
             ReadOnlyMemory<byte>? result = deepClone(value);
-            Assert.IsFalse(result.HasValue);
+            Assert.That(!result.HasValue);
         }
     }
 
@@ -608,7 +608,7 @@ public class NullablePrimitiveTest
         foreach (var deepClone in Tests<ReadOnlyMemory<byte>?>.Functions)
         {
             ReadOnlyMemory<byte>? result = deepClone(value);
-            Assert.IsTrue(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
+            Assert.That(result.HasValue && value.Value.ToArray().SequenceEqual(result.Value.ToArray()));
         }
     }
 
