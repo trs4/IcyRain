@@ -58,8 +58,8 @@ public abstract class SingleDataColumn<T> : DataColumn<T>
     [MethodImpl(Flags.HotPath)]
     public override T Get(in int row)
     {
-        var rowValues = Values;
-        return rowValues is not null && rowValues.Count > row ? rowValues[row] : Fallback;
+        var values = Values;
+        return values is not null && values.Count > row ? values[row] : Fallback;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -71,12 +71,10 @@ public abstract class SingleDataColumn<T> : DataColumn<T>
     [MethodImpl(Flags.HotPath)]
     public sealed override object GetObjectFallback() => Fallback;
 
-    protected sealed override T GetDefaultValue() => Fallback;
-
     internal sealed override void CleanBottom() => CleanBottom(Values, SetRows, Fallback, Equals);
 
     internal sealed override void CompressFallback(in int tableRowCount)
-        => SetFallback(tableRowCount, Values, SetRows, SetFallbackValue, Equals);
+        => SetFallback(tableRowCount, Values, SetRows, SetFallback, Equals);
 
     public sealed override void ClearRows(in int capacity)
     {
@@ -85,7 +83,7 @@ public abstract class SingleDataColumn<T> : DataColumn<T>
     }
 
     [MethodImpl(Flags.HotPath)]
-    private void SetFallbackValue(T newValue) => Fallback = newValue;
+    private void SetFallback(T newValue) => Fallback = newValue;
 
     protected abstract bool Equals(T x, T y);
 }

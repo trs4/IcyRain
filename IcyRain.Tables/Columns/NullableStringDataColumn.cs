@@ -15,6 +15,8 @@ public sealed class NullableStringDataColumn : SingleDataColumn<string>
 
     public sealed override bool IsNullable => true;
 
+    public sealed override FrozenDataColumn<string> ToFrozen() => new FrozenNullableStringDataColumn(this);
+
     public sealed override bool GetBool(in int row) => bool.Parse(base.Get(row) ?? string.Empty);
 
     public sealed override bool? GetNullableBool(in int row) => bool.Parse(base.Get(row) ?? string.Empty);

@@ -25,7 +25,7 @@ public abstract class NullableDataColumn<T> : SingleDataColumn<T?>
 
         if (count > valuesCount)
         {
-            for (int i = 0; i < Values.Count; i++)
+            for (int i = 0; i < valuesCount; i++)
             {
                 var value = Values[i];
 
@@ -63,7 +63,7 @@ public abstract class NullableDataColumn<T> : SingleDataColumn<T?>
 
         if (count > valuesCount)
         {
-            for (int i = 0; i < Values.Count; i++)
+            for (int i = 0; i < valuesCount; i++)
             {
                 var value = Values[i];
 

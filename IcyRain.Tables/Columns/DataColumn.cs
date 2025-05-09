@@ -18,6 +18,9 @@ public abstract class DataColumn
 
     public virtual bool IsArray => false;
 
+    public abstract FrozenDataColumn ToFrozenObject();
+
+    [MethodImpl(Flags.HotPath)]
     public abstract object GetObject(in int row);
 
     public abstract bool GetBool(in int row);
@@ -106,93 +109,88 @@ public abstract class DataColumn
 
     public abstract void ClearRows(in int capacity);
 
-    protected abstract int GetCount();
-
     [MethodImpl(Flags.HotPath)]
-    protected static void Set<T>(in int row, in T value, List<T> rowValues, in T fallbackValue, Func<T, bool> isDefault)
+    protected static void Set<T>(in int row, in T value, List<T> values, in T fallback, Func<T, bool> isDefault)
     {
-        if (rowValues.Count == row)
-            rowValues.Add(value);
-        else if (rowValues.Count > row)
-            rowValues[row] = value;
-        else if (!isDefault(fallbackValue) || !isDefault(value))
+        if (values.Count == row)
+            values.Add(value);
+        else if (values.Count > row)
+            values[row] = value;
+        else if (!isDefault(fallback) || !isDefault(value))
         {
-            while (rowValues.Count < row)
-                rowValues.Add(fallbackValue);
+            while (values.Count < row)
+                values.Add(fallback);
 
-            rowValues.Add(value);
+            values.Add(value);
         }
     }
 
     [MethodImpl(Flags.HotPath)]
-    protected static void SetWithCheck<T>(in int row, T value, List<T> rowValues,
-        in T fallbackValue, Func<T, bool> isDefault)
+    protected static void SetWithCheck<T>(in int row, T value, List<T> values, in T fallback, Func<T, bool> isDefault)
     {
         if (isDefault(value))
             value = default;
 
-        Set(row, value, rowValues, fallbackValue, isDefault);
+        Set(row, value, values, fallback, isDefault);
     }
 
-    protected static void CleanBottom<T>(List<T> rowValues, Action<List<T>> setRows,
-        T fallbackValue, Func<T, T, bool> equals)
+    protected static void CleanBottom<T>(List<T> values, Action<List<T>> setRows, T fallback, Func<T, T, bool> equals)
     {
-        if (rowValues.Count == 0)
+        if (values.Count == 0)
             return;
 
-        int index = rowValues.FindLastIndex(r => !equals(r, fallbackValue));
+        int index = values.FindLastIndex(r => !equals(r, fallback));
 
         if (index < 0)
         {
-            if (rowValues.All(r => equals(r, fallbackValue)))
+            if (values.All(r => equals(r, fallback)))
                 setRows(null);
 
             return;
         }
 
-        if (++index == rowValues.Count)
+        if (++index == values.Count)
             return;
 
-        rowValues.RemoveRange(index, rowValues.Count - index);
+        values.RemoveRange(index, values.Count - index);
     }
 
-    protected static void SetFallback<T>(in int tableRowCount, List<T> rowValues,
-        Action<List<T>> setRows, Action<T> setFallbackValue, Func<T, T, bool> equals)
+    protected static void SetFallback<T>(in int tableRowCount, List<T> values, Action<List<T>> setRows, Action<T> setFallback, Func<T, T, bool> equals)
     {
-        if (rowValues is null || rowValues.Count != tableRowCount || rowValues.Count == 0)
+        if (values is null || values.Count != tableRowCount || values.Count == 0)
             return;
 
-        int index = rowValues.Count - 1;
+        int index = values.Count - 1;
 
         if (index == 0)
         {
-            setFallbackValue(rowValues[0]);
+            setFallback(values[0]);
             setRows(null);
         }
         else if (index > 0)
         {
-            var fallbackValue = rowValues[index];
+            var fallback = values[index];
 
-            if (equals(fallbackValue, rowValues[index - 1]))
+            if (equals(fallback, values[index - 1]))
             {
-                setFallbackValue(fallbackValue);
-                CleanBottom(rowValues, setRows, fallbackValue, equals);
+                setFallback(fallback);
+                CleanBottom(values, setRows, fallback, equals);
             }
         }
     }
 
-    protected static void SetNullRowsIfEmpty<T>(List<T> rowValues, Action<List<T>> setRows)
+    protected static void SetNullRowsIfEmpty<T>(List<T> values, Action<List<T>> setRows)
     {
-        if (rowValues is not null && rowValues.Count == 0)
+        if (values is not null && values.Count == 0)
             setRows(null);
     }
 
-    protected static void ClearRows<T>(List<T> rowValues, Action<List<T>> setRows, in int capacity)
+    protected static void ClearRows<T>(List<T> values, Action<List<T>> setRows, in int capacity)
     {
-        if (rowValues is null || rowValues.Capacity < capacity)
+        if (values is null || values.Capacity < capacity)
             setRows(new List<T>(capacity));
         else
-            rowValues.Clear();
+            values.Clear();
     }
 
     public static IEnumerable<Type> GetKnownTypes()

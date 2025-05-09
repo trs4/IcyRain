@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace IcyRain.Tables;
 
-[DataContract]
-public sealed class ByteArrayDataColumn : ArrayDataColumn<byte>
+public sealed class FrozenByteArrayDataColumn : FrozenArrayDataColumn<byte>
 {
-    public ByteArrayDataColumn(int capacity) : base(capacity) { }
+    internal FrozenByteArrayDataColumn(ByteArrayDataColumn dataColumn) : base(dataColumn) { }
 
     public sealed override DataType Type => DataType.Byte;
-
-    public sealed override FrozenDataColumn<byte[]> ToFrozen() => new FrozenByteArrayDataColumn(this);
 
     public sealed override bool GetBool(in int row) => Get(row) is not null;
 

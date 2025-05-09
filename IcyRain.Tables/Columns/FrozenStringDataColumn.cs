@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text;
 
 namespace IcyRain.Tables;
 
-[DataContract]
-public sealed class StringDataColumn : SingleDataColumn<string>
+public sealed class FrozenStringDataColumn : FrozenSingleDataColumn<string>
 {
-    public StringDataColumn(int capacity) : base(capacity) { }
+    internal FrozenStringDataColumn(StringDataColumn dataColumn) : base(dataColumn) { }
 
     public override DataType Type => DataType.String;
-
-    public override string Fallback
-    {
-        get => base.Fallback;
-        set => base.Fallback = string.IsNullOrEmpty(value) ? null : value;
-    }
-
-    public sealed override FrozenDataColumn<string> ToFrozen() => new FrozenStringDataColumn(this);
 
     public sealed override bool GetBool(in int row) => bool.Parse(base.Get(row) ?? string.Empty);
 
@@ -90,12 +80,6 @@ public sealed class StringDataColumn : SingleDataColumn<string>
 
     public sealed override string Get(in int row) => base.Get(row) ?? string.Empty;
 
-    public sealed override void Set(in int row, in string value) => SetWithCheck(row, value, Values, Fallback, IsDefault);
-
-    public sealed override void SetObject(in int row, object value) => SetWithCheck(row, (string)value, Values, Fallback, IsDefault);
-
-    protected sealed override bool Equals(string x, string y) => x == y;
-
     protected sealed override bool IsDefault(string value) => string.IsNullOrEmpty(value);
 
     public sealed override bool IsNull(in int row) => false;
@@ -105,35 +89,21 @@ public sealed class StringDataColumn : SingleDataColumn<string>
         if (count < 0)
             throw new ArgumentNullException(nameof(count));
 
-        if (Values is null)
-            return GetNullValues(count);
-
-        int valuesCount = Values.Count;
         var values = new List<string>(count);
 
-        if (count > valuesCount)
+        if (count > _valuesCount)
         {
-            for (int i = 0; i < valuesCount; i++)
-                values.Add(Values[i] ?? string.Empty);
+            for (int i = 0; i < _valuesCount; i++)
+                values.Add(_values[i] ?? string.Empty);
 
-            for (int i = valuesCount; i < count; i++)
-                values.Add(base.Fallback ?? string.Empty);
+            for (int i = _valuesCount; i < count; i++)
+                values.Add(_fallback ?? string.Empty);
         }
         else
         {
             for (int i = 0; i < count; i++)
-                values.Add(Values[i] ?? string.Empty);
+                values.Add(_values[i] ?? string.Empty);
         }
-
-        return values;
-    }
-
-    private List<string> GetNullValues(int count)
-    {
-        var values = new List<string>(count);
-
-        for (int i = 0; i < count; i++)
-            values.Add(base.Fallback ?? string.Empty);
 
         return values;
     }

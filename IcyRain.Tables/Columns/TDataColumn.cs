@@ -17,6 +17,10 @@ public abstract class DataColumn<T> : DataColumn
 
     public sealed override Type LanguageType => typeof(T);
 
+    public abstract FrozenDataColumn<T> ToFrozen();
+
+    public sealed override FrozenDataColumn ToFrozenObject() => ToFrozen();
+
     [MethodImpl(Flags.HotPath)]
     public virtual T Get(in int row)
     {
@@ -25,15 +29,13 @@ public abstract class DataColumn<T> : DataColumn
     }
 
     [MethodImpl(Flags.HotPath)]
-    public virtual void Set(in int row, in T value)
-        => Set(row, value, Values, default, IsDefault);
+    public virtual void Set(in int row, in T value) => Set(row, value, Values, default, IsDefault);
 
     [MethodImpl(Flags.HotPath)]
     public sealed override object GetObject(in int row) => Get(row);
 
     [MethodImpl(Flags.HotPath)]
-    public override void SetObject(in int row, object value)
-        => Set(row, (T)value, Values, default, IsDefault);
+    public override void SetObject(in int row, object value) => Set(row, (T)value, Values, default, IsDefault);
 
     public sealed override void Clear(in int row)
     {
@@ -48,10 +50,6 @@ public abstract class DataColumn<T> : DataColumn
     public override bool IsNull(in int row) => Get(row) is null;
 
     public abstract List<T> GetValues(int count);
-
-    protected virtual T GetDefaultValue() => default;
-
-    protected sealed override int GetCount() => Values?.Count ?? 0;
 
     internal sealed override void SetNullRowsIfEmpty() => SetNullRowsIfEmpty(Values, SetRows);
 
