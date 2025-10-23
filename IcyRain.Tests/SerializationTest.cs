@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using IcyRain.Data.Objects;
-using IcyRain.Internal;
 using NUnit.Framework;
 
 namespace IcyRain.Tests;
@@ -98,6 +97,34 @@ public class SerializationTest
                 Check(deepClone, data, clone);
             }
         }
+    }
+
+    [Test]
+    public void NotifyClass()
+    {
+        var data = new NotifyMessage
+        {
+            Name = "test1",
+            DeviceName = "test2",
+            Port = 12345,
+        };
+
+        var message3 = Serialization.Serialize(data);
+
+        foreach (var deepClone in Tests<SearchMessage>.Functions)
+        {
+            var clone = deepClone(data);
+            Check(deepClone, data, clone);
+        }
+    }
+
+    private static void Check(Delegate deepClone, NotifyMessage data, SearchMessage clone)
+    {
+        var notifyClone = clone as NotifyMessage;
+        Assert.That(notifyClone is not null);
+        Assert.That(data.Name == clone.Name);
+        Assert.That(data.DeviceName == clone.DeviceName);
+        Assert.That(data.Port == notifyClone.Port);
     }
 
     private static void Check(Delegate deepClone, TestData data, TestData clone)

@@ -11,7 +11,7 @@ namespace IcyRain.Resolvers;
 
 internal static class ResolverHelper
 {
-    private static readonly ConcurrentDictionary<Type, bool> _unionMap = new();
+    private static readonly ConcurrentDictionary<Type, bool> _unionMap = [];
 
     public static IBuilderData GetBuilderData(Type type)
         => IsUnionResolver(type) ? BuilderData<UnionResolver>.Get(type) : BuilderData<Resolver>.Get(type);
@@ -19,39 +19,40 @@ internal static class ResolverHelper
     [MethodImpl(Flags.HotPath)]
     public static bool IsUnionResolver<T>() => IsUnionResolver(typeof(T));
 
-    public static bool IsUnionResolver(Type type)
-        => _unionMap.GetOrAdd(type, t =>
+    public static bool IsUnionResolver(Type type) => _unionMap.GetOrAdd(type, IsUnionResolverCore);
+
+    private static bool IsUnionResolverCore(Type type)
+    {
+        if (type.IsEnum)
+            return false;
+
+        while (type.HasCollectionDataContractAttribute())
+            type = type.BaseType;
+
+        while (true)
         {
-            if (t.IsEnum)
-                return false;
-
-            while (t.HasCollectionDataContractAttribute())
-                t = t.BaseType;
-
-            while (true)
+            if (type.IsArray)
+                type = type.GetElementType();
+            else if (type.IsSystemType())
             {
-                if (t.IsArray)
-                    t = t.GetElementType();
-                else if (t.IsSystemType())
+                if (type.IsGenericType)
                 {
-                    if (t.IsGenericType)
-                    {
-                        t = t.GetGenericArgumentValueType();
-                        return t is not null && IsUnion(t);
-                    }
-
-                    return false;
+                    type = type.GetGenericArgumentValueType();
+                    return type is not null && IsUnion(type);
                 }
-                else if (t.IsClass && t.BaseType.IsSystemType())
-                    return IsUnion(t.BaseType.GetGenericArgumentValueType() ?? t);
-                else if (t.IsGenericType)
-                    t = t.GetGenericArguments()[0];
-                else
-                    break;
-            }
 
-            return t?.HasKnownTypes() ?? false;
-        });
+                return false;
+            }
+            else if (type.IsClass && type.BaseType.IsSystemType())
+                return IsUnion(type.BaseType.GetGenericArgumentValueType() ?? type);
+            else if (type.IsGenericType)
+                type = type.GetGenericArguments()[0];
+            else
+                break;
+        }
+
+        return type?.HasKnownTypes() ?? false;
+    }
 
     private static bool IsUnion(Type type)
     {
