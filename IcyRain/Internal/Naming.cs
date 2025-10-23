@@ -27,7 +27,7 @@ internal static class Naming
         if (isUnion)
             builder.Append("Union.");
 
-        BuildName(builder, type, isUnion, true);
+        BuildName(builder, type, true);
 
         if (forSerializer)
             builder.Append("$Serializer");
@@ -41,11 +41,11 @@ internal static class Naming
     public static string GetSerializerNotFoundMessage(Type type)
         => $"Serializer '{type.Name}' not found";
 
-    private static void BuildName(StringBuilder builder, Type type, bool isUnion, bool isFirst)
+    private static void BuildName(StringBuilder builder, Type type, bool isFirst)
     {
         if (type.IsArray)
         {
-            BuildName(builder, type.GetElementType(), isUnion, isFirst);
+            BuildName(builder, type.GetElementType(), isFirst);
             builder.Append("$A");
         }
         else if (type.IsGenericType)
@@ -67,7 +67,7 @@ internal static class Naming
             foreach (var argumentType in argumentTypes)
             {
                 builder.Append('_');
-                BuildName(builder, argumentType, isUnion, false);
+                BuildName(builder, argumentType, false);
             }
         }
         else
