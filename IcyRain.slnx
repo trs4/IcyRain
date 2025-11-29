@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path="NuGet.Config" />
+    <File Path="RuleSet.ruleset" />
+  </Folder>
+  <Project Path="IcyRain.Benchmarks/IcyRain.Benchmarks.csproj" />
+  <Project Path="IcyRain.Console/IcyRain.Console.csproj" />
+  <Project Path="IcyRain.Data/IcyRain.Data.csproj" />
+  <Project Path="IcyRain.Tables/IcyRain.Tables.csproj" />
+  <Project Path="IcyRain.Tests/IcyRain.Tests.csproj" />
+  <Project Path="IcyRain/IcyRain.csproj" />
+</Solution>
