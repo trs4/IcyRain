@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net10.0</TargetFrameworks>
+    <DefineConstants></DefineConstants>
+    <IsPackable>false</IsPackable>
+    <NoWarn>CA1062</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="greet.proto" GrpcServices="Client" Link="greet.proto" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Net.Client" />
+  </ItemGroup>
+</Project>
