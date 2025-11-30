@@ -8,13 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+    <ProjectReference Include="..\IcyRain.Grpc.Client\IcyRain.Grpc.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="greet.proto" GrpcServices="Client" Link="greet.proto" />
     <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
     <PackageReference Include="Google.Protobuf" />
-    <PackageReference Include="Grpc.Net.Client" />
   </ItemGroup>
 </Project>

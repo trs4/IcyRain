@@ -33,13 +33,13 @@ internal sealed class HttpContextStreamReader<TRequest> : IAsyncStreamReader<TRe
 
     //public void Dispose() { }
 
-    public Task<bool> MoveNext(CancellationToken cancellationToken)
+    public Task<bool> MoveNext(CancellationToken token)
     {
         async Task<bool> MoveNextAsync(ValueTask<TRequest?> readStreamTask)
             => ProcessPayload(await readStreamTask);
 
-        if (cancellationToken.IsCancellationRequested)
-            return Task.FromCanceled<bool>(cancellationToken);
+        if (token.IsCancellationRequested)
+            return Task.FromCanceled<bool>(token);
 
         if (_completed || _requestLifetimeFeature.RequestAborted.IsCancellationRequested)
             return Task.FromException<bool>(new InvalidOperationException("Can't read messages after the request is complete."));
@@ -47,7 +47,7 @@ internal sealed class HttpContextStreamReader<TRequest> : IAsyncStreamReader<TRe
         // Clear current before moving next. This prevents rooting the previous value while getting the next one.
         // In a long running stream this can allow the previous value to be GCed.
         Current = null!;
-        var request = _bodyReader.ReadStreamMessageAsync(_serverCallContext, _deserializer, cancellationToken);
+        var request = _bodyReader.ReadStreamMessageAsync(_serverCallContext, _deserializer, token);
 
         if (!request.IsCompletedSuccessfully)
             return MoveNextAsync(request);

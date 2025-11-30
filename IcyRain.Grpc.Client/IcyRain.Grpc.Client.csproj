@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>IcyRain.Grpc.Client</AssemblyName>
+    <TargetFrameworks>net10.0</TargetFrameworks>
+    <DefineConstants></DefineConstants>
+    <NoWarn>CA1005;CA2002;CA2007</NoWarn>
+    <Nullable>enable</Nullable>
+
+    <TieredPGO>true</TieredPGO>
+
+    <PackageId>IcyRain.Grpc.Client</PackageId>
+    <PackageTags>buffers;binary;serialization</PackageTags>
+    <PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Core.Api" />
+    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+  </ItemGroup>
+</Project>
+

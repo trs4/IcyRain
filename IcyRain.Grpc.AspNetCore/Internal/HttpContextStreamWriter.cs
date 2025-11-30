@@ -42,27 +42,27 @@ internal sealed class HttpContextStreamWriter<TResponse> : IServerStreamWriter<T
     public Task WriteAsync(TResponse message)
         => WriteCoreAsync(message, CancellationToken.None);
 
-    // Explicit implementation because this WriteAsync has a default interface implementation.
-    Task IAsyncStreamWriter<TResponse>.WriteAsync(TResponse message, CancellationToken cancellationToken)
-        => WriteCoreAsync(message, cancellationToken);
+    // Explicit implementation because this WriteAsync has a default interface implementation
+    Task IAsyncStreamWriter<TResponse>.WriteAsync(TResponse message, CancellationToken token)
+        => WriteCoreAsync(message, token);
 
-    private async Task WriteCoreAsync(TResponse message, CancellationToken cancellationToken)
+    private async Task WriteCoreAsync(TResponse message, CancellationToken token)
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        // Register cancellation token early to ensure request is canceled if cancellation is requested.
+        // Register cancellation token early to ensure request is canceled if cancellation is requested
         CancellationTokenRegistration? registration = null;
 
-        if (cancellationToken.CanBeCanceled)
+        if (token.CanBeCanceled)
         {
-            registration = cancellationToken.Register(
+            registration = token.Register(
                 static (state) => ((HttpContextServerCallContext)state!).CancelRequest(),
                 _context);
         }
 
         try
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            token.ThrowIfCancellationRequested();
 
             if (_completed || _requestLifetimeFeature.RequestAborted.IsCancellationRequested)
                 throw new InvalidOperationException("Can't write the message because the request is complete.");
@@ -74,7 +74,7 @@ internal sealed class HttpContextStreamWriter<TResponse> : IServerStreamWriter<T
                     throw new InvalidOperationException("Can't write the message because the previous write is in progress.");
 
                 // Save write task to track whether it is complete. Must be set inside lock.
-                _writeTask = _bodyWriter.WriteStreamedMessageAsync(message, _context, _serializer, cancellationToken);
+                _writeTask = _bodyWriter.WriteStreamedMessageAsync(message, _context, _serializer, token);
             }
 
             await _writeTask;

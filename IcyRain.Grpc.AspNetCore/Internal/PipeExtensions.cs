@@ -38,14 +38,14 @@ internal static partial class PipeExtensions
     }
 
     public static async Task WriteStreamedMessageAsync<TResponse>(this PipeWriter pipeWriter, TResponse response, HttpContextServerCallContext serverCallContext,
-        Action<TResponse, SerializationContext> serializer, CancellationToken cancellationToken = default)
+        Action<TResponse, SerializationContext> serializer, CancellationToken token = default)
         where TResponse : class
     {
         // Must call StartAsync before the first pipeWriter.GetSpan() in WriteHeader
         var httpResponse = serverCallContext.HttpContext.Response;
 
         if (!httpResponse.HasStarted)
-            await httpResponse.StartAsync(cancellationToken);
+            await httpResponse.StartAsync(token);
 
         var serializationContext = serverCallContext.SerializationContext;
         serializationContext.Reset();
@@ -57,12 +57,12 @@ internal static partial class PipeExtensions
 
         if (flush)
         {
-            var flushResult = await pipeWriter.FlushAsync(cancellationToken);
+            var flushResult = await pipeWriter.FlushAsync(token);
 
             // Workaround bug where FlushAsync doesn't return IsCanceled = true on request abort.
             // https://github.com/dotnet/aspnetcore/issues/40788
             // Also, sometimes the request CT isn't triggered. Also check CT passed into method.
-            if (!flushResult.IsCompleted && (serverCallContext.CancellationToken.IsCancellationRequested || cancellationToken.IsCancellationRequested))
+            if (!flushResult.IsCompleted && (serverCallContext.CancellationToken.IsCancellationRequested || token.IsCancellationRequested))
                 throw new OperationCanceledException("Request aborted while sending the message.");
         }
     }
@@ -164,13 +164,13 @@ internal static partial class PipeExtensions
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public static async ValueTask<T?> ReadStreamMessageAsync<T>(this PipeReader input, HttpContextServerCallContext serverCallContext,
-        Func<DeserializationContext, T> deserializer, CancellationToken cancellationToken = default)
+        Func<DeserializationContext, T> deserializer, CancellationToken token = default)
         where T : class
     {
         while (true)
         {
             var completeMessage = false;
-            var result = await input.ReadAsync(cancellationToken);
+            var result = await input.ReadAsync(token);
             var buffer = result.Buffer;
 
             try

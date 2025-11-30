@@ -1,6 +1,6 @@
 ﻿using System;
 using Greet;
-using Grpc.Net.Client;
+using IcyRain.Grpc.Client;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:5001");
 var client = new Greeter.GreeterClient(channel);

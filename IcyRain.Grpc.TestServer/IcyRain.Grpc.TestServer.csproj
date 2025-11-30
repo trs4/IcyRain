@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IcyRain.Grpc.AspNetCore\IcyRain.Grpc.AspNetCore.csproj" />
-    <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
   </ItemGroup>
   
   <ItemGroup>

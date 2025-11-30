@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Grpc/">
     <Project Path="IcyRain.Grpc.AspNetCore/IcyRain.Grpc.AspNetCore.csproj" Id="a8564a30-d53f-4275-a3dc-2e5a6b2bb0ba" />
+    <Project Path="IcyRain.Grpc.Client/IcyRain.Grpc.Client.csproj" Id="82c84f51-8bfe-4ad2-bbc7-89e530a8bd02" />
     <Project Path="IcyRain.Grpc.TestClient/IcyRain.Grpc.TestClient.csproj" Id="ca3f6c65-074b-49a8-932f-9fee90e5f9b6" />
     <Project Path="IcyRain.Grpc.TestServer/IcyRain.Grpc.TestServer.csproj" Id="8df40902-1bff-419a-aef7-a1e5b61a31fb" />
   </Folder>
