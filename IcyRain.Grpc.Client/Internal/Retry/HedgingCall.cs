@@ -23,16 +23,13 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
     private TaskCompletionSource<bool>? _writeClientMessageTcs;
     private int _writeClientMessageCount;
 
-    // Internal for testing
-    internal List<IGrpcCall<TRequest, TResponse>> ActiveCalls { get; }
-
-    internal Task? CreateHedgingCallsTask { get; set; }
+    private readonly List<IGrpcCall<TRequest, TResponse>> _activeCalls;
 
     public HedgingCall(HedgingPolicyInfo hedgingPolicy, GrpcChannel channel, Method<TRequest, TResponse> method, CallOptions options)
         : base(channel, method, options, hedgingPolicy.MaxAttempts)
     {
         _hedgingPolicy = hedgingPolicy;
-        ActiveCalls = [];
+        _activeCalls = [];
 
         if (_hedgingPolicy.HedgingDelay > TimeSpan.Zero)
         {
@@ -61,7 +58,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
                 OnStartingAttempt();
 
                 call = HttpClientCallInvoker.CreateGrpcCall<TRequest, TResponse>(Channel, Method, Options, AttemptCount, forceAsyncHttpResponse: true, CallWrapper);
-                ActiveCalls.Add(call);
+                _activeCalls.Add(call);
 
                 startCallFunc(call);
 
@@ -132,7 +129,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
                     CommitCall(call, CommitReason.DeadlineExceeded); // Deadline has been exceeded so immediately commit call
                 else if (!_hedgingPolicy.NonFatalStatusCodes.Contains(status.StatusCode))
                     CommitCall(call, CommitReason.FatalStatusCode);
-                else if (ActiveCalls.Count == 1 && AttemptCount >= MaxRetryAttempts)
+                else if (_activeCalls.Count == 1 && AttemptCount >= MaxRetryAttempts)
                     CommitCall(call, CommitReason.ExceededAttemptCount); // This is the last active call and no more will be made
                 else
                 {
@@ -142,7 +139,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
                     // Increment call failure out. Needs to happen before checking throttling.
                     RetryAttemptCallFailure();
 
-                    if (ActiveCalls.Count == 1 && IsRetryThrottlingActive())
+                    if (_activeCalls.Count == 1 && IsRetryThrottlingActive())
                     {
                         // This is the last active call and throttling is active.
                         CommitCall(call, CommitReason.Throttled);
@@ -164,7 +161,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
                         // Call isn't used and can be cancelled.
                         // Note that the call could have already been removed and disposed if the
                         // hedging call has been finalized or disposed
-                        if (ActiveCalls.Remove(call))
+                        if (_activeCalls.Remove(call))
                             call.Dispose();
                     }
                 }
@@ -197,7 +194,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
     {
         Debug.Assert(Monitor.IsEntered(Lock));
 
-        ActiveCalls.Remove(call);
+        _activeCalls.Remove(call);
         CleanUpUnsynchronized();
     }
 
@@ -205,10 +202,10 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
     {
         Debug.Assert(Monitor.IsEntered(Lock));
 
-        while (ActiveCalls.Count > 0)
+        while (_activeCalls.Count > 0)
         {
-            ActiveCalls[^1].Dispose();
-            ActiveCalls.RemoveAt(ActiveCalls.Count - 1);
+            _activeCalls[^1].Dispose();
+            _activeCalls.RemoveAt(_activeCalls.Count - 1);
         }
     }
 
@@ -236,7 +233,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
             }
         }
         else
-            CreateHedgingCallsTask = CreateHedgingCalls(startCallFunc);
+            _ = CreateHedgingCalls(startCallFunc);
     }
 
 #pragma warning disable CA2000 // Dispose objects before losing scope
@@ -262,7 +259,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
                     {
                         if (IsRetryThrottlingActive())
                         {
-                            if (ActiveCalls.Count == 0)
+                            if (_activeCalls.Count == 0)
                                 CommitCall(CreateStatusCall(GrpcProtocolConstants.ThrottledStatus), CommitReason.Throttled);
                             
                             break;
@@ -452,7 +449,7 @@ internal sealed partial class HedgingCall<TRequest, TResponse> : RetryCallBase<T
         // Because of hedging, multiple active calls can be in-progress. Apply action to all.
 
         lock (Lock)
-            return ActiveCalls.Count > 0 ? action(ActiveCalls) : WaitForCallUnsynchronizedAsync(action);
+            return _activeCalls.Count > 0 ? action(_activeCalls) : WaitForCallUnsynchronizedAsync(action);
 
         async Task WaitForCallUnsynchronizedAsync(Func<IList<IGrpcCall<TRequest, TResponse>>, Task> action)
         {

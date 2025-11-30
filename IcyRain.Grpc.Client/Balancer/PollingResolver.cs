@@ -17,8 +17,7 @@ namespace IcyRain.Grpc.Client.Balancer;
 /// </summary>
 public abstract partial class PollingResolver : Resolver
 {
-    // Internal for testing
-    internal Task _resolveTask = Task.CompletedTask;
+    private Task _resolveTask = Task.CompletedTask;
     private Action<ResolverResult>? _listener;
     private bool _disposed;
     private bool _resolveSuccessful;

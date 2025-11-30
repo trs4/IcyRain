@@ -19,12 +19,9 @@ internal sealed class PushStreamContent<TRequest, TResponse> : HttpContent
         _streamWriter = streamWriter;
     }
 
-    public PushStreamContent(
-        HttpContentClientStreamWriter<TRequest, TResponse> streamWriter,
-        Func<Stream, Task>? startCallback) : this(streamWriter)
-    {
-        _startCallback = startCallback;
-    }
+    public PushStreamContent(HttpContentClientStreamWriter<TRequest, TResponse> streamWriter, Func<Stream, Task>? startCallback)
+        : this(streamWriter)
+        => _startCallback = startCallback;
 
     protected override async Task SerializeToStreamAsync(Stream stream, TransportContext? context)
     {
@@ -49,11 +46,4 @@ internal sealed class PushStreamContent<TRequest, TResponse> : HttpContent
         return false;
     }
 
-    // Hacky. ReadAsStreamAsync does not complete until SerializeToStreamAsync finishes.
-    // WARNING: Will run SerializeToStreamAsync again on .NET Framework.
-    internal Task PushComplete => ReadAsStreamAsync();
-
-    // Internal for testing.
-    internal Task SerializeToStreamAsync(Stream stream)
-        => SerializeToStreamAsync(stream, context: null);
 }

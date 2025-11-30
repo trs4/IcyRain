@@ -15,18 +15,15 @@ internal sealed class ConnectionManager : IDisposable, IChannelControlHelper
     private static readonly ChannelIdProvider _channelIdProvider = new ChannelIdProvider();
 
     private readonly object _lock;
-    internal readonly Resolver _resolver;
+    private readonly Resolver _resolver;
     private readonly ISubchannelTransportFactory _subchannelTransportFactory;
     private readonly List<Subchannel> _subchannels;
     private readonly List<StateWatcher> _stateWatchers;
     private readonly TaskCompletionSource<object?> _resolverStartedTcs;
     private readonly long _channelId;
-
-    // Internal for testing
-    internal LoadBalancer? _balancer;
-    internal SubchannelPicker? _picker;
-    // Cache picker wrapped in task once and reuse.
-    private Task<SubchannelPicker>? _pickerTask;
+    private LoadBalancer? _balancer;
+    private SubchannelPicker? _picker;
+    private Task<SubchannelPicker>? _pickerTask; // Cache picker wrapped in task once and reuse
     private bool _resolverStarted;
     private TaskCompletionSource<SubchannelPicker> _nextPickerTcs;
     private int _currentSubchannelId;

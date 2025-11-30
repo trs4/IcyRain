@@ -169,39 +169,4 @@ internal abstract class GrpcCall
         _ => ((int)httpStatusCode >= 100 && (int)httpStatusCode < 200) ? StatusCode.Internal : StatusCode.Unknown, // 100
     };
 
-    protected internal sealed class ActivityStartData
-    {
-        // Common properties. Properties not in this list could be trimmed.
-        [DynamicDependency(nameof(HttpRequestMessage.RequestUri), typeof(HttpRequestMessage))]
-        [DynamicDependency(nameof(HttpRequestMessage.Method), typeof(HttpRequestMessage))]
-        [DynamicDependency(nameof(Uri.Host), typeof(Uri))]
-        [DynamicDependency(nameof(Uri.Port), typeof(Uri))]
-        internal ActivityStartData(HttpRequestMessage request)
-            => Request = request;
-
-        public HttpRequestMessage Request { get; }
-
-        public override string ToString() => $"{{ {nameof(Request)} = {Request} }}";
-    }
-
-    protected internal sealed class ActivityStopData
-    {
-        [DynamicDependency(nameof(HttpRequestMessage.RequestUri), typeof(HttpRequestMessage))]
-        [DynamicDependency(nameof(HttpRequestMessage.Method), typeof(HttpRequestMessage))]
-        [DynamicDependency(nameof(Uri.Host), typeof(Uri))]
-        [DynamicDependency(nameof(Uri.Port), typeof(Uri))]
-        [DynamicDependency(nameof(HttpResponseMessage.StatusCode), typeof(HttpResponseMessage))]
-        internal ActivityStopData(HttpResponseMessage? response, HttpRequestMessage request)
-        {
-            Response = response;
-            Request = request;
-        }
-
-        public HttpResponseMessage? Response { get; }
-
-        public HttpRequestMessage Request { get; }
-
-        public override string ToString() => $"{{ {nameof(Response)} = {Response}, {nameof(Request)} = {Request} }}";
-    }
-
 }

@@ -33,8 +33,7 @@ internal sealed class RoundRobinBalancer : SubchannelsLoadBalancer
 
 internal sealed class RoundRobinPicker : SubchannelPicker
 {
-    // Internal for testing
-    internal readonly List<Subchannel> _subchannels;
+    private readonly List<Subchannel> _subchannels;
     private long _pickCount;
 
     public RoundRobinPicker(IReadOnlyList<Subchannel> subchannels, long pickCount)

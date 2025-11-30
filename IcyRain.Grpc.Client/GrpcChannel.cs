@@ -665,13 +665,6 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
             return RandomGenerator.Next(minValue, maxValue);
     }
 
-    // Internal for testing
-    internal IDisposable[] GetActiveCalls()
-    {
-        lock (_lock)
-            return [.. _activeCalls];
-    }
-
     private sealed class SubChannelTransportFactory : ISubchannelTransportFactory
     {
         private readonly GrpcChannel _channel;

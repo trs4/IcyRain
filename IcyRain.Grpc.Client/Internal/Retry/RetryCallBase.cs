@@ -23,9 +23,7 @@ internal abstract partial class RetryCallBase<TRequest, TResponse> : IGrpcCall<T
     private Task<Metadata>? _responseHeadersTask;
     private TRequest? _request;
     private bool _commitStarted;
-
-    // Internal for unit testing.
-    internal CancellationTokenRegistration? _ctsRegistration;
+    private CancellationTokenRegistration? _ctsRegistration;
 
     protected object Lock { get; } = new object();
 

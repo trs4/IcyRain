@@ -25,8 +25,7 @@ internal sealed partial class ServerCallHandlerFactory<[DynamicallyAccessedMembe
         _globalOptions = globalOptions.Value;
     }
 
-    // Internal for testing
-    internal MethodOptions CreateMethodOptions() => MethodOptions.Create([_globalOptions, _serviceOptions]);
+    private MethodOptions CreateMethodOptions() => MethodOptions.Create([_globalOptions, _serviceOptions]);
 
     public UnaryServerCallHandler<TService, TRequest, TResponse> CreateUnary<TRequest, TResponse>(
         Method<TRequest, TResponse> method, UnaryServerMethod<TService, TRequest, TResponse> invoker)

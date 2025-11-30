@@ -407,11 +407,8 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
 
     private async Task RunCall(HttpRequestMessage request, TimeSpan? timeout)
     {
-        var (diagnosticSourceEnabled, activity) = InitializeCall(request, timeout);
-
-        // Unset variable to check that FinishCall is called in every code path
-        bool finished;
-        Status? status;
+        InitializeCall(request, timeout);
+        Status? status; // Unset variable to check that FinishCall is called in every code path
 
         try
         {
@@ -444,7 +441,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                 {
                     // gRPC status in the header
                     if (status.Value.StatusCode != StatusCode.OK)
-                        finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+                        FinishCall(request, status.Value);
                     else
                     {
                         // Change the status code to a more accurate status.
@@ -453,7 +450,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                             "Failed to deserialize response message. The response header contains a gRPC status of OK, which means any message returned to the client for this call should be ignored. " +
                             "A unary or client streaming gRPC call must have a response message, which makes this response invalid.");
 
-                        finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+                        FinishCall(request, status.Value);
                     }
 
                     FinishResponseAndCleanUp(status.Value);
@@ -466,7 +463,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                 }
                 else
                 {
-                    finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+                    FinishCall(request, status.Value);
                     FinishResponseAndCleanUp(status.Value);
                 }
             }
@@ -482,7 +479,8 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                     singleMessage: true,
                     _callCts.Token).ConfigureAwait(false);
 
-                status = GrpcProtocolHelpers.GetResponseStatus(HttpResponse, Channel.OperatingSystem.IsBrowser, Channel.HttpHandlerType == HttpHandlerType.WinHttpHandler);
+                status = GrpcProtocolHelpers.GetResponseStatus(
+                    HttpResponse, Channel.OperatingSystem.IsBrowser, Channel.HttpHandlerType == HttpHandlerType.WinHttpHandler);
 
                 if (message is null)
                 {
@@ -494,7 +492,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                     }
 
                     FinishResponseAndCleanUp(status.Value);
-                    finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+                    FinishCall(request, status.Value);
 
                     // Set failed result makes the response task thrown an error. Must be called after
                     // the response is finished. Reasons:
@@ -505,7 +503,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                 else
                 {
                     FinishResponseAndCleanUp(status.Value);
-                    finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+                    FinishCall(request, status.Value);
 
                     if (status.Value.StatusCode == StatusCode.OK)
                         _responseTcs.TrySetResult(message);
@@ -529,7 +527,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                 // TCS will also be set in Dispose.
                 status = await CallTask.ConfigureAwait(false);
 
-                finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+                FinishCall(request, status.Value);
                 Cleanup(status.Value);
             }
         }
@@ -537,7 +535,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
         {
             ResolveException(ErrorStartingCallMessage, ex, out status, out var resolvedException);
 
-            finished = FinishCall(request, diagnosticSourceEnabled, activity, status.Value);
+            FinishCall(request, status.Value);
 
             // Update HTTP response TCS before clean up. Needs to happen first because cleanup will
             // cancel the TCS for anyone still listening.
@@ -559,9 +557,6 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
             }
         }
 
-        // Verify that FinishCall is called in every code path of this method.
-        // Should create an "Unassigned variable" compiler error if not set.
-        Debug.Assert(finished);
         // Should be completed before exiting.
         Debug.Assert(_httpResponseTcs.Task.IsCompleted);
         Debug.Assert(_responseTcs is null || _responseTcs.Task.IsCompleted);
@@ -675,17 +670,16 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
             _responseTcs.TrySetException(CreateRpcException(status));
     }
 
-    private (bool diagnosticSourceEnabled, Activity? activity) InitializeCall(HttpRequestMessage request, TimeSpan? timeout)
+    private void InitializeCall(HttpRequestMessage request, TimeSpan? timeout)
     {
-        // Deadline will cancel the call CTS.
+        // Deadline will cancel the call CTS
         // Only exceed deadline/start timer after reader/writer have been created, otherwise deadline will cancel
-        // the call CTS before they are created and leave them in a non-canceled state.
+        // the call CTS before they are created and leave them in a non-canceled state
         if (timeout != null)
         {
             if (timeout.Value <= TimeSpan.Zero)
             {
-                // Call was started with a deadline in the past so immediately trigger deadline exceeded.
-                lock (this)
+                lock (this) // Call was started with a deadline in the past so immediately trigger deadline exceeded
                     DeadlineExceeded();
             }
             else
@@ -695,88 +689,32 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
             }
         }
 
-        bool diagnosticSourceEnabled = false;
-        //var diagnosticSourceEnabled = GrpcDiagnostics.DiagnosticListener.IsEnabled() &&
-        //    GrpcDiagnostics.DiagnosticListener.IsEnabled(GrpcDiagnostics.ActivityName, request);
-        Activity? activity = null;
-
-        //// Set activity if:
-        //// 1. Diagnostic source is enabled
-        //// 2. Logging is enabled
-        //// 3. There is an existing activity (to enable activity propagation)
-        //// 4. ActivitySource has listeners
-        //if (diagnosticSourceEnabled || Activity.Current != null || GrpcDiagnostics.ActivitySource.HasListeners())
-        //{
-        //    activity = GrpcDiagnostics.ActivitySource.CreateActivity(GrpcDiagnostics.ActivityName, ActivityKind.Client);
-
-        //    // ActivitySource only returns an activity if someone is listening.
-        //    // If we're at this point then we always want there to be an activity. Create the activity manually.
-        //    activity ??= new Activity(GrpcDiagnostics.ActivityName);
-
-        //    activity.AddTag(GrpcDiagnostics.GrpcMethodTagName, Method.FullName);
-        //    activity.Start();
-
-        //    if (diagnosticSourceEnabled)
-        //    {
-        //        WriteDiagnosticEvent(GrpcDiagnostics.DiagnosticListener, GrpcDiagnostics.ActivityStartKey, new ActivityStartData(request));
-        //    }
-        //}
-
         if (Options.CancellationToken.CanBeCanceled)
         {
-            // The cancellation token will cancel the call CTS.
+            // The cancellation token will cancel the call CTS
             // This must be registered after the client writer has been created
-            // so that cancellation will always complete the writer.
+            // so that cancellation will always complete the writer
             _ctsRegistration = RegisterCancellation(Options.CancellationToken);
         }
-
-        return (diagnosticSourceEnabled, activity);
     }
 
-    private bool FinishCall(HttpRequestMessage request, bool diagnosticSourceEnabled, Activity? activity, Status status)
+    private void FinishCall(HttpRequestMessage request, Status status)
     {
-        if (status.StatusCode != StatusCode.OK)
+        if (status.StatusCode == StatusCode.DeadlineExceeded)
         {
-            if (status.StatusCode == StatusCode.DeadlineExceeded)
+            // Usually a deadline will be triggered via the deadline timer. However,
+            // if the client and server are on the same machine it is possible for the
+            // client to get the response before the timer triggers. In that situation
+            // treat a returned DEADLINE_EXCEEDED status as the client exceeding deadline.
+            // To ensure that the deadline counter isn't incremented twice in a race
+            // between the timer and status, lock and use _deadline to check whether
+            // the client has processed that it has exceeded or not.
+            lock (this)
             {
-                // Usually a deadline will be triggered via the deadline timer. However,
-                // if the client and server are on the same machine it is possible for the
-                // client to get the response before the timer triggers. In that situation
-                // treat a returned DEADLINE_EXCEEDED status as the client exceeding deadline.
-                // To ensure that the deadline counter isn't incremented twice in a race
-                // between the timer and status, lock and use _deadline to check whether
-                // the client has processed that it has exceeded or not.
-                lock (this)
-                {
-                    if (IsDeadlineExceededUnsynchronized())
-                        _deadline = DateTime.MaxValue;
-                }
+                if (IsDeadlineExceededUnsynchronized())
+                    _deadline = DateTime.MaxValue;
             }
         }
-
-        //// Activity needs to be stopped in the same execution context it was started
-        //if (activity != null)
-        //{
-        //    var statusText = status.StatusCode.ToString("D");
-        //    if (statusText != null)
-        //    {
-        //        activity.AddTag(GrpcDiagnostics.GrpcStatusCodeTagName, statusText);
-        //    }
-
-        //    if (diagnosticSourceEnabled)
-        //    {
-        //        // Stop sets the end time if it was unset, but we want it set before we issue the write
-        //        // so we do it now.
-        //        if (activity.Duration == TimeSpan.Zero)
-        //            activity.SetEndTime(DateTime.UtcNow);
-
-        //        WriteDiagnosticEvent(GrpcDiagnostics.DiagnosticListener, GrpcDiagnostics.ActivityStopKey, new ActivityStopData(HttpResponse, request));
-        //    }
-
-        //    activity.Stop();
-        //}
-
-        return true;
     }
 
     private bool IsDeadlineExceededUnsynchronized()
@@ -951,7 +889,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
 
         if (message is null)
             return null;
-        
+
         MessagesRead++;
         return message;
     }

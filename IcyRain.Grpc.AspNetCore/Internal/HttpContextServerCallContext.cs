@@ -20,8 +20,6 @@ internal sealed partial class HttpContextServerCallContext : ServerCallContext
     private Metadata? _responseTrailers;
     private Status _status;
     private AuthContext? _authContext;
-    private Activity? _activity;
-    // Internal for tests
     internal ServerCallDeadlineManager? DeadlineManager;
     private HttpContextSerializationContext? _serializationContext;
     private DefaultDeserializationContext? _deserializationContext;
@@ -158,7 +156,6 @@ internal sealed partial class HttpContextServerCallContext : ServerCallContext
             HttpContext.Response.ConsolidateTrailers(this);
 
         DeadlineManager?.SetCallEnded();
-        LogCallEnd();
     }
 
     // If there is a deadline then we need to have our own cancellation token.
@@ -214,12 +211,7 @@ internal sealed partial class HttpContextServerCallContext : ServerCallContext
         // Don't update trailers if request has exceeded deadline
         if (DeadlineManager is null || !DeadlineManager.IsDeadlineExceededStarted)
             HttpContext.Response.ConsolidateTrailers(this);
-
-        LogCallEnd();
     }
-
-    private void LogCallEnd()
-        => _activity?.AddTag(GrpcServerConstants.ActivityStatusCodeTag, _status.StatusCode.ToTrailerString());
 
     protected override WriteOptions? WriteOptionsCore { get; set; }
 
@@ -283,36 +275,10 @@ internal sealed partial class HttpContextServerCallContext : ServerCallContext
     // Clock is for testing
     public void Initialize()
     {
-        _activity = GetHostActivity();
-        _activity?.AddTag(GrpcServerConstants.ActivityMethodTag, MethodCore);
         var timeout = GetTimeout();
 
         if (timeout != TimeSpan.Zero)
             DeadlineManager = new ServerCallDeadlineManager(this, timeout);
-    }
-
-    private Activity? GetHostActivity()
-    {
-        // Feature always returns the host activity
-        var feature = HttpContext.Features.Get<IHttpActivityFeature>();
-
-        if (feature is not null)
-            return feature.Activity;
-
-        // If feature isn't available, or not supported, then fallback to Activity.Current.
-        var activity = Activity.Current;
-
-        while (activity is not null)
-        {
-            // We only want to add gRPC metadata to the host activity
-            // Search parent activities in case a new activity was started in middleware before gRPC endpoint is invoked
-            if (string.Equals(activity.OperationName, GrpcServerConstants.HostActivityName, StringComparison.Ordinal))
-                return activity;
-
-            activity = activity.Parent;
-        }
-
-        return null;
     }
 
     private TimeSpan GetTimeout()
