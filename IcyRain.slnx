@@ -2,8 +2,10 @@
   <Folder Name="/Grpc/">
     <Project Path="IcyRain.Grpc.AspNetCore/IcyRain.Grpc.AspNetCore.csproj" Id="a8564a30-d53f-4275-a3dc-2e5a6b2bb0ba" />
     <Project Path="IcyRain.Grpc.Client/IcyRain.Grpc.Client.csproj" Id="82c84f51-8bfe-4ad2-bbc7-89e530a8bd02" />
+    <Project Path="IcyRain.Grpc.Service/IcyRain.Grpc.Service.csproj" Id="16e05558-b0c5-4bf4-a024-1980cc7a95ed" />
     <Project Path="IcyRain.Grpc.TestClient/IcyRain.Grpc.TestClient.csproj" Id="ca3f6c65-074b-49a8-932f-9fee90e5f9b6" />
     <Project Path="IcyRain.Grpc.TestServer/IcyRain.Grpc.TestServer.csproj" Id="8df40902-1bff-419a-aef7-a1e5b61a31fb" />
+    <Project Path="IcyRain.Grpc.Tools/IcyRain.Grpc.Tools.csproj" Id="86b1575b-4035-4efe-a09a-a2368f217b8f" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.props" />

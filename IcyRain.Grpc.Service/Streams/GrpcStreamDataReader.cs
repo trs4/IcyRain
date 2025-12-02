@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using IcyRain.Streams;
 
-namespace IcyRain.Data.Streams;
+namespace IcyRain.Grpc.Service.Streams;
 
 public sealed class GrpcStreamDataReader<T> : TransferStreamDataReader<T>
 {

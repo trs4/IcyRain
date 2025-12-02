@@ -1,9 +1,11 @@
-﻿using System;
+﻿#if NET10_0_OR_GREATER
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Grpc.Core;
 using IcyRain.Data.Objects;
-using IcyRain.Data.Streams;
+using IcyRain.Grpc.Service.Internal;
+using IcyRain.Grpc.Service.Streams;
 using IcyRain.Internal;
 using IcyRain.Streams;
 
@@ -15,46 +17,16 @@ public static class GrpcTestService
 
     #region Data
 
-    private static readonly Marshaller<TestData> _requestMarshaller = new(SerializeData, DeserializeData<TestData>);
-    private static readonly Marshaller<SealedData> _responseMarshaller = new(SerializeData, DeserializeData<SealedData>);
-    private static readonly Marshaller<Empty> _emptyMarshaller = new(SerializeData, DeserializeData<Empty>);
+    private static readonly Marshaller<TestData> _requestMarshaller = new(GrpcSerialization.SerializeData, GrpcSerialization.DeserializeData<TestData>);
+    private static readonly Marshaller<SealedData> _responseMarshaller = new(GrpcSerialization.SerializeData, GrpcSerialization.DeserializeData<SealedData>);
+    private static readonly Marshaller<Empty> _emptyMarshaller = new(GrpcSerialization.SerializeData, GrpcSerialization.DeserializeData<Empty>);
     internal static readonly Method<TestData, SealedData> Method = new(MethodType.Unary, ServiceName, "TestMethod", _requestMarshaller, _responseMarshaller);
-
-    private static void SerializeData<T>(T obj, SerializationContext context)
-    {
-        var buffer = context.GetBufferWriter();
-        Serialization.Serialize(buffer, obj);
-        context.Complete();
-    }
-
-    private static T DeserializeData<T>(DeserializationContext context)
-        => Serialization.Deserialize<T>(context.PayloadAsReadOnlySequence());
 
     #endregion
     #region Stream
 
-    private static readonly Marshaller<StreamPart> _streamPartMarshaller = new(SerializeStreamPart, DeserializeStreamPart);
-    private static readonly Marshaller<StreamDataPart<SealedData>> _streamDataPartMarshaller = new(SerializeStreamDataPart, DeserializeStreamDataPart);
-
-    private static void SerializeStreamPart(StreamPart obj, SerializationContext context)
-    {
-        var buffer = context.GetBufferWriter();
-        Serialization.Streams.Serialize(buffer, obj);
-        context.Complete();
-    }
-
-    private static StreamPart DeserializeStreamPart(DeserializationContext context)
-        => Serialization.Streams.Deserialize(context.PayloadAsReadOnlySequence());
-
-    private static void SerializeStreamDataPart(StreamDataPart<SealedData> obj, SerializationContext context)
-    {
-        var buffer = context.GetBufferWriter();
-        Serialization.Streams.Serialize(buffer, obj);
-        context.Complete();
-    }
-
-    private static StreamDataPart<SealedData> DeserializeStreamDataPart(DeserializationContext context)
-        => Serialization.Streams.DeserializeData<SealedData>(context.PayloadAsReadOnlySequence());
+    private static readonly Marshaller<StreamPart> _streamPartMarshaller = new(GrpcSerialization.SerializeStreamPart, GrpcSerialization.DeserializeStreamPart);
+    private static readonly Marshaller<StreamDataPart<SealedData>> _streamDataPartMarshaller = new(GrpcSerialization.SerializeStreamDataPart, GrpcSerialization.DeserializeStreamDataPart<SealedData>);
 
     internal static readonly Method<StreamPart, Empty> RequestStreamMethod
         = new(MethodType.ClientStreaming, ServiceName, "RequestStreamMethod", _streamPartMarshaller, _emptyMarshaller);
@@ -234,7 +206,7 @@ public sealed class TestServiceServerImpl : TestServiceServer
         var data = new SealedData() { Property5 = "Response 1" };
         using var stream = GrpcTestService.GenerateStream();
 
-        var writer = new GrpcStreamDataWriter(responseStream);
+        var writer = new GrpcStreamDataWriter<SealedData>(responseStream);
         await StreamTransmitter.SendAsync(writer, data, stream, cancellationToken: context.CancellationToken).ConfigureAwait(false);
     }
 
@@ -256,7 +228,7 @@ public sealed class TestServiceServerImpl : TestServiceServer
         using var stream = await TransferDataReaderStream<SealedData>.CreateWithDataAsync(reader).ConfigureAwait(false);
         var data = stream.Data;
 
-        var writer = new GrpcStreamDataWriter(responseStream);
+        var writer = new GrpcStreamDataWriter<SealedData>(responseStream);
         await StreamTransmitter.SendAsync(writer, data, stream, cancellationToken: context.CancellationToken).ConfigureAwait(false);
     }
 
@@ -291,7 +263,7 @@ public sealed class TestServiceClient : ClientBase<TestServiceClient>
     {
         using var call = CallInvoker.AsyncClientStreamingCall(GrpcTestService.RequestStreamDataMethod, null, options);
 
-        var writer = new GrpcStreamDataWriter(call.RequestStream);
+        var writer = new GrpcStreamDataWriter<SealedData>(call.RequestStream);
         await StreamTransmitter.SendAsync(writer, data, stream, cancellationToken: options.CancellationToken).ConfigureAwait(false);
 
         await call.RequestStream.CompleteAsync().ConfigureAwait(false);
@@ -337,7 +309,7 @@ public sealed class TestServiceClient : ClientBase<TestServiceClient>
     {
         var call = CallInvoker.AsyncDuplexStreamingCall(GrpcTestService.DuplexStreamDataMethod, null, options);
 
-        var writer = new GrpcStreamDataWriter(call.RequestStream);
+        var writer = new GrpcStreamDataWriter<SealedData>(call.RequestStream);
         await StreamTransmitter.SendAsync(writer, data, stream, cancellationToken: options.CancellationToken).ConfigureAwait(false);
 
         await call.RequestStream.CompleteAsync().ConfigureAwait(false);
@@ -348,3 +320,5 @@ public sealed class TestServiceClient : ClientBase<TestServiceClient>
 
     #endregion
 }
+
+#endif

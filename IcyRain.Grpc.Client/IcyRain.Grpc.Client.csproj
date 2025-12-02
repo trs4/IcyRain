@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.Core.Api" />
+    <ProjectReference Include="..\IcyRain.Grpc.Service\IcyRain.Grpc.Service.csproj" />
     <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
   </ItemGroup>
 </Project>

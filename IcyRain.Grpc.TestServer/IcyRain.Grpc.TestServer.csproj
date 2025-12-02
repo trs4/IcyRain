@@ -9,10 +9,13 @@
   <ItemGroup>
     <ProjectReference Include="..\IcyRain.Grpc.AspNetCore\IcyRain.Grpc.AspNetCore.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <Protobuf Include="greet.proto" GrpcServices="Server" Link="greet.proto" />
+    <ProjectReference Include="..\IcyRain.Grpc.Tools\IcyRain.Grpc.Tools.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <AdditionalFiles Include="TestService.irs" />
+
     <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
     <PackageReference Include="Google.Protobuf" />
+    <Protobuf Include="greet.proto" GrpcServices="Server" Link="greet.proto" />
   </ItemGroup>
 </Project>

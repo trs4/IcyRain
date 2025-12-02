@@ -1,0 +1,10 @@
+﻿using IcyRain.Grpc.Tests.Data
+
+namespace IcyRain.Grpc.Tests
+
+service TestService {
+    UnaryResponse UnaryOp(UnaryRequest par)
+    StreamResponse ClientStreamOp(streaming StreamRequest)
+    streaming StreamResponse ServerStreamOp(StreamRequest par)
+    streaming StreamResponse DuplexStreamOp(streaming StreamRequest)
+}
