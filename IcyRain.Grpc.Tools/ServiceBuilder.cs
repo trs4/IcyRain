@@ -39,7 +39,8 @@ internal static class ServiceBuilder
 
         builder.Append("namespace ").Append(service.Namespace).Append(";\r\n\r\n")
             .Append("public static class ").Append(service.Name).Append("\r\n{\r\n")
-            .Append(_indent).Append("public static readonly string ServiceName = \"").Append(service.Name).Append("\";\r\n\r\n");
+            .Append(_indent).Append("public static readonly string ServiceName = \"").Append(service.Name).Append("\";\r\n\r\n")
+            .Append(_indent).Append("public static readonly bool WithLZ4 = ").Append(service.WithLZ4 ? "true" : "false").Append(";\r\n\r\n");
 
         var marshallers = new Dictionary<string, string>();
 
@@ -51,10 +52,10 @@ internal static class ServiceBuilder
             string methodName = GetMethodName(operation);
 
             string requestType = GetTypeForMarshaller(operation.Parameters);
-            string requestMarshaller = AddMarshaller(builder, marshallers, requestType);
+            string requestMarshaller = AddMarshaller(builder, service, marshallers, requestType);
 
             string responseType = GetTypeForMarshaller(operation.ResponseType);
-            string responseMarshaller = AddMarshaller(builder, marshallers, responseType);
+            string responseMarshaller = AddMarshaller(builder, service, marshallers, responseType);
 
             operations.Add((operation, methodName, requestType, requestMarshaller, responseType, responseMarshaller));
         }
@@ -199,7 +200,7 @@ internal static class ServiceBuilder
     private static string GetMethodName(Operation operation)
         => $"_{char.ToLower(operation.Name[0])}{operation.Name.Substring(1)}Method";
 
-    private static string AddMarshaller(StringBuilder builder, Dictionary<string, string> marshallers, string type)
+    private static string AddMarshaller(StringBuilder builder, Service service, Dictionary<string, string> marshallers, string type)
     {
         if (marshallers.TryGetValue(type, out string marshallerName))
             return marshallerName;
@@ -208,8 +209,17 @@ internal static class ServiceBuilder
         marshallers.Add(type, marshallerName);
 
         builder.Append(_indent).Append("private static readonly Marshaller<").Append(type).Append("> ").Append(marshallerName)
-            .Append(" = new(GrpcSerialization.SerializeData, GrpcSerialization.DeserializeData<").Append(type).Append(">);\r\n\r\n");
+            .Append(" = new(GrpcSerialization.SerializeData");
 
+        if (service.WithLZ4)
+            builder.Append("WithLZ4");
+
+        builder.Append(", GrpcSerialization.DeserializeData");
+
+        if (service.WithLZ4)
+            builder.Append("WithLZ4");
+
+        builder.Append('<').Append(type).Append(">);\r\n\r\n");
         return marshallerName;
     }
 

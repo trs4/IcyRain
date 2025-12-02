@@ -16,8 +16,22 @@ public static class GrpcSerialization
     }
 
     [MethodImpl(Flags.HotPath)]
+    public static void SerializeDataWithLZ4<T>(T obj, SerializationContext context)
+    {
+        var buffer = context.GetBufferWriter();
+        Serialization.SerializeWithLZ4(buffer, obj);
+        context.Complete();
+    }
+
+
+    [MethodImpl(Flags.HotPath)]
     public static T DeserializeData<T>(DeserializationContext context)
         => Serialization.Deserialize<T>(context.PayloadAsReadOnlySequence());
+
+    [MethodImpl(Flags.HotPath)]
+    public static T DeserializeDataWithLZ4<T>(DeserializationContext context)
+        => Serialization.DeserializeWithLZ4<T>(context.PayloadAsReadOnlySequence());
+
 
     [MethodImpl(Flags.HotPath)]
     public static void SerializeStreamPart(StreamPart obj, SerializationContext context)

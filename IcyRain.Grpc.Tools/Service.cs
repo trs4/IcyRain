@@ -53,6 +53,12 @@ internal sealed class Service
                             state = ReadState.Operations;
                         }
 
+                        if (value.EndsWith(Keys.WithLZ4))
+                        {
+                            value = value.Substring(0, value.Length - Keys.WithLZ4.Length).TrimEnd();
+                            WithLZ4 = true;
+                        }
+
                         if (!IsName(value))
                             throw GetLineException(i, line);
 
@@ -161,6 +167,8 @@ internal sealed class Service
     public string Namespace { get; }
 
     public string Name { get; }
+
+    public bool WithLZ4 { get; }
 
     public ReadOnlyCollection<Operation> Operations => _operations.AsReadOnly();
 
