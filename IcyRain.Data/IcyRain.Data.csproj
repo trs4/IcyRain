@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.Core" />
     <PackageReference Include="Grpc.Core.Api" />
     <PackageReference Include="ZeroFormatter" />
     <PackageReference Include="System.Memory" />

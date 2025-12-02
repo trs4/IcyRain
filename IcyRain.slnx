@@ -15,7 +15,6 @@
     <File Path="RuleSet.ruleset" />
   </Folder>
   <Project Path="IcyRain.Benchmarks/IcyRain.Benchmarks.csproj" />
-  <Project Path="IcyRain.Console/IcyRain.Console.csproj" />
   <Project Path="IcyRain.Data/IcyRain.Data.csproj" />
   <Project Path="IcyRain.Tables/IcyRain.Tables.csproj" />
   <Project Path="IcyRain.Tests/IcyRain.Tests.csproj" />
