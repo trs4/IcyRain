@@ -1,4 +1,5 @@
 ﻿using System;
+using IcyRain.Grpc.Service.Internal;
 
 namespace IcyRain.Grpc.AspNetCore.Internal;
 

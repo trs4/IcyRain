@@ -3,6 +3,7 @@
     <AssemblyName>IcyRain.Grpc.Service</AssemblyName>
     <TargetFrameworks>net10.0</TargetFrameworks>
     <DefineConstants></DefineConstants>
+    <Nullable>enable</Nullable>
 
     <TieredPGO>true</TieredPGO>
   </PropertyGroup>
@@ -13,6 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>IcyRain.Grpc.AspNetCore</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>IcyRain.Grpc.Client</_Parameter1>
+    </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>IcyRain.Data</_Parameter1>
     </AssemblyAttribute>

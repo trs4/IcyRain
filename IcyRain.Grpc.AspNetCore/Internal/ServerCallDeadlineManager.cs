@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using IcyRain.Grpc.Service.Internal;
 
 namespace IcyRain.Grpc.AspNetCore.Internal;
 

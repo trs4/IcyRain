@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using IcyRain.Grpc.Client.Internal.Http;
+using IcyRain.Grpc.Service.Internal;
 
 namespace IcyRain.Grpc.Client.Internal;
 

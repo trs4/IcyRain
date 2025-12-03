@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IcyRain.Grpc.AspNetCore.Internal;
+namespace IcyRain.Grpc.Service.Internal;
 
 internal static class CommonGrpcProtocolHelpers
 {

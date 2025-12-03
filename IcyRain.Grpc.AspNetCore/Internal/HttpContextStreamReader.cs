@@ -3,6 +3,7 @@ using System.IO.Pipelines;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using IcyRain.Grpc.Service.Internal;
 using Microsoft.AspNetCore.Http.Features;
 
 namespace IcyRain.Grpc.AspNetCore.Internal;

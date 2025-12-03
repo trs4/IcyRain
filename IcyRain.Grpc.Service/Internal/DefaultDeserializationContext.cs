@@ -1,7 +1,7 @@
 ﻿using System.Buffers;
 using Grpc.Core;
 
-namespace IcyRain.Grpc.AspNetCore.Internal;
+namespace IcyRain.Grpc.Service.Internal;
 
 internal sealed class DefaultDeserializationContext : DeserializationContext
 {
