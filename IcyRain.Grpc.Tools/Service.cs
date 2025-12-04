@@ -53,10 +53,28 @@ internal sealed class Service
                             state = ReadState.Operations;
                         }
 
-                        if (value.EndsWith(Keys.WithLZ4))
+                        int index = value.IndexOf(Keys.With);
+
+                        if (index > -1)
                         {
-                            value = value.Substring(0, value.Length - Keys.WithLZ4.Length).TrimEnd();
-                            WithLZ4 = true;
+                            string with = value.Substring(index + Keys.With.Length);
+
+                            if (string.IsNullOrWhiteSpace(with))
+                                throw GetLineException(i, line);
+
+                            value = value.Substring(0, index).TrimEnd();
+
+                            foreach (string part in with.Split(','))
+                            {
+                                string withPart = part.Trim();
+
+                                if (withPart == Keys.LZ4)
+                                    WithLZ4 = true;
+                                else if (withPart == Keys.ProtectedMethods)
+                                    ProtectedMethods = true;
+                                else
+                                    throw GetLineException(i, line);
+                            }
                         }
 
                         if (!IsName(value))
@@ -169,6 +187,8 @@ internal sealed class Service
     public string Name { get; }
 
     public bool WithLZ4 { get; }
+
+    public bool ProtectedMethods { get; }
 
     public ReadOnlyCollection<Operation> Operations => _operations.AsReadOnly();
 

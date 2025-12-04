@@ -99,12 +99,15 @@ internal static class ServiceBuilder
             .Append(_indent).Append(_indent).Append("protected override Client NewInstance(ClientBaseConfiguration configuration)\r\n")
             .Append(_indent).Append(_indent).Append(_indent).Append("=> new Client(configuration);\r\n");
 
+        string modificator = service.ProtectedMethods ? "protected" : "public";
+
         foreach (var operation in operations)
         {
             var type = operation.Operation.Type;
             string name = operation.Operation.Name;
             bool hasClientStreamingPart = type is OperationType.ClientStreaming or OperationType.DuplexStreaming;
-            builder.AppendLine().Append(_indent).Append(_indent).Append("public Async").Append(type).Append("Call<");
+
+            builder.AppendLine().Append(_indent).Append(_indent).Append(modificator).Append(" Async").Append(type).Append("Call<");
 
             if (hasClientStreamingPart)
                 builder.Append(operation.RequestType).Append(", ");

@@ -6,5 +6,7 @@ internal static class Keys
     public const string Namespace = "namespace ";
     public const string Service = "service ";
     public const string Streaming = "streaming ";
-    public const string WithLZ4 = " with lz4";
+    public const string With = " with ";
+    public const string LZ4 = "lz4";
+    public const string ProtectedMethods = "protected";
 }
