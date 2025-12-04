@@ -9,4 +9,6 @@ internal static class Keys
     public const string With = " with ";
     public const string LZ4 = "lz4";
     public const string ProtectedMethods = "protected";
+    public const string Client = "client";
+    public const string Server = "server";
 }

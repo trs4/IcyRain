@@ -17,35 +17,51 @@ internal static class ServiceBuilder
             throw new ArgumentNullException(nameof(service));
 
         var builder = new StringBuilder(2048);
+        var usings = GetUsing(service);
 
-        var usings = new HashSet<string>(service.Usings)
-        {
-            "System",
-            "System.IO",
-            "System.Threading.Tasks",
-            "Grpc.Core",
-            "IcyRain.Grpc.Service.Internal",
-            "IcyRain.Grpc.Service.Wrappers",
-            "IcyRain.Streams",
-        };
+        foreach (string usingValue in usings.OrderByDescending(u => u.StartsWith("System")).ThenBy(u => u))
+            builder.Append("using ").Append(usingValue).Append(";\r\n");
 
-        if (service.Usings.Count > 0)
-        {
-            foreach (string usingValue in usings.OrderByDescending(u => u.StartsWith("System")).ThenBy(u => u))
-                builder.Append("using ").Append(usingValue).Append(";\r\n");
-
-            builder.AppendLine();
-        }
-
-        builder.Append("namespace ").Append(service.Namespace).Append(";\r\n\r\n")
+        builder.AppendLine()
+            .Append("namespace ").Append(service.Namespace).Append(";\r\n\r\n")
             .Append("public static class ").Append(service.Name).Append("\r\n{\r\n")
             .Append(_indent).Append("public static readonly string ServiceName = \"").Append(service.Name).Append("\";\r\n\r\n")
             .Append(_indent).Append("public static readonly bool WithLZ4 = ").Append(service.WithLZ4 ? "true" : "false").Append(";\r\n\r\n");
 
-        var marshallers = new Dictionary<string, string>();
+        var operations = GetOperations(builder, service);
 
-        var operations = new List<(Operation Operation, string MethodName,
-            string RequestType, string RequestMarshaller, string ResponseType, string ResponseMarshaller)>();
+        foreach (var operation in operations)
+            BuildOperation(builder, operation);
+
+        if (service.WithServer)
+            BuildBindService(builder, operations);
+
+        if (service.WithClient)
+            BuildClient(builder, service, operations);
+
+        if (service.WithServer)
+            BuildServer(builder, service, operations);
+
+        builder.Append("}\r\n");
+        return builder.ToString();
+    }
+
+    private static HashSet<string> GetUsing(Service service) =>
+    [
+        .. service.Usings,
+        "System",
+        "System.IO",
+        "System.Threading.Tasks",
+        "Grpc.Core",
+        "IcyRain.Grpc.Service.Internal",
+        "IcyRain.Grpc.Service.Wrappers",
+        "IcyRain.Streams",
+    ];
+
+    private static List<OperationData> GetOperations(StringBuilder builder, Service service)
+    {
+        var marshallers = new Dictionary<string, string>(service.Operations.Count * 2);
+        var operations = new List<OperationData>(service.Operations.Count);
 
         foreach (var operation in service.Operations)
         {
@@ -57,17 +73,20 @@ internal static class ServiceBuilder
             string responseType = GetTypeForMarshaller(operation.ResponseType);
             string responseMarshaller = AddMarshaller(builder, service, marshallers, responseType);
 
-            operations.Add((operation, methodName, requestType, requestMarshaller, responseType, responseMarshaller));
+            operations.Add(new(operation, methodName, requestType, requestMarshaller, responseType, responseMarshaller));
         }
 
-        foreach (var operation in operations)
-        {
-            builder.Append(_indent).Append("private static readonly Method<")
-                .Append(operation.RequestType).Append(", ").Append(operation.ResponseType).Append("> ").Append(operation.MethodName)
-                .Append(" = new(MethodType.").Append(operation.Operation.Type).Append(", ServiceName, \"").Append(operation.Operation.Name).Append("\", ")
-                .Append(operation.RequestMarshaller).Append(", ").Append(operation.ResponseMarshaller).Append(");\r\n\r\n");
-        }
+        return operations;
+    }
 
+    private static void BuildOperation(StringBuilder builder, OperationData operation) => builder
+        .Append(_indent).Append("private static readonly Method<")
+        .Append(operation.RequestType).Append(", ").Append(operation.ResponseType).Append("> ").Append(operation.MethodName)
+        .Append(" = new(MethodType.").Append(operation.Operation.Type).Append(", ServiceName, \"").Append(operation.Operation.Name).Append("\", ")
+        .Append(operation.RequestMarshaller).Append(", ").Append(operation.ResponseMarshaller).Append(");\r\n\r\n");
+
+    private static void BuildBindService(StringBuilder builder, List<OperationData> operations)
+    {
         builder.Append(_indent).Append("public static ServerServiceDefinition BindService(Server serviceImpl)\r\n")
             .Append(_indent).Append(_indent).Append("=> ServerServiceDefinition.CreateBuilder()\r\n");
 
@@ -89,8 +108,12 @@ internal static class ServiceBuilder
                 .Append(operation.Operation.Name).Append("));\r\n");
         }
 
-        builder.Append(_indent).Append("}\r\n\r\n")
-            .Append(_indent).Append("public class Client : ClientBase<Client>\r\n")
+        builder.Append(_indent).Append("}\r\n\r\n");
+    }
+
+    private static void BuildClient(StringBuilder builder, Service service, List<OperationData> operations)
+    {
+        builder.Append(_indent).Append("public class Client : ClientBase<Client>\r\n")
             .Append(_indent).Append("{\r\n")
             .Append(_indent).Append(_indent).Append("public Client(ChannelBase channel) : base(channel) { }\r\n\r\n")
             .Append(_indent).Append(_indent).Append("public Client(CallInvoker callInvoker) : base(callInvoker) { }\r\n\r\n")
@@ -99,7 +122,7 @@ internal static class ServiceBuilder
             .Append(_indent).Append(_indent).Append("protected override Client NewInstance(ClientBaseConfiguration configuration)\r\n")
             .Append(_indent).Append(_indent).Append(_indent).Append("=> new Client(configuration);\r\n");
 
-        string modificator = service.ProtectedMethods ? "protected" : "public";
+        string modificator = service.WithProtectedMethods ? "protected" : "public";
 
         foreach (var operation in operations)
         {
@@ -127,8 +150,12 @@ internal static class ServiceBuilder
             builder.Append(");\r\n");
         }
 
-        builder.Append(_indent).Append("}\r\n\r\n")
-            .Append(_indent).Append("[BindServiceMethod(typeof(").Append(service.Name).Append("), \"BindService\")]\r\n")
+        builder.Append(_indent).Append("}\r\n\r\n");
+    }
+
+    private static void BuildServer(StringBuilder builder, Service service, List<OperationData> operations)
+    {
+        builder.Append(_indent).Append("[BindServiceMethod(typeof(").Append(service.Name).Append("), \"BindService\")]\r\n")
             .Append(_indent).Append("public abstract class Server\r\n")
             .Append(_indent).Append("{\r\n");
 
@@ -171,10 +198,7 @@ internal static class ServiceBuilder
             builder.Append(", ServerCallContext context);\r\n");
         }
 
-        builder.Append(_indent).Append("}\r\n\r\n")
-            .Append("}\r\n");
-
-        return builder.ToString();
+        builder.Append(_indent).Append("}\r\n\r\n");
     }
 
     private static string GetTypeForMarshaller(string type)
