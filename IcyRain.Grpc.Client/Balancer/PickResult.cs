@@ -24,7 +24,7 @@ public sealed class PickResult
     /// <summary>The <see cref="Subchannel"/> provided by <see cref="ForSubchannel(Subchannel, ISubchannelCallTracker?)"/></summary>
     public Subchannel? Subchannel { get; }
 
-    /// <summary>The <see cref="Grpc.Core.Status"/> provided by <see cref="ForFailure(Status)"/> or <see cref="ForDrop(Status)"/></summary>
+    /// <summary>The <see cref="Status"/> provided by <see cref="ForFailure(Status)"/> or <see cref="ForDrop(Status)"/></summary>
     public Status Status { get; }
 
     /// <summary>The optional <see cref="SubchannelCallTracker"/> provided by <see cref="ForSubchannel(Subchannel, ISubchannelCallTracker?)"/></summary>

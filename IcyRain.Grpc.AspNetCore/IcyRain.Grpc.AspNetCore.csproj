@@ -5,6 +5,7 @@
     <DefineConstants></DefineConstants>
     <NoWarn>CA1005;CA2002;CA2007</NoWarn>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <TieredPGO>true</TieredPGO>
 

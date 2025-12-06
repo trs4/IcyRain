@@ -32,7 +32,6 @@ public abstract partial class PollingResolver : Resolver
     protected Action<ResolverResult> Listener => _listener!;
 
     /// <summary>Initializes a new instance of the <see cref="PollingResolver"/></summary>
-    /// <param name="loggerFactory">The logger factory</param>
     protected PollingResolver() : this(null) { }
 
     /// <summary>Initializes a new instance of the <see cref="PollingResolver"/></summary>

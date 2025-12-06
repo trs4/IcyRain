@@ -19,7 +19,6 @@ internal sealed class PickFirstBalancer : LoadBalancer
 
     /// <summary>Initializes a new instance of the <see cref="PickFirstBalancer"/> class</summary>
     /// <param name="controller">The controller</param>
-    /// <param name="loggerFactory">The logger factory</param>
     public PickFirstBalancer(IChannelControlHelper controller)
         => _controller = controller;
 

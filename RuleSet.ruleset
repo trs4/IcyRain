@@ -208,6 +208,7 @@
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
     <Rule Id="CS1062" Action="None" />
+    <Rule Id="CS1591" Action="None" />
     <Rule Id="CS1711" Action="None" />
     <Rule Id="CS2002" Action="None" />
   </Rules>

@@ -17,7 +17,6 @@ internal sealed class RoundRobinBalancer : SubchannelsLoadBalancer
 
     /// <summary>Initializes a new instance of the <see cref="RoundRobinBalancer"/> class</summary>
     /// <param name="controller">The controller</param>
-    /// <param name="loggerFactory">The logger factory</param>
     public RoundRobinBalancer(IChannelControlHelper controller) : this(controller, new RandomGenerator()) { }
 
     internal RoundRobinBalancer(IChannelControlHelper controller, IRandomGenerator randomGenerator)
