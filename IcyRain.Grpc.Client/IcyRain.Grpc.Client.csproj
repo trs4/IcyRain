@@ -21,9 +21,9 @@
     <ProjectReference Include="..\IcyRain.Grpc.Service\IcyRain.Grpc.Service.csproj" />
     <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <None Include="readme.md" Pack="true" PackagePath="\"/>
+    <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
 
