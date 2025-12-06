@@ -13,6 +13,7 @@ using IcyRain.Grpc.Client.Configuration;
 using IcyRain.Grpc.Client.Internal;
 using IcyRain.Grpc.Client.Internal.Http;
 using IcyRain.Grpc.Client.Internal.Retry;
+using IcyRain.Grpc.Client.Web;
 
 namespace IcyRain.Grpc.Client;
 
@@ -550,18 +551,38 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     /// <param name="port">Port the channel will use</param>
     /// <param name="scheme">Scheme the channel will use</param>
     /// <param name="withoutSSL">Without certificate validation</param>
+    /// <param name="useHttp3">Use HTTP3 protocol</param>
+    /// <param name="webMode">The gRPC-Web mode</param>
     /// <returns>A new instance of <see cref="GrpcChannel"/></returns>
-    public static GrpcChannel ForAddress(IPAddress ipAddress, int port, string scheme = "https", bool withoutSSL = true)
+#pragma warning disable CA2000 // Dispose objects before losing scope
+    public static GrpcChannel ForAddress(IPAddress ipAddress, int port, string scheme = "https", bool withoutSSL = true,
+        bool useHttp3 = false, GrpcWebMode webMode = GrpcWebMode.GrpcWeb)
     {
         ArgumentNullException.ThrowIfNull(ipAddress);
-        var httpHandler = new HttpClientHandler();
+        Version? httpVersion = null;
+        HttpMessageHandler httpHandler = new HttpClientHandler();
 
         if (withoutSSL)
-            httpHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            ((HttpClientHandler)httpHandler).ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
-        var channelOptions = new GrpcChannelOptions { HttpHandler = httpHandler };
+        if (!Internal.OperatingSystem.Instance.IsWindows)
+        {
+            httpHandler = new GrpcWebHandler(webMode, httpHandler);
+            httpVersion = new Version(1, 1);
+        }
+
+        if (useHttp3)
+            httpVersion = new Version(3, 0);
+
+        var channelOptions = new GrpcChannelOptions
+        {
+            HttpHandler = httpHandler,
+            HttpVersion = httpVersion,
+        };
+
         return ForAddress($"{scheme}://{ipAddress}:{port}", channelOptions);
     }
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
     /// <summary>
     /// Allows explicitly requesting channel to connect without starting an RPC.
