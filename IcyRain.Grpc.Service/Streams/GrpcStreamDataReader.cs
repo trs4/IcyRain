@@ -20,6 +20,6 @@ public sealed class GrpcStreamDataReader<T> : TransferStreamDataReader<T>
 
     public sealed override StreamPart Current => _requestStream.Current;
 
-    public sealed override async Task<bool> MoveNext(CancellationToken cancellationToken)
-        => _moveNext && (_moveNext = await _requestStream.MoveNext(cancellationToken).ConfigureAwait(false));
+    public sealed override async Task<bool> MoveNext(CancellationToken token)
+        => _moveNext && (_moveNext = await _requestStream.MoveNext(token).ConfigureAwait(false));
 }

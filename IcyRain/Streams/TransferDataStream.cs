@@ -13,12 +13,12 @@ public abstract class TransferDataStream<T> : TransferStream
     public T Data { get; }
 
     public static async ValueTask<TransferDataStream<T>> CreateWithDataAsync(
-        TransferStreamDataReader<T> reader, Action onDispose = null, CancellationToken cancellationToken = default)
+        TransferStreamDataReader<T> reader, Action onDispose = null, CancellationToken token = default)
     {
         if (reader is null)
             throw new ArgumentNullException(nameof(reader));
 
-        await reader.MoveNext(cancellationToken).ConfigureAwait(false);
+        await reader.MoveNext(token).ConfigureAwait(false);
         return new TransferDataReaderStream<T>(reader, onDispose);
     }
 

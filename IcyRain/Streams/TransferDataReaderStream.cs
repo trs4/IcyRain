@@ -13,17 +13,17 @@ internal sealed class TransferDataReaderStream<T> : TransferDataStream<T>
         : base(reader.Data, onDispose)
         => _reader = reader;
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
-        => CopyToCoreAsync(_reader, destination, cancellationToken);
+    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken token)
+        => CopyToCoreAsync(_reader, destination, token);
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-        => ReadCoreAsync(_reader, buffer, offset, count, cancellationToken);
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken token)
+        => ReadCoreAsync(_reader, buffer, offset, count, token);
 
 #if !NETFRAMEWORK
     public sealed override int Read(Span<byte> buffer)
         => ReadCore(_reader, buffer);
 
-    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        => ReadCoreAsync(_reader, buffer, cancellationToken);
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken token = default)
+        => ReadCoreAsync(_reader, buffer, token);
 #endif
 }

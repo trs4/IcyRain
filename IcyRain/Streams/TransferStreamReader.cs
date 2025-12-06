@@ -9,5 +9,5 @@ public abstract class TransferStreamReader
 
     public abstract StreamPart Current { get; }
 
-    public abstract Task<bool> MoveNext(CancellationToken cancellationToken);
+    public abstract Task<bool> MoveNext(CancellationToken token);
 }

@@ -63,7 +63,7 @@ public abstract class TransferStream : Stream
 
     public sealed override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
 
-    public sealed override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    public sealed override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken token)
         => throw new NotSupportedException();
 
     public sealed override void WriteByte(byte value) => throw new NotSupportedException();
@@ -71,7 +71,7 @@ public abstract class TransferStream : Stream
 #if !NETFRAMEWORK
     public sealed override void Write(ReadOnlySpan<byte> buffer) => throw new NotSupportedException();
 
-    public sealed override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+    public sealed override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken token = default)
         => throw new NotSupportedException();
 #endif
 
@@ -91,20 +91,20 @@ public abstract class TransferStream : Stream
     #endregion
 
     [MethodImpl(Flags.HotPath)]
-    protected async Task CopyToCoreAsync(TransferStreamReader reader, Stream destination, CancellationToken cancellationToken)
+    protected async Task CopyToCoreAsync(TransferStreamReader reader, Stream destination, CancellationToken token)
     {
         if (destination is null)
             throw new ArgumentNullException(nameof(destination));
 
-        while (await reader.MoveNext(cancellationToken).ConfigureAwait(false))
+        while (await reader.MoveNext(token).ConfigureAwait(false))
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            token.ThrowIfCancellationRequested();
             using var part = reader.Current;
 
 #if NETFRAMEWORK
-            var task = destination.WriteAsync(part.Buffer, 0, part.BufferSize, cancellationToken);
+            var task = destination.WriteAsync(part.Buffer, 0, part.BufferSize, token);
 #else
-            var task = destination.WriteAsync(new ReadOnlyMemory<byte>(part.Buffer, 0, part.BufferSize), cancellationToken);
+            var task = destination.WriteAsync(new ReadOnlyMemory<byte>(part.Buffer, 0, part.BufferSize), token);
 #endif
             if (!task.IsCompleted)
                 await task.ConfigureAwait(false);
@@ -114,8 +114,7 @@ public abstract class TransferStream : Stream
     }
 
     [MethodImpl(Flags.HotPath)]
-    protected async Task<int> ReadCoreAsync(TransferStreamReader reader, byte[] buffer, int offset, int count,
-        CancellationToken cancellationToken)
+    protected async Task<int> ReadCoreAsync(TransferStreamReader reader, byte[] buffer, int offset, int count, CancellationToken token)
     {
         if (buffer is null)
             throw new ArgumentNullException(nameof(buffer));
@@ -135,7 +134,7 @@ public abstract class TransferStream : Stream
         {
             if (_part is null)
             {
-                if (reader.IsCompleted || !await reader.MoveNext(cancellationToken).ConfigureAwait(false))
+                if (reader.IsCompleted || !await reader.MoveNext(token).ConfigureAwait(false))
                     return readCount;
 
                 _part = reader.Current;
@@ -205,8 +204,7 @@ public abstract class TransferStream : Stream
     }
 
     [MethodImpl(Flags.HotPath)]
-    protected async ValueTask<int> ReadCoreAsync(TransferStreamReader reader, Memory<byte> buffer,
-        CancellationToken cancellationToken)
+    protected async ValueTask<int> ReadCoreAsync(TransferStreamReader reader, Memory<byte> buffer, CancellationToken token)
     {
         int count = buffer.Length;
         int readCount = 0;
@@ -215,7 +213,7 @@ public abstract class TransferStream : Stream
         {
             if (_part is null)
             {
-                if (reader.IsCompleted || !await reader.MoveNext(cancellationToken).ConfigureAwait(false))
+                if (reader.IsCompleted || !await reader.MoveNext(token).ConfigureAwait(false))
                     return readCount;
 
                 _part = reader.Current;

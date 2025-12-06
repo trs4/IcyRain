@@ -9,7 +9,7 @@ namespace IcyRain.Streams;
 public static class StreamTransmitter
 {
     public static async Task SendAsync(TransferStreamWriter writer, Stream stream,
-        int bufferSize = Buffers.StreamPartSize, CancellationToken cancellationToken = default)
+        int bufferSize = Buffers.StreamPartSize, CancellationToken token = default)
     {
         if (stream is null)
             return;
@@ -21,13 +21,13 @@ public static class StreamTransmitter
 
         while (part.CanRead())
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            token.ThrowIfCancellationRequested();
             await writer.WriteAsync(part).ConfigureAwait(false);
         }
     }
 
     public static async Task SendAsync<T>(TransferStreamDataWriter<T> writer, T data, Stream stream,
-        int bufferSize = Buffers.StreamPartSize, CancellationToken cancellationToken = default)
+        int bufferSize = Buffers.StreamPartSize, CancellationToken token = default)
     {
         if (stream is not null && stream.CanSeek && stream.Position != 0)
             stream.Seek(0L, SeekOrigin.Begin);
@@ -36,7 +36,7 @@ public static class StreamTransmitter
 
         while (part.CanRead())
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            token.ThrowIfCancellationRequested();
             await writer.WriteAsync(part).ConfigureAwait(false);
         }
     }
