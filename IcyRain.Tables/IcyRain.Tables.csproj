@@ -11,5 +11,10 @@
 		<PackageTags>buffers;binary;serialization</PackageTags>
 		<PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
 	</PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 </Project>

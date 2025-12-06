@@ -12,6 +12,7 @@
     <PackageTags>buffers;binary;serialization</PackageTags>
     <PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
     <RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   
   <ItemGroup>
@@ -19,5 +20,9 @@
     <PackageReference Include="Grpc.Core.Api" />
     <ProjectReference Include="..\IcyRain.Grpc.Service\IcyRain.Grpc.Service.csproj" />
     <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

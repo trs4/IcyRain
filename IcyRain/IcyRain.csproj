@@ -12,6 +12,7 @@
     <PackageTags>buffers;binary;serialization;serializer;grpc</PackageTags>
     <PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
     <RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,5 +38,9 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>IcyRain.Benchmarks</_Parameter1>
     </AssemblyAttribute>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

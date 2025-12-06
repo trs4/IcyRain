@@ -13,6 +13,7 @@
     <PackageTags>buffers;binary;serialization</PackageTags>
     <PackageProjectUrl>https://github.com/trs4/IcyRain</PackageProjectUrl>
     <RepositoryUrl>https://github.com/trs4/IcyRain</RepositoryUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,5 +24,6 @@
   <ItemGroup>
     <None Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll" Pack="true"
           PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
