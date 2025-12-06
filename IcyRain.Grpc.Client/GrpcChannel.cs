@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Grpc.Net.Client.Internal;
 using IcyRain.Grpc.Client.Balancer;
 using IcyRain.Grpc.Client.Balancer.Internal;
 using IcyRain.Grpc.Client.Configuration;
@@ -393,7 +392,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
             {
                 // GetHttpHandlerType recurses through DelegatingHandlers that may wrap the HttpClientHandler.
                 var httpClientHandler = HttpRequestHelpers.GetHttpHandlerType<HttpClientHandler>(handler);
-                var grpcWebHandler = HttpRequestHelpers.GetHttpHandlerType(handler, "Grpc.Net.Client.Web.GrpcWebHandler");
+                var grpcWebHandler = HttpRequestHelpers.GetHttpHandlerType(handler, "GrpcWebHandler", isFullName: false);
 
                 if (httpClientHandler is not null && grpcWebHandler is null
                     && RuntimeHelpers.QueryRuntimeSettingSwitch("System.Net.Http.UseNativeHttpHandler", defaultValue: false))

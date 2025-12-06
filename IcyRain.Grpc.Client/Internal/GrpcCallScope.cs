@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Grpc.Core;
 
-namespace Grpc.Net.Client.Internal;
+namespace IcyRain.Grpc.Client.Internal;
 
 internal sealed class GrpcCallScope : IReadOnlyList<KeyValuePair<string, object>>
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grpc.Core;
-using Grpc.Net.Client.Internal;
 using IcyRain.Grpc.Client.Configuration;
 
 namespace IcyRain.Grpc.Client.Internal;

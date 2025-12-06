@@ -16,9 +16,9 @@ internal static class HttpRequestHelpers
     public static bool HasHttpHandlerType(HttpMessageHandler handler, string handlerTypeName)
         => GetHttpHandlerType(handler, handlerTypeName) is not null;
 
-    public static HttpMessageHandler? GetHttpHandlerType(HttpMessageHandler handler, string handlerTypeName)
+    public static HttpMessageHandler? GetHttpHandlerType(HttpMessageHandler handler, string handlerTypeName, bool isFullName = true)
     {
-        if (IsType(handler.GetType(), handlerTypeName))
+        if (IsType(handler.GetType(), handlerTypeName, isFullName))
             return handler;
 
         HttpMessageHandler? currentHandler = handler;
@@ -27,20 +27,22 @@ internal static class HttpRequestHelpers
         {
             currentHandler = delegatingHandler.InnerHandler;
 
-            if (currentHandler is not null && IsType(currentHandler.GetType(), handlerTypeName))
+            if (currentHandler is not null && IsType(currentHandler.GetType(), handlerTypeName, isFullName))
                 return currentHandler;
         }
 
         return null;
     }
 
-    private static bool IsType(Type type, string handlerTypeName)
+    private static bool IsType(Type type, string handlerTypeName, bool isFullName)
     {
         Type? currentType = type;
 
         do
         {
-            if (currentType.FullName == handlerTypeName)
+            string? currentName = isFullName ? currentType.FullName : currentType.Name;
+
+            if (currentName == handlerTypeName)
                 return true;
 
             currentType = currentType.BaseType;
