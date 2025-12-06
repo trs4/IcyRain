@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     internal long? MaxRetryBufferSize { get; }
 
     internal long? MaxRetryBufferPerCallSize { get; }
-    
+
     internal bool ThrowOperationCanceledOnCancellation { get; }
 
     internal bool UnsafeUseInsecureChannelCallCredentials { get; }
@@ -234,7 +235,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
 
         if (HttpRequestHelpers.HasHttpHandlerType(channelOptions.HttpHandler, "System.Net.Http.WinHttpHandler"))
             return new HttpHandlerContext(HttpHandlerType.WinHttpHandler);
-        
+
         if (HttpRequestHelpers.HasHttpHandlerType(channelOptions.HttpHandler, "System.Net.Http.SocketsHttpHandler"))
         {
             var socketsHttpHandler = HttpRequestHelpers.GetHttpHandlerType<SocketsHttpHandler>(channelOptions.HttpHandler)!;
@@ -326,7 +327,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
 
         if (serviceFactories is not null)
             return [.. serviceFactories.Union(LoadBalancerFactory.KnownLoadBalancerFactories)];
-        
+
         return LoadBalancerFactory.KnownLoadBalancerFactories;
     }
 
@@ -334,7 +335,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     {
         if (retryThrottling.MaxTokens is null)
             throw CreateException(RetryThrottlingPolicy.MaxTokensPropertyName);
-        
+
         if (retryThrottling.TokenRatio is null)
             throw CreateException(RetryThrottlingPolicy.TokenRatioPropertyName);
 
@@ -359,7 +360,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
 
                 if (configs.ContainsKey(methodKey))
                     throw new InvalidOperationException($"Duplicate method config found. Service: '{name.Service}', method: '{name.Method}'.");
-                
+
                 configs[methodKey] = methodConfig;
             }
         }
@@ -480,10 +481,10 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
         {
             if (_serviceConfigMethods.TryGetValue(new MethodKey(method.ServiceName, method.Name), out MethodConfig? methodConfig))
                 return methodConfig;
-            
+
             if (_serviceConfigMethods.TryGetValue(new MethodKey(method.ServiceName, null), out methodConfig))
                 return methodConfig;
-            
+
             if (_serviceConfigMethods.TryGetValue(new MethodKey(null, null), out methodConfig))
                 return methodConfig;
         }
@@ -495,7 +496,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     {
         if (IsSecure && Address.Scheme == Uri.UriSchemeHttp)
             throw new InvalidOperationException($"Channel is configured with secure channel credentials and can't use a HttpClient with a '{Address.Scheme}' scheme.");
-        
+
         if (!IsSecure && Address.Scheme == Uri.UriSchemeHttps)
             throw new InvalidOperationException($"Channel is configured with insecure channel credentials and can't use a HttpClient with a '{Address.Scheme}' scheme.");
     }
@@ -543,6 +544,24 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
         }
 
         return new GrpcChannel(address, channelOptions);
+    }
+
+    /// <summary>Creates a <see cref="GrpcChannel"/> for the specified address</summary>
+    /// <param name="ipAddress">IP address the channel will use</param>
+    /// <param name="port">Port the channel will use</param>
+    /// <param name="scheme">Scheme the channel will use</param>
+    /// <param name="withoutSSL">Without certificate validation</param>
+    /// <returns>A new instance of <see cref="GrpcChannel"/></returns>
+    public static GrpcChannel ForAddress(IPAddress ipAddress, int port, string scheme = "https", bool withoutSSL = true)
+    {
+        ArgumentNullException.ThrowIfNull(ipAddress);
+        var httpHandler = new HttpClientHandler();
+
+        if (withoutSSL)
+            httpHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+        var channelOptions = new GrpcChannelOptions { HttpHandler = httpHandler };
+        return ForAddress($"{scheme}://{ipAddress}:{port}", channelOptions);
     }
 
     /// <summary>
