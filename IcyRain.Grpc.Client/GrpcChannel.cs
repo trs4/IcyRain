@@ -554,7 +554,6 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     /// <param name="httpVersion">HTTP protocol</param>
     /// <param name="webMode">The gRPC-Web mode</param>
     /// <returns>A new instance of <see cref="GrpcChannel"/></returns>
-#pragma warning disable CA2000 // Dispose objects before losing scope
     public static GrpcChannel ForAddress(IPAddress ipAddress, int port, string scheme = "https", bool withoutSSL = true,
         Version? httpVersion = null, GrpcWebMode webMode = GrpcWebMode.GrpcWeb)
     {
@@ -565,10 +564,7 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
             ((HttpClientHandler)httpHandler).ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
         if (!Internal.OperatingSystem.Instance.IsWindows)
-        {
             httpHandler = new GrpcWebHandler(webMode, httpHandler);
-            httpVersion ??= new Version(1, 1);
-        }
 
         var channelOptions = new GrpcChannelOptions
         {
@@ -578,7 +574,6 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
 
         return ForAddress($"{scheme}://{ipAddress}:{port}", channelOptions);
     }
-#pragma warning restore CA2000 // Dispose objects before losing scope
 
     /// <summary>
     /// Allows explicitly requesting channel to connect without starting an RPC.
