@@ -4,9 +4,10 @@ using IcyRain.Grpc.Client;
 using IcyRain.Grpc.Tests;
 using IcyRain.Grpc.Tests.Data;
 
-var ipAddress = IPAddress.Parse("192.168.1.38");
-int port = 21452;
-using var channel = GrpcChannel.ForAddress(ipAddress, port);
+//var ipAddress = IPAddress.Parse("192.168.1.38");
+//int port = 21452;
+//using var channel = GrpcChannel.ForAddress(ipAddress, port);
+using var channel = GrpcChannel.ForAddress("https://localhost:21452");
 
 var client = new TestService.Client(channel);
 var request = await client.UnaryOp(new UnaryRequest { Name = "IcyRainClient" });

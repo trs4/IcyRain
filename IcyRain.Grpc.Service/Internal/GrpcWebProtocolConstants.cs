@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 
-namespace IcyRain.Grpc.Client.Web.Internal;
+namespace IcyRain.Grpc.Service.Internal;
 
 internal static class GrpcWebProtocolConstants
 {

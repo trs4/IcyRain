@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using IcyRain.Grpc.Service.Internal;
 
 namespace IcyRain.Grpc.Client.Web.Internal;
 
