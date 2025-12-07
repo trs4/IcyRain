@@ -551,15 +551,14 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     /// <param name="port">Port the channel will use</param>
     /// <param name="scheme">Scheme the channel will use</param>
     /// <param name="withoutSSL">Without certificate validation</param>
-    /// <param name="useHttp3">Use HTTP3 protocol</param>
+    /// <param name="httpVersion">HTTP protocol</param>
     /// <param name="webMode">The gRPC-Web mode</param>
     /// <returns>A new instance of <see cref="GrpcChannel"/></returns>
 #pragma warning disable CA2000 // Dispose objects before losing scope
     public static GrpcChannel ForAddress(IPAddress ipAddress, int port, string scheme = "https", bool withoutSSL = true,
-        bool useHttp3 = false, GrpcWebMode webMode = GrpcWebMode.GrpcWeb)
+        Version? httpVersion = null, GrpcWebMode webMode = GrpcWebMode.GrpcWeb)
     {
         ArgumentNullException.ThrowIfNull(ipAddress);
-        Version? httpVersion = null;
         HttpMessageHandler httpHandler = new HttpClientHandler();
 
         if (withoutSSL)
@@ -568,11 +567,8 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
         if (!Internal.OperatingSystem.Instance.IsWindows)
         {
             httpHandler = new GrpcWebHandler(webMode, httpHandler);
-            httpVersion = new Version(1, 1);
+            httpVersion ??= new Version(1, 1);
         }
-
-        if (useHttp3)
-            httpVersion = new Version(3, 0);
 
         var channelOptions = new GrpcChannelOptions
         {
