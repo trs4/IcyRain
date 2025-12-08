@@ -204,7 +204,7 @@ internal static class Commons
                 subTypes.Remove(subType);
         }
 
-        var types = subTypes.Count == 0 ? null : subTypes.OrderByDescending(GetDepth).ThenBy(t => t.Name).ToArray();
+        var types = subTypes.Count == 0 ? null : subTypes.OrderByDescending(GetDepth).ToArray();
         return (types, baseType);
     }
 
