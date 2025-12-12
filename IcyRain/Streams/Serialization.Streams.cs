@@ -9,7 +9,7 @@ namespace IcyRain;
 /// <summary>Buffer fast serialization for concrete types</summary>
 public static partial class Serialization
 {
-    /// <summary>Experimental gRPC System.IO.Stream transfering</summary>
+    /// <summary>Experimental gRPC System.IO.Stream transferring</summary>
     public static class Streams
     {
         /// <summary>Serialize via buffer</summary>

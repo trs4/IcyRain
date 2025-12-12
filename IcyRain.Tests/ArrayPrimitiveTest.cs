@@ -248,7 +248,10 @@ public class ArrayPrimitiveTest
         foreach (var deepClone in Tests<string[]>.Functions)
         {
             string[] result = deepClone(value);
-            Assert.That(value.SequenceEqual(result));
+            Assert.That(value.Length == (result?.Length ?? -1));
+
+            for (int i = 0; i < value.Length; i++)
+                Assert.That(string.Equals(value[i], result[i]));
         }
     }
 
