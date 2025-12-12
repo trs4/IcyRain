@@ -551,11 +551,11 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
     /// <param name="port">Port the channel will use</param>
     /// <param name="scheme">Scheme the channel will use</param>
     /// <param name="withoutSSL">Without certificate validation</param>
-    /// <param name="httpVersion">HTTP protocol</param>
     /// <param name="webMode">The gRPC-Web mode</param>
+    /// <param name="setOptions">An options class for configuring</param>
     /// <returns>A new instance of <see cref="GrpcChannel"/></returns>
     public static GrpcChannel ForAddress(IPAddress ipAddress, int port, string scheme = "https", bool withoutSSL = true,
-        Version? httpVersion = null, GrpcWebMode webMode = GrpcWebMode.GrpcWeb)
+        GrpcWebMode webMode = GrpcWebMode.GrpcWeb, Action<GrpcChannelOptions>? setOptions = null)
     {
         ArgumentNullException.ThrowIfNull(ipAddress);
         HttpMessageHandler httpHandler = new HttpClientHandler();
@@ -569,9 +569,9 @@ public sealed partial class GrpcChannel : ChannelBase, IDisposable
         var channelOptions = new GrpcChannelOptions
         {
             HttpHandler = httpHandler,
-            HttpVersion = httpVersion,
         };
 
+        setOptions?.Invoke(channelOptions);
         return ForAddress($"{scheme}://{ipAddress}:{port}", channelOptions);
     }
 
