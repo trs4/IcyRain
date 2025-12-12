@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -632,6 +633,19 @@ public ref struct Reader
     [MethodImpl(Flags.HotPath)]
     public ReadOnlySequence<byte> ReadReadOnlySequence(int length)
         => new ReadOnlySequence<byte>(GetMemory(length));
+
+    #endregion
+    #region Stream
+
+    [MethodImpl(Flags.HotPath)]
+    public unsafe Stream ReadStream(int length)
+    {
+        var memory = GetMemory(length);
+
+        return MemoryMarshal.TryGetArray(memory, out var arraySegment)
+            ? new MemoryStream(arraySegment.Array, arraySegment.Offset, arraySegment.Count)
+            : new MemoryStream(memory.ToArray());
+    }
 
     #endregion
 

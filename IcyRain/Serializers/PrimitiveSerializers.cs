@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.IO;
 using System.Runtime.CompilerServices;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
@@ -886,4 +887,53 @@ internal sealed class ReadOnlySequenceByteSerializer<TResolver> : Serializer<TRe
     [MethodImpl(Flags.HotPath)]
     public override sealed ReadOnlySequence<byte> DeserializeInUTCSpot(ref Reader reader)
         => reader.ReadReadOnlySequence(reader.ReadInt());
+}
+
+internal sealed class StreamSerializer<TResolver> : Serializer<TResolver, Stream>
+    where TResolver : Resolver
+{
+    [MethodImpl(Flags.HotPath)]
+    public override sealed int? GetSize() => null;
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed int GetCapacity(Stream value) => (int)value.Length + 4;
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed void Serialize(ref Writer writer, Stream value)
+    {
+        int length = (int)value.Length;
+        writer.WriteInt(length);
+
+        if (length > 0)
+            writer.WriteStream(value);
+    }
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed void SerializeSpot(ref Writer writer, Stream value)
+    {
+        writer.WriteInt((int)value.Length);
+        writer.WriteStream(value);
+    }
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed Stream Deserialize(ref Reader reader)
+    {
+        int length = reader.ReadInt();
+        return length > 0 ? reader.ReadStream(length) : Stream.Null;
+    }
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed Stream DeserializeInUTC(ref Reader reader)
+    {
+        int length = reader.ReadInt();
+        return length > 0 ? reader.ReadStream(length) : Stream.Null;
+    }
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed Stream DeserializeSpot(ref Reader reader)
+        => reader.ReadStream(reader.ReadInt());
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed Stream DeserializeInUTCSpot(ref Reader reader)
+        => reader.ReadStream(reader.ReadInt());
 }

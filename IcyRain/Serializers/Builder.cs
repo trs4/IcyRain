@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using IcyRain.Builders;
 using IcyRain.Internal;
@@ -176,6 +177,7 @@ internal static class Builder<TResolver>
         { typeof(Memory<byte>), () => new MemorySerializer<TResolver>() },
         { typeof(ReadOnlyMemory<byte>), () => new ReadOnlyMemorySerializer<TResolver>() },
         { typeof(ReadOnlySequence<byte>), () => new ReadOnlySequenceByteSerializer<TResolver>() },
+        { typeof(Stream), () => new StreamSerializer<TResolver>() },
         
         // Extended
         { typeof(Version), () => new VersionSerializer<TResolver>() },

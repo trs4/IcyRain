@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -673,6 +674,43 @@ public class PrimitiveTest
         {
             ReadOnlySequence<byte> result = deepClone(value);
             Assert.That(value.ToArray().SequenceEqual(result.ToArray()));
+        }
+    }
+
+    #endregion
+    #region Stream
+
+    [Test]
+    public void Stream1()
+    {
+        var value = Stream.Null;
+
+        foreach (var deepClone in Tests<Stream>.Functions)
+        {
+            Stream result = deepClone(value);
+            Assert.That(result.Length == 0);
+        }
+    }
+
+    [Test]
+    public void Stream2()
+    {
+        byte[] buffer = [1, 5, 0, 9];
+        var value = new MemoryStream(buffer);
+
+        foreach (var deepClone in Tests<Stream>.Functions)
+        {
+            value.Seek(0, SeekOrigin.Begin);
+            Stream result = deepClone(value);
+            byte[] resultBuffer;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                result.CopyTo(memoryStream);
+                resultBuffer = memoryStream.ToArray();
+            }
+
+            Assert.That(buffer.SequenceEqual(resultBuffer));
         }
     }
 

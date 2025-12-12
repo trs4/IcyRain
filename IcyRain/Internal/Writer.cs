@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using IcyRain.Compression.LZ4;
@@ -725,6 +726,30 @@ public ref struct Writer
             }
         }
     }
+
+    #endregion
+    #region Stream
+
+    [MethodImpl(Flags.HotPath)]
+    public unsafe void WriteStream(Stream value)
+#if NETFRAMEWORK
+    {
+        int count = (int)value.Length;
+        byte[] buffer = Buffers.Rent(count);
+
+        try
+        {
+            int bytesRead = value.Read(buffer, 0, count);
+            WriteByteArray(buffer, bytesRead);
+        }
+        finally
+        {
+            Buffers.Return(buffer);
+        }
+    }
+#else
+        => _offset += value.Read(_span.Slice(_offset));
+#endif
 
     #endregion
 
