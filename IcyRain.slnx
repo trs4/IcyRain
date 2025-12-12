@@ -8,6 +8,7 @@
     <Project Path="IcyRain.Grpc.Tools/IcyRain.Grpc.Tools.csproj" Id="86b1575b-4035-4efe-a09a-a2368f217b8f" />
   </Folder>
   <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />
