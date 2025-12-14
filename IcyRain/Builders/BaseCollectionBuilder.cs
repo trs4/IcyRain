@@ -22,7 +22,7 @@ internal static class BaseCollectionBuilder
             type = type.BaseType;
         }
 
-        return type;
+        return null;
     }
 
 }

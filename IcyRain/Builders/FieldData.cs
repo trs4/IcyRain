@@ -12,6 +12,8 @@ internal sealed class FieldData
     private readonly MethodInfo _setPropertyMethod;
     private readonly bool _isVirtualSetPropertyMethod;
 
+    private ConstructorInfo _realPropertyTypeConstructor;
+
     public FieldData(PropertyInfo property, FieldInfo field, Type propertyType, bool isNullable, IBuilderData data)
     {
         _getPropertyMethod = property.GetGetMethod();
@@ -30,6 +32,9 @@ internal sealed class FieldData
     public FieldInfo Field { get; }
 
     public Type RealPropertyType { get; }
+
+    public ConstructorInfo RealPropertyTypeConstructor
+        => _realPropertyTypeConstructor ??= RealPropertyType.GetConstructors()[0];
 
     public Type PropertyType { get; }
 

@@ -212,7 +212,7 @@ internal static class UnionBuilder
             var label = il.DefineLabel();
             il.DeclareLocal(Types.Byte);
 
-            FieldsBuilder.ReadByte(il, data);
+            ObjectEmitBuilder.ReadByte(il, data);
             il.Emit(OpCodes.Ldloc_0);
             il.Emit(OpCodes.Brtrue_S, label);
 
@@ -250,7 +250,7 @@ internal static class UnionBuilder
             var label = il.DefineLabel();
             il.DeclareLocal(Types.Byte);
 
-            FieldsBuilder.ReadByte(il, data);
+            ObjectEmitBuilder.ReadByte(il, data);
             il.Emit(OpCodes.Ldloc_0);
             il.Emit(OpCodes.Brtrue_S, label);
 
@@ -288,7 +288,7 @@ internal static class UnionBuilder
             var label = il.DefineLabel();
             il.DeclareLocal(Types.Byte);
 
-            FieldsBuilder.ReadByte(il, data);
+            ObjectEmitBuilder.ReadByte(il, data);
 
             for (int i = 0; i < dataListCount; i++)
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using IcyRain.Internal;
@@ -9,6 +8,7 @@ using IcyRain.Serializers;
 
 namespace IcyRain.Builders;
 
+#pragma warning disable CA1508 // Avoid dead conditional code
 internal static class ObjectBuilder
 {
     public static object Get(Type type)
@@ -25,29 +25,12 @@ internal static class ObjectBuilder
 
         var typeField = builder.DefineField(Naming.TypeField, Types.Type, Flags.PrivateReadOnlyField);
         MethodInfo serializeSpotMethod;
-
-        var baseCollectionType = BaseCollectionBuilder.GetType(type);
-        bool hasBaseCollectionType = baseCollectionType is not null;
-        FieldBuilder constructorField = null;
-        bool hasCapacityConstructor = false;
-        IBuilderData baseData = null;
-        FieldBuilder baseField = null;
-
-        if (hasBaseCollectionType)
-        {
-            constructorField = builder.DefineField(Naming.BaseConstructorField, typeof(ConstructorInfo), Flags.PrivateReadOnlyField);
-            hasCapacityConstructor = type.GetConstructors().Any(c => c.GetParameters().Length == 1 && c.GetParameters()[0].ParameterType == Types.Int);
-
-            baseData = ResolverHelper.GetBuilderData(baseCollectionType);
-            string baseName = Naming.BaseFieldPrefix + nameof(Serializer<,>);
-            baseField = builder.DefineField(baseName, data.SerializerType, Flags.PrivateReadOnlyField);
-        }
-
+        var baseClassData = BaseClassData.Create(type, builder);
         var fields = FieldsBuilder.Build(builder, data.Properties);
         var calculatedFields = new List<FieldData>(fields.Length);
         int size = data.PropertyIndexSize * (fields.Length + 1);
 
-        if (hasBaseCollectionType)
+        if (baseClassData is not null)
             size += data.PropertyIndexSize;
 
         foreach (var field in fields)
@@ -61,7 +44,7 @@ internal static class ObjectBuilder
         }
 
         // .ctor
-        FieldsBuilder.BuildConstructor(builder, data, type, typeField, fields, baseData, constructorField, baseField, hasCapacityConstructor);
+        ObjectEmitBuilder.BuildConstructor(builder, data, type, typeField, fields, baseClassData);
 
         // int? GetSize()
         {
@@ -71,7 +54,7 @@ internal static class ObjectBuilder
 
             var il = method.GetILGenerator();
 
-            if (hasBaseCollectionType || calculatedFields.Count == 0)
+            if (baseClassData is not null || calculatedFields.Count == 0)
             {
                 il.EmitLdc_I4(size);
                 il.Emit(OpCodes.Newobj, Types.NullableIntCtor);
@@ -101,13 +84,13 @@ internal static class ObjectBuilder
             il.Emit(OpCodes.Brfalse_S, label);
             il.EmitLdc_I4(size);
 
-            if (hasBaseCollectionType)
+            if (baseClassData is not null)
             {
                 // _s_Base_Serializer.GetCapacity(value);
                 il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, baseField);
+                il.Emit(OpCodes.Ldfld, baseClassData.Field);
                 il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Callvirt, baseData.GetCapacity);
+                il.Emit(OpCodes.Callvirt, baseClassData.Data.GetCapacity);
                 il.Emit(OpCodes.Add);
             }
 
@@ -152,7 +135,7 @@ internal static class ObjectBuilder
                 }
             }
 
-            if (hasBaseCollectionType)
+            if (baseClassData is not null)
             {
                 // writer.WriteByte(254);
                 il.Emit(OpCodes.Ldarg_1);
@@ -161,10 +144,10 @@ internal static class ObjectBuilder
 
                 // _s_Base_Serializer.SerializeSpot(ref writer, value);
                 il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, baseField);
+                il.Emit(OpCodes.Ldfld, baseClassData.Field);
                 il.Emit(OpCodes.Ldarg_1);
                 il.Emit(OpCodes.Ldarg_2);
-                il.Emit(OpCodes.Callvirt, baseData.SerializeSpot);
+                il.Emit(OpCodes.Callvirt, baseClassData.Data.SerializeSpot);
             }
 
             for (int i = 0; i < fields.Length; i++)
@@ -244,55 +227,9 @@ internal static class ObjectBuilder
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
-            var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int); // index
-            il.DeclareLocal(type); // obj
-
-            if (hasBaseCollectionType)
-                il.DeclareLocal(Types.Int); // length
-
-            FieldsBuilder.ReadByte(il, data);
-
-            // if (num == 0)
-            il.Emit(OpCodes.Ldloc_0);
-            il.Emit(OpCodes.Brtrue_S, label);
-
-            // return null;
-            il.Emit(OpCodes.Ldnull);
-            il.Emit(OpCodes.Ret);
-            il.MarkLabel(label);
-
-            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeSpot, constructorField, hasCapacityConstructor);
-            int maxIndex = fields.Length - 1;
-
-            for (int i = 0; i <= maxIndex; i++)
-            {
-                var field = fields[i];
-                var propertyLabel = il.DefineLabel();
-
-                // if (num == 1)
-                il.Emit(OpCodes.Ldloc_0);
-                il.EmitLdc_I4(i + 1);
-                il.Emit(OpCodes.Bne_Un_S, propertyLabel);
-
-                // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
-                il.Emit(OpCodes.Ldloc_1);
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, field.Field);
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Callvirt, field.Data.DeserializeSpot);
-
-                if (field.IsNullable)
-                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
-
-                field.EmitSetProperty(il);
-
-                FieldsBuilder.ReadByte(il, data, i < maxIndex);
-                il.MarkLabel(propertyLabel);
-            }
-
-            il.Emit(OpCodes.Ldloc_1);
-            il.Emit(OpCodes.Ret);
+            ObjectEmitBuilder.DeclareLocalVariablesOnDeserialize(il, type, data, baseClassData is not null);
+            ObjectEmitBuilder.BuildCreateObject(il, type, typeField, data, fields, baseClassData, d => d.BaseDeserializeSpot);
+            ObjectEmitBuilder.ReadPropertyValues(il, data, fields, d => d.DeserializeSpot);
         }
 
         // T DeserializeInUTC(ref Reader reader)
@@ -302,55 +239,9 @@ internal static class ObjectBuilder
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
-            var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int); // index
-            il.DeclareLocal(type); // obj
-
-            if (hasBaseCollectionType)
-                il.DeclareLocal(Types.Int); // length
-
-            FieldsBuilder.ReadByte(il, data);
-
-            // if (num == 0)
-            il.Emit(OpCodes.Ldloc_0);
-            il.Emit(OpCodes.Brtrue_S, label);
-
-            // return null;
-            il.Emit(OpCodes.Ldnull);
-            il.Emit(OpCodes.Ret);
-            il.MarkLabel(label);
-
-            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeInUTCSpot, constructorField, hasCapacityConstructor);
-            int maxIndex = fields.Length - 1;
-
-            for (int i = 0; i <= maxIndex; i++)
-            {
-                var field = fields[i];
-                var propertyLabel = il.DefineLabel();
-
-                // if (num == 1)
-                il.Emit(OpCodes.Ldloc_0);
-                il.EmitLdc_I4(i + 1);
-                il.Emit(OpCodes.Bne_Un_S, propertyLabel);
-
-                // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
-                il.Emit(OpCodes.Ldloc_1);
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, field.Field);
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Callvirt, field.Data.DeserializeInUTCSpot);
-
-                if (field.IsNullable)
-                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
-
-                field.EmitSetProperty(il);
-
-                FieldsBuilder.ReadByte(il, data, i < maxIndex);
-                il.MarkLabel(propertyLabel);
-            }
-
-            il.Emit(OpCodes.Ldloc_1);
-            il.Emit(OpCodes.Ret);
+            ObjectEmitBuilder.DeclareLocalVariablesOnDeserialize(il, type, data, baseClassData is not null);
+            ObjectEmitBuilder.BuildCreateObject(il, type, typeField, data, fields, baseClassData, d => d.BaseDeserializeInUTCSpot);
+            ObjectEmitBuilder.ReadPropertyValues(il, data, fields, d => d.DeserializeInUTCSpot);
         }
 
         // T DeserializeSpot(ref Reader reader)
@@ -360,44 +251,9 @@ internal static class ObjectBuilder
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
-            var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int); // index
-            il.DeclareLocal(type); // obj
-
-            if (hasBaseCollectionType)
-                il.DeclareLocal(Types.Int); // length
-
-            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeSpot, constructorField, hasCapacityConstructor, spot: true);
-            int maxIndex = fields.Length - 1;
-
-            for (int i = 0; i <= maxIndex; i++)
-            {
-                var field = fields[i];
-                var propertyLabel = il.DefineLabel();
-
-                // if (num == 1)
-                il.Emit(OpCodes.Ldloc_0);
-                il.EmitLdc_I4(i + 1);
-                il.Emit(OpCodes.Bne_Un_S, propertyLabel);
-
-                // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
-                il.Emit(OpCodes.Ldloc_1);
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, field.Field);
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Callvirt, field.Data.DeserializeSpot);
-
-                if (field.IsNullable)
-                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
-
-                field.EmitSetProperty(il);
-
-                FieldsBuilder.ReadByte(il, data, i < maxIndex);
-                il.MarkLabel(propertyLabel);
-            }
-
-            il.Emit(OpCodes.Ldloc_1);
-            il.Emit(OpCodes.Ret);
+            ObjectEmitBuilder.DeclareLocalVariablesOnDeserialize(il, type, baseClassData is not null);
+            ObjectEmitBuilder.BuildCreateObject(il, type, typeField, data, fields, baseClassData, d => d.BaseDeserializeSpot, spot: true);
+            ObjectEmitBuilder.ReadPropertyValues(il, data, fields, d => d.DeserializeSpot);
         }
 
         // T DeserializeInUTCSpot(ref Reader reader)
@@ -407,47 +263,13 @@ internal static class ObjectBuilder
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
-            var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int); // index
-            il.DeclareLocal(type); // obj
-
-            if (hasBaseCollectionType)
-                il.DeclareLocal(Types.Int); // length
-
-            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeInUTCSpot, constructorField, hasCapacityConstructor, spot: true);
-            int maxIndex = fields.Length - 1;
-
-            for (int i = 0; i <= maxIndex; i++)
-            {
-                var field = fields[i];
-                var propertyLabel = il.DefineLabel();
-
-                // if (num == 1)
-                il.Emit(OpCodes.Ldloc_0);
-                il.EmitLdc_I4(i + 1);
-                il.Emit(OpCodes.Bne_Un_S, propertyLabel);
-
-                // testData.Property = _s_PropertySerializer.DeserializeSpot(ref reader);
-                il.Emit(OpCodes.Ldloc_1);
-                il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, field.Field);
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Callvirt, field.Data.DeserializeInUTCSpot);
-
-                if (field.IsNullable)
-                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
-
-                field.EmitSetProperty(il);
-
-                FieldsBuilder.ReadByte(il, data, i < maxIndex);
-                il.MarkLabel(propertyLabel);
-            }
-
-            il.Emit(OpCodes.Ldloc_1);
-            il.Emit(OpCodes.Ret);
+            ObjectEmitBuilder.DeclareLocalVariablesOnDeserialize(il, type, baseClassData is not null);
+            ObjectEmitBuilder.BuildCreateObject(il, type, typeField, data, fields, baseClassData, d => d.BaseDeserializeInUTCSpot, spot: true);
+            ObjectEmitBuilder.ReadPropertyValues(il, data, fields, d => d.DeserializeInUTCSpot);
         }
 
         return builder.CreateType();
     }
 
 }
+#pragma warning restore CA1508 // Avoid dead conditional code
