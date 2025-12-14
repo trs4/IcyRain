@@ -38,6 +38,10 @@ internal interface IBuilderData
 
     MethodInfo DeserializeInUTCSpot { get; }
 
+    MethodInfo BaseDeserializeSpot { get; }
+
+    MethodInfo BaseDeserializeInUTCSpot { get; }
+
     MethodInfo Add { get; }
 
     ISerializer Serializer { get; }

@@ -124,4 +124,16 @@ internal sealed class ListSerializer<TResolver, T> : Serializer<TResolver, List<
         return value.CreateList();
     }
 
+    public override void BaseDeserializeSpot<TObj>(ref Reader reader, TObj value, int length)
+    {
+        for (int i = 0; i < length; i++)
+            value.Add(_serializer.Deserialize(ref reader));
+    }
+
+    public override void BaseDeserializeInUTCSpot<TObj>(ref Reader reader, TObj value, int length)
+    {
+        for (int i = 0; i < length; i++)
+            value.Add(_serializer.DeserializeInUTC(ref reader));
+    }
+
 }

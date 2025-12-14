@@ -13,6 +13,7 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IcyRain.Tables\IcyRain.Tables.csproj" />
     <ProjectReference Include="..\IcyRain\IcyRain.csproj" />
   </ItemGroup>
 

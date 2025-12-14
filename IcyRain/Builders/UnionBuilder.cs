@@ -45,7 +45,7 @@ internal static class UnionBuilder
 
         // int? GetSize()
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.GetSize), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.GetSize), Flags.PublicOverrideMethod,
                 Types.NullableInt, Type.EmptyTypes)
                 .WithAggressiveInlining();
 
@@ -60,7 +60,7 @@ internal static class UnionBuilder
 
         // int GetCapacity(T value)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.GetCapacity), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.GetCapacity), Flags.PublicOverrideMethod,
                 Types.Int, [type])
                 .WithName(Naming.Value).WithAggressiveInlining();
 
@@ -119,7 +119,7 @@ internal static class UnionBuilder
 
         // void SerializeSpot(ref Writer writer, T value)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.SerializeSpot), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.SerializeSpot), Flags.PublicOverrideMethod,
                 null, [Types.WriterRef, type])
                 .WithNames(Naming.Serialize);
 
@@ -176,7 +176,7 @@ internal static class UnionBuilder
 
         // void Serialize(ref Writer writer, T value)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Serialize), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.Serialize), Flags.PublicOverrideMethod,
                 null, [Types.WriterRef, type])
                 .WithNames(Naming.Serialize);
 
@@ -204,7 +204,7 @@ internal static class UnionBuilder
 
         // T Deserialize(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Deserialize), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.Deserialize), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
@@ -212,10 +212,7 @@ internal static class UnionBuilder
             var label = il.DefineLabel();
             il.DeclareLocal(Types.Byte);
 
-            // int index = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
+            FieldsBuilder.ReadByte(il, data);
             il.Emit(OpCodes.Ldloc_0);
             il.Emit(OpCodes.Brtrue_S, label);
 
@@ -245,7 +242,7 @@ internal static class UnionBuilder
 
         // T DeserializeInUTC(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTC), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.DeserializeInUTC), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
@@ -253,10 +250,7 @@ internal static class UnionBuilder
             var label = il.DefineLabel();
             il.DeclareLocal(Types.Byte);
 
-            // int index = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
+            FieldsBuilder.ReadByte(il, data);
             il.Emit(OpCodes.Ldloc_0);
             il.Emit(OpCodes.Brtrue_S, label);
 
@@ -286,7 +280,7 @@ internal static class UnionBuilder
 
         // T DeserializeSpot(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeSpot), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.DeserializeSpot), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
@@ -294,10 +288,7 @@ internal static class UnionBuilder
             var label = il.DefineLabel();
             il.DeclareLocal(Types.Byte);
 
-            // int index = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
+            FieldsBuilder.ReadByte(il, data);
 
             for (int i = 0; i < dataListCount; i++)
             {
@@ -320,7 +311,7 @@ internal static class UnionBuilder
 
         // T DeserializeInUTCSpot(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTCSpot), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.DeserializeInUTCSpot), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 

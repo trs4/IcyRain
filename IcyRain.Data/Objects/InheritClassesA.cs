@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using IcyRain.Internal;
 using IcyRain.Resolvers;
 using IcyRain.Serializers;
+using IcyRain.Tables;
 using ZeroFormatter;
 
 namespace IcyRain.Data.Objects;
@@ -706,6 +709,152 @@ public sealed class TestA1DynamicSerializer : Serializer<UnionResolver, TestA1>
             return Serializer<Resolver, TestA3>.Instance.DeserializeInUTCSpot(ref reader);
         else
             throw new InvalidOperationException("Unknown index: " + index);
+    }
+
+}
+
+
+public sealed class TestDataTableSerializer : Serializer<Resolver, DataTable>
+{
+    private readonly ConstructorInfo _constructor;
+    private readonly Serializer<Resolver, Dictionary<string, DataColumn>> _s_Base_Serializer;
+    private readonly Serializer<Resolver, int> _s_RowCountSerializer;
+
+    public TestDataTableSerializer()
+    {
+        //_constructor = typeof(DataTable).GetConstructor([]);
+        _constructor = typeof(DataTable).GetConstructor(BuilderTypes.IntArray);
+        _s_Base_Serializer = Serializer<Resolver, Dictionary<string, DataColumn>>.Instance;
+        _s_RowCountSerializer = Serializer<Resolver, int>.Instance;
+    }
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed int? GetSize() => null;
+
+    [MethodImpl(Flags.HotPath)]
+    public override sealed int GetCapacity(DataTable value)
+        => value is null ? 1 : 50 + _s_Base_Serializer.GetCapacity(value) + _s_RowCountSerializer.GetCapacity(value.RowCount);
+
+    public override sealed void Serialize(ref Writer writer, DataTable value)
+    {
+        if (value is null)
+        {
+            writer.WriteByte(255); // Empty object
+            return;
+        }
+
+        writer.WriteByte(254); // Base
+        _s_Base_Serializer.SerializeSpot(ref writer, value);
+
+        if (value.RowCount != default)
+        {
+            writer.WriteByte(1);
+            _s_RowCountSerializer.SerializeSpot(ref writer, value.RowCount);
+        }
+
+        writer.WriteByte(0); // End object
+    }
+
+    public override sealed void SerializeSpot(ref Writer writer, DataTable value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override sealed DataTable Deserialize(ref Reader reader)
+    {
+        byte index = reader.ReadByte(); // Read 255 or 1 or 0
+
+        if (index == 255)
+            return null;
+
+        //#if NET8_0_OR_GREATER
+        //        var obj = (DataTable)RuntimeHelpers.GetUninitializedObject(typeof(DataTable));
+        //#else
+        //        var obj = (DataTable)FormatterServices.GetUninitializedObject(typeof(DataTable));
+        //#endif
+        //var obj = Creator.GetObject<DataTable>();
+        //var obj = new DataTable();
+        //var obj = Activator.CreateInstance<DataTable>();
+        //var obj = (DataTable)Activator.CreateInstance(typeof(DataTable));
+        //var obj = (DataTable)_constructor.Invoke([]);
+        //var obj = (DataTable)typeof(DataTable).GetConstructor([]).Invoke([]);
+        //((IBaseSystemTypeSerializer<Dictionary<string, DataColumn>>)_s_Base_Serializer).BaseDeserializeSpot(ref reader, obj);
+        //_s_Base_Serializer.BaseDeserializeSpot(ref reader, (object)obj);
+        //var obj = _s_Base_Serializer.BaseDeserializeSpot<DataTable>(ref reader);
+
+        int length = reader.ReadInt();
+        //var obj = (DataTable)_constructor.Invoke([]);
+        var obj = (DataTable)_constructor.Invoke([length]);
+        _s_Base_Serializer.BaseDeserializeSpot(ref reader, obj, length);
+        index = reader.ReadByte(); // Read next
+
+        if (index == 1)
+        {
+            obj.RowCount = _s_RowCountSerializer.DeserializeSpot(ref reader);
+            reader.ReadByte(); // Read 0
+        }
+
+        if (index == 2) // test
+        {
+            obj.RowCount = _s_RowCountSerializer.DeserializeSpot(ref reader);
+            reader.ReadByte(); // Read 0
+        }
+
+        return obj;
+    }
+
+    public override sealed DataTable DeserializeInUTC(ref Reader reader)
+    {
+        byte index = reader.ReadByte(); // Read 255 or 1 or 0
+
+        if (index == 255)
+            return null;
+
+#if NET8_0_OR_GREATER
+        var obj = (DataTable)RuntimeHelpers.GetUninitializedObject(typeof(DataTable));
+#else
+        var obj = (DataTable)FormatterServices.GetUninitializedObject(typeof(DataTable));
+#endif
+        //((IBaseSystemTypeSerializer<Dictionary<string, DataColumn>>)_s_Base_Serializer).BaseDeserializeInUTCSpot(ref reader, obj);
+        //_s_Base_Serializer.BaseDeserializeInUTCSpot(ref reader, (object)obj);
+        index = reader.ReadByte(); // Read next
+
+        if (index == 1)
+        {
+            obj.RowCount = _s_RowCountSerializer.DeserializeInUTCSpot(ref reader);
+            reader.ReadByte(); // Read 0
+        }
+
+        return obj;
+    }
+
+    public override sealed DataTable DeserializeSpot(ref Reader reader)
+    {
+        byte index = reader.ReadByte(); // Read 255 or 1 or 0
+        int length = reader.ReadInt();
+        //var obj = (DataTable)_constructor.Invoke([]);
+        var obj = (DataTable)_constructor.Invoke([length]);
+        _s_Base_Serializer.BaseDeserializeSpot(ref reader, obj, length);
+        index = reader.ReadByte(); // Read next
+
+        if (index == 1)
+        {
+            obj.RowCount = _s_RowCountSerializer.DeserializeSpot(ref reader);
+            reader.ReadByte(); // Read 0
+        }
+
+        if (index == 2) // test
+        {
+            obj.RowCount = _s_RowCountSerializer.DeserializeSpot(ref reader);
+            reader.ReadByte(); // Read 0
+        }
+
+        return obj;
+    }
+
+    public override sealed DataTable DeserializeInUTCSpot(ref Reader reader)
+    {
+        throw new NotImplementedException();
     }
 
 }

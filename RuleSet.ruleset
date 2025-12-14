@@ -220,6 +220,7 @@
     <Rule Id="IDE0130" Action="None" />
     <Rule Id="IDE0290" Action="None" />
     <Rule Id="IDE0330" Action="None" />
+    <Rule Id="IDE0340" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.CSharp.NetAnalyzers">
     <Rule Id="CA1001" Action="Warning" />

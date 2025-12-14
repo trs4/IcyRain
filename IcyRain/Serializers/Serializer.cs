@@ -47,4 +47,12 @@ public abstract class Serializer<TResolver, T> : ISerializer
     public abstract T DeserializeSpot(ref Reader reader);
 
     public abstract T DeserializeInUTCSpot(ref Reader reader);
+
+    public virtual void BaseDeserializeSpot<TObj>(ref Reader reader, TObj value, int length)
+        where TObj : T
+        => throw new NotSupportedException();
+
+    public virtual void BaseDeserializeInUTCSpot<TObj>(ref Reader reader, TObj value, int length)
+        where TObj : T
+        => throw new NotSupportedException();
 }

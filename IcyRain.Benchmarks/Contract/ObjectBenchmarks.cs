@@ -18,6 +18,7 @@ public class ObjectBenchmarks : IIcyRainBenchmark, IMessagePackBenchmark, IProto
         Property3 = 4.5,
         Property4 = new DateTime(2021, 5, 1, 5, 8, 7),
         Property5 = "test",
+        Property6 = 25,
     };
 
     [MethodImpl(MethodImplOptions.NoInlining)]
@@ -29,6 +30,7 @@ public class ObjectBenchmarks : IIcyRainBenchmark, IMessagePackBenchmark, IProto
         var r3 = value.Property3;
         var r4 = value.Property4;
         var r5 = value.Property5;
+        var r6 = value.Property6;
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
     }
 

@@ -31,6 +31,10 @@ public class TestData
     [DataMember(Order = 5)]
     [Index(4)]
     public virtual string Property5 { get; set; }
+
+    [DataMember(Order = 6)]
+    [Index(4)]
+    public virtual int? Property6 { get; set; }
 }
 
 public sealed class TestDataSerializer : Serializer<Resolver, TestData>
@@ -41,6 +45,7 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
     private readonly Serializer<Resolver, double> _s_Property3Serializer;
     private readonly Serializer<Resolver, DateTime> _s_Property4Serializer;
     private readonly Serializer<Resolver, string> _s_Property5Serializer;
+    private readonly Serializer<Resolver, int> _s_Property6Serializer;
 
     public TestDataSerializer()
     {
@@ -49,6 +54,7 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         _s_Property3Serializer = Serializer<Resolver, double>.Instance;
         _s_Property4Serializer = Serializer<Resolver, DateTime>.Instance;
         _s_Property5Serializer = Serializer<Resolver, string>.Instance;
+        _s_Property6Serializer = Serializer<Resolver, int>.Instance;
     }
 
     [MethodImpl(Flags.HotPath)]
@@ -99,6 +105,14 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
             _s_Property5Serializer.SerializeSpot(ref writer, value.Property5);
         }
 
+        int? property6 = value.Property6;
+
+        if (property6.HasValue)
+        {
+            writer.WriteByte(6);
+            _s_Property6Serializer.SerializeSpot(ref writer, value.Property6.Value);
+        }
+
         writer.WriteByte(255); // End object
     }
 
@@ -142,6 +156,12 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         if (index == 5)
         {
             obj.Property5 = _s_Property5Serializer.DeserializeSpot(ref reader);
+            index = reader.ReadByte(); // Read 6
+        }
+
+        if (index == 6)
+        {
+            obj.Property6 = _s_Property6Serializer.DeserializeSpot(ref reader);
             reader.ReadByte(); // Read 255
         }
 
@@ -188,6 +208,12 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         if (index == 5)
         {
             obj.Property5 = _s_Property5Serializer.DeserializeInUTCSpot(ref reader);
+            index = reader.ReadByte(); // Read 6
+        }
+
+        if (index == 6)
+        {
+            obj.Property6 = _s_Property6Serializer.DeserializeInUTCSpot(ref reader);
             reader.ReadByte(); // Read 255
         }
 
@@ -230,6 +256,12 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         if (index == 5)
         {
             obj.Property5 = _s_Property5Serializer.DeserializeSpot(ref reader);
+            index = reader.ReadByte(); // Read 6
+        }
+
+        if (index == 6)
+        {
+            obj.Property6 = _s_Property6Serializer.DeserializeSpot(ref reader);
             reader.ReadByte(); // Read 255
         }
 
@@ -272,6 +304,12 @@ public sealed class TestDataSerializer : Serializer<Resolver, TestData>
         if (index == 5)
         {
             obj.Property5 = _s_Property5Serializer.DeserializeInUTCSpot(ref reader);
+            index = reader.ReadByte(); // Read 6
+        }
+
+        if (index == 6)
+        {
+            obj.Property6 = _s_Property6Serializer.DeserializeInUTCSpot(ref reader);
             reader.ReadByte(); // Read 255
         }
 

@@ -24,6 +24,8 @@ internal sealed class BuilderData<TResolver> : IBuilderData
     private MethodInfo _serializeSpot;
     private MethodInfo _deserializeSpot;
     private MethodInfo _deserializeInUTCSpot;
+    private MethodInfo _baseDeserializeSpot;
+    private MethodInfo _baseDeserializeInUTCSpot;
     private MethodInfo _add;
     private ISerializer _serializer;
 
@@ -85,17 +87,21 @@ internal sealed class BuilderData<TResolver> : IBuilderData
 
     public MethodInfo GetInstance => _getInstance ??= _serializerTypeInfo.GetMethod("get_Instance");
 
-    public MethodInfo GetSize => _getSize ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.GetSize));
+    public MethodInfo GetSize => _getSize ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.GetSize));
 
-    public MethodInfo GetCapacity => _getCapacity ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.GetCapacity));
+    public MethodInfo GetCapacity => _getCapacity ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.GetCapacity));
 
-    public MethodInfo SerializeSpot => _serializeSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.SerializeSpot));
+    public MethodInfo SerializeSpot => _serializeSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.SerializeSpot));
 
-    public MethodInfo DeserializeSpot => _deserializeSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.DeserializeSpot));
+    public MethodInfo DeserializeSpot => _deserializeSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.DeserializeSpot));
 
-    public MethodInfo DeserializeInUTCSpot => _deserializeInUTCSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<Resolver, object>.DeserializeInUTCSpot));
+    public MethodInfo DeserializeInUTCSpot => _deserializeInUTCSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.DeserializeInUTCSpot));
 
-    public MethodInfo Add => _add ??= _serializerTypeInfo.GetMethod(nameof(UnionByteMapSerializer<object>.Add));
+    public MethodInfo BaseDeserializeSpot => _baseDeserializeSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.BaseDeserializeSpot));
+
+    public MethodInfo BaseDeserializeInUTCSpot => _baseDeserializeInUTCSpot ??= _serializerTypeInfo.GetMethod(nameof(Serializer<,>.BaseDeserializeInUTCSpot));
+
+    public MethodInfo Add => _add ??= _serializerTypeInfo.GetMethod(nameof(UnionByteMapSerializer<>.Add));
 
     public ISerializer Serializer => _serializer ??= GetInstance.Invoke(null, null) as ISerializer;
 
@@ -104,9 +110,11 @@ internal sealed class BuilderData<TResolver> : IBuilderData
 
     private static bool GetIsBytePropertyIndexes(int propertiesCount)
     {
-        if (propertiesCount < byte.MaxValue) // 1..254
+        const int reservedIndexes = 2; // null, base collection type
+
+        if (propertiesCount <= byte.MaxValue - reservedIndexes) // 1..253 (255-2)
             return true;
-        else if (propertiesCount < ushort.MaxValue) // 1..65534
+        else if (propertiesCount <= ushort.MaxValue - reservedIndexes) // 1..65533 (65535-2)
             return false;
 
         throw new NotSupportedException($"Properties count is {propertiesCount}. Max available count is 65534");

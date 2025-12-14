@@ -15,7 +15,8 @@ public static class SerializationExample
             Property2 = 25,
             Property3 = 7.0,
             Property4 = DateTime.Now,
-            Property5 = "test"
+            Property5 = "test",
+            Property6 = 4,
         };
 
         // byte array serialization

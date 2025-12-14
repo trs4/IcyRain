@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using IcyRain.Internal;
@@ -25,9 +26,29 @@ internal static class ObjectBuilder
         var typeField = builder.DefineField(Naming.TypeField, Types.Type, Flags.PrivateReadOnlyField);
         MethodInfo serializeSpotMethod;
 
+        var baseCollectionType = BaseCollectionBuilder.GetType(type);
+        bool hasBaseCollectionType = baseCollectionType is not null;
+        FieldBuilder constructorField = null;
+        bool hasCapacityConstructor = false;
+        IBuilderData baseData = null;
+        FieldBuilder baseField = null;
+
+        if (hasBaseCollectionType)
+        {
+            constructorField = builder.DefineField(Naming.BaseConstructorField, typeof(ConstructorInfo), Flags.PrivateReadOnlyField);
+            hasCapacityConstructor = type.GetConstructors().Any(c => c.GetParameters().Length == 1 && c.GetParameters()[0].ParameterType == Types.Int);
+
+            baseData = ResolverHelper.GetBuilderData(baseCollectionType);
+            string baseName = Naming.BaseFieldPrefix + nameof(Serializer<,>);
+            baseField = builder.DefineField(baseName, data.SerializerType, Flags.PrivateReadOnlyField);
+        }
+
         var fields = FieldsBuilder.Build(builder, data.Properties);
         var calculatedFields = new List<FieldData>(fields.Length);
         int size = data.PropertyIndexSize * (fields.Length + 1);
+
+        if (hasBaseCollectionType)
+            size += data.PropertyIndexSize;
 
         foreach (var field in fields)
         {
@@ -40,17 +61,17 @@ internal static class ObjectBuilder
         }
 
         // .ctor
-        FieldsBuilder.BuildConstructor(builder, data, type, typeField, fields);
+        FieldsBuilder.BuildConstructor(builder, data, type, typeField, fields, baseData, constructorField, baseField, hasCapacityConstructor);
 
         // int? GetSize()
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.GetSize), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.GetSize), Flags.PublicOverrideMethod,
                 Types.NullableInt, Type.EmptyTypes)
                 .WithAggressiveInlining();
 
             var il = method.GetILGenerator();
 
-            if (calculatedFields.Count == 0)
+            if (hasBaseCollectionType || calculatedFields.Count == 0)
             {
                 il.EmitLdc_I4(size);
                 il.Emit(OpCodes.Newobj, Types.NullableIntCtor);
@@ -69,7 +90,7 @@ internal static class ObjectBuilder
 
         // int GetCapacity(T value)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.GetCapacity), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.GetCapacity), Flags.PublicOverrideMethod,
                 Types.Int, [type])
                 .WithName(Naming.Value).WithAggressiveInlining();
 
@@ -79,6 +100,16 @@ internal static class ObjectBuilder
             il.Emit(OpCodes.Ldarg_1);
             il.Emit(OpCodes.Brfalse_S, label);
             il.EmitLdc_I4(size);
+
+            if (hasBaseCollectionType)
+            {
+                // _s_Base_Serializer.GetCapacity(value);
+                il.Emit(OpCodes.Ldarg_0);
+                il.Emit(OpCodes.Ldfld, baseField);
+                il.Emit(OpCodes.Ldarg_1);
+                il.Emit(OpCodes.Callvirt, baseData.GetCapacity);
+                il.Emit(OpCodes.Add);
+            }
 
             foreach (var field in calculatedFields)
             {
@@ -99,7 +130,7 @@ internal static class ObjectBuilder
 
         // void SerializeSpot(ref Writer writer, T value)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.SerializeSpot), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.SerializeSpot), Flags.PublicOverrideMethod,
                 null, [Types.WriterRef, type])
                 .WithNames(Naming.Serialize);
 
@@ -119,6 +150,21 @@ internal static class ObjectBuilder
                     field.VariableIndex = ++variableIndex;
                     il.DeclareLocal(field.RealPropertyType);
                 }
+            }
+
+            if (hasBaseCollectionType)
+            {
+                // writer.WriteByte(254);
+                il.Emit(OpCodes.Ldarg_1);
+                il.EmitLdc_I4(data.EndMessageCode - 1);
+                il.Emit(OpCodes.Call, data.WriteMethod);
+
+                // _s_Base_Serializer.SerializeSpot(ref writer, value);
+                il.Emit(OpCodes.Ldarg_0);
+                il.Emit(OpCodes.Ldfld, baseField);
+                il.Emit(OpCodes.Ldarg_1);
+                il.Emit(OpCodes.Ldarg_2);
+                il.Emit(OpCodes.Callvirt, baseData.SerializeSpot);
             }
 
             for (int i = 0; i < fields.Length; i++)
@@ -165,7 +211,7 @@ internal static class ObjectBuilder
 
         // void Serialize(ref Writer writer, T value)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Serialize), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.Serialize), Flags.PublicOverrideMethod,
                 null, [Types.WriterRef, type])
                 .WithNames(Naming.Serialize);
 
@@ -193,19 +239,19 @@ internal static class ObjectBuilder
 
         // T Deserialize(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.Deserialize), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.Deserialize), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
             var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int);
-            il.DeclareLocal(type);
+            il.DeclareLocal(Types.Int); // index
+            il.DeclareLocal(type); // obj
 
-            // int num = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
+            if (hasBaseCollectionType)
+                il.DeclareLocal(Types.Int); // length
+
+            FieldsBuilder.ReadByte(il, data);
 
             // if (num == 0)
             il.Emit(OpCodes.Ldloc_0);
@@ -216,13 +262,7 @@ internal static class ObjectBuilder
             il.Emit(OpCodes.Ret);
             il.MarkLabel(label);
 
-            // TestData testData = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
-            il.Emit(OpCodes.Ldarg_0);
-            il.Emit(OpCodes.Ldfld, typeField);
-            il.Emit(OpCodes.Call, Types.GetUninitializedObjectMethod);
-            il.Emit(OpCodes.Castclass, type);
-            il.Emit(OpCodes.Stloc_1);
-
+            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeSpot, constructorField, hasCapacityConstructor);
             int maxIndex = fields.Length - 1;
 
             for (int i = 0; i <= maxIndex; i++)
@@ -241,17 +281,13 @@ internal static class ObjectBuilder
                 il.Emit(OpCodes.Ldfld, field.Field);
                 il.Emit(OpCodes.Ldarg_1);
                 il.Emit(OpCodes.Callvirt, field.Data.DeserializeSpot);
+
+                if (field.IsNullable)
+                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
+
                 field.EmitSetProperty(il);
 
-                // num = reader.ReadByte();
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Call, data.ReadMethod);
-
-                if (i < maxIndex)
-                    il.Emit(OpCodes.Stloc_0);
-                else
-                    il.Emit(OpCodes.Pop);
-
+                FieldsBuilder.ReadByte(il, data, i < maxIndex);
                 il.MarkLabel(propertyLabel);
             }
 
@@ -261,19 +297,19 @@ internal static class ObjectBuilder
 
         // T DeserializeInUTC(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTC), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.DeserializeInUTC), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
             var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int);
-            il.DeclareLocal(type);
+            il.DeclareLocal(Types.Int); // index
+            il.DeclareLocal(type); // obj
 
-            // int num = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
+            if (hasBaseCollectionType)
+                il.DeclareLocal(Types.Int); // length
+
+            FieldsBuilder.ReadByte(il, data);
 
             // if (num == 0)
             il.Emit(OpCodes.Ldloc_0);
@@ -284,13 +320,7 @@ internal static class ObjectBuilder
             il.Emit(OpCodes.Ret);
             il.MarkLabel(label);
 
-            // TestData testData = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
-            il.Emit(OpCodes.Ldarg_0);
-            il.Emit(OpCodes.Ldfld, typeField);
-            il.Emit(OpCodes.Call, Types.GetUninitializedObjectMethod);
-            il.Emit(OpCodes.Castclass, type);
-            il.Emit(OpCodes.Stloc_1);
-
+            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeInUTCSpot, constructorField, hasCapacityConstructor);
             int maxIndex = fields.Length - 1;
 
             for (int i = 0; i <= maxIndex; i++)
@@ -309,17 +339,13 @@ internal static class ObjectBuilder
                 il.Emit(OpCodes.Ldfld, field.Field);
                 il.Emit(OpCodes.Ldarg_1);
                 il.Emit(OpCodes.Callvirt, field.Data.DeserializeInUTCSpot);
+
+                if (field.IsNullable)
+                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
+
                 field.EmitSetProperty(il);
 
-                // num = reader.ReadByte();
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Call, data.ReadMethod);
-
-                if (i < maxIndex)
-                    il.Emit(OpCodes.Stloc_0);
-                else
-                    il.Emit(OpCodes.Pop);
-
+                FieldsBuilder.ReadByte(il, data, i < maxIndex);
                 il.MarkLabel(propertyLabel);
             }
 
@@ -329,27 +355,19 @@ internal static class ObjectBuilder
 
         // T DeserializeSpot(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeSpot), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.DeserializeSpot), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
             var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int);
-            il.DeclareLocal(type);
+            il.DeclareLocal(Types.Int); // index
+            il.DeclareLocal(type); // obj
 
-            // TestData testData = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
-            il.Emit(OpCodes.Ldarg_0);
-            il.Emit(OpCodes.Ldfld, typeField);
-            il.Emit(OpCodes.Call, Types.GetUninitializedObjectMethod);
-            il.Emit(OpCodes.Castclass, type);
-            il.Emit(OpCodes.Stloc_1);
+            if (hasBaseCollectionType)
+                il.DeclareLocal(Types.Int); // length
 
-            // int num = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
-
+            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeSpot, constructorField, hasCapacityConstructor, spot: true);
             int maxIndex = fields.Length - 1;
 
             for (int i = 0; i <= maxIndex; i++)
@@ -368,17 +386,13 @@ internal static class ObjectBuilder
                 il.Emit(OpCodes.Ldfld, field.Field);
                 il.Emit(OpCodes.Ldarg_1);
                 il.Emit(OpCodes.Callvirt, field.Data.DeserializeSpot);
+
+                if (field.IsNullable)
+                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
+
                 field.EmitSetProperty(il);
 
-                // num = reader.ReadByte();
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Call, data.ReadMethod);
-
-                if (i < maxIndex)
-                    il.Emit(OpCodes.Stloc_0);
-                else
-                    il.Emit(OpCodes.Pop);
-
+                FieldsBuilder.ReadByte(il, data, i < maxIndex);
                 il.MarkLabel(propertyLabel);
             }
 
@@ -388,27 +402,19 @@ internal static class ObjectBuilder
 
         // T DeserializeInUTCSpot(ref Reader reader)
         {
-            var method = builder.DefineMethod(nameof(Serializer<Resolver, object>.DeserializeInUTCSpot), Flags.PublicOverrideMethod,
+            var method = builder.DefineMethod(nameof(Serializer<,>.DeserializeInUTCSpot), Flags.PublicOverrideMethod,
                 type, Types.Deserialize)
                 .WithNames(Naming.Deserialize);
 
             var il = method.GetILGenerator();
             var label = il.DefineLabel();
-            il.DeclareLocal(Types.Int);
-            il.DeclareLocal(type);
+            il.DeclareLocal(Types.Int); // index
+            il.DeclareLocal(type); // obj
 
-            // TestData testData = (TestData)FormatterServices.GetUninitializedObject(_s_Type);
-            il.Emit(OpCodes.Ldarg_0);
-            il.Emit(OpCodes.Ldfld, typeField);
-            il.Emit(OpCodes.Call, Types.GetUninitializedObjectMethod);
-            il.Emit(OpCodes.Castclass, type);
-            il.Emit(OpCodes.Stloc_1);
+            if (hasBaseCollectionType)
+                il.DeclareLocal(Types.Int); // length
 
-            // int num = reader.ReadByte();
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Call, data.ReadMethod);
-            il.Emit(OpCodes.Stloc_0);
-
+            FieldsBuilder.BuildCreateObject(il, type, typeField, hasBaseCollectionType, data, fields, baseField, baseData?.BaseDeserializeInUTCSpot, constructorField, hasCapacityConstructor, spot: true);
             int maxIndex = fields.Length - 1;
 
             for (int i = 0; i <= maxIndex; i++)
@@ -427,17 +433,13 @@ internal static class ObjectBuilder
                 il.Emit(OpCodes.Ldfld, field.Field);
                 il.Emit(OpCodes.Ldarg_1);
                 il.Emit(OpCodes.Callvirt, field.Data.DeserializeInUTCSpot);
+
+                if (field.IsNullable)
+                    il.Emit(OpCodes.Newobj, field.RealPropertyType.GetConstructors()[0]);
+
                 field.EmitSetProperty(il);
 
-                // num = reader.ReadByte();
-                il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Call, data.ReadMethod);
-
-                if (i < maxIndex)
-                    il.Emit(OpCodes.Stloc_0);
-                else
-                    il.Emit(OpCodes.Pop);
-
+                FieldsBuilder.ReadByte(il, data, i < maxIndex);
                 il.MarkLabel(propertyLabel);
             }
 

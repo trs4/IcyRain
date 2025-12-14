@@ -9,7 +9,9 @@ internal static class Naming
     [ThreadStatic]
     private static StringBuilder CacheBuilder;
 
-    public const string FieldPreffix = "_s_";
+    public const string FieldPrefix = "_s_";
+    public const string BaseConstructorField = "_s_BaseConstructor";
+    public const string BaseFieldPrefix = "_s_Base_";
     public const string TypeField = "_s_Type";
     public const string Value = "value";
 

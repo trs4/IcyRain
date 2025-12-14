@@ -138,4 +138,16 @@ internal sealed class DictionarySerializer<TResolver, TKey, TValue> : Serializer
         return value;
     }
 
+    public override void BaseDeserializeSpot<TObj>(ref Reader reader, TObj value, int length)
+    {
+        for (int i = 0; i < length; i++)
+            value.Add(_keySerializer.Deserialize(ref reader), _valueSerializer.Deserialize(ref reader));
+    }
+
+    public override void BaseDeserializeInUTCSpot<TObj>(ref Reader reader, TObj value, int length)
+    {
+        for (int i = 0; i < length; i++)
+            value.Add(_keySerializer.DeserializeInUTC(ref reader), _valueSerializer.DeserializeInUTC(ref reader));
+    }
+
 }

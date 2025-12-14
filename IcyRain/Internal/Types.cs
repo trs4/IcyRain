@@ -102,6 +102,8 @@ internal static class Types
     public static readonly MethodInfo ReadByte = Reader.GetMethod(nameof(Internal.Reader.ReadByte));
     public static readonly MethodInfo ReadUShort = Reader.GetMethod(nameof(Internal.Reader.ReadUShort));
 
+    public static readonly MethodInfo ReadInt = Reader.GetMethod(nameof(Internal.Reader.ReadInt));
+
     public static readonly MethodInfo GetTypeMethod
         = typeof(object).GetMethod(nameof(GetType));
 
@@ -130,6 +132,18 @@ internal static class Types
 #else
         = typeof(RuntimeHelpers).GetMethod(nameof(RuntimeHelpers.GetUninitializedObject));
 #endif
+
+    public static readonly MethodInfo ArrayEmptyObjectMethod
+        = typeof(Array).GetMethod(nameof(Array.Empty)).MakeGenericMethod(typeof(object));
+
+    public static readonly MethodInfo ArrayEmptyTypeMethod
+        = typeof(Array).GetMethod(nameof(Array.Empty)).MakeGenericMethod(typeof(Type));
+
+    public static readonly MethodInfo ConstructorInfoInvokeMethod
+        = typeof(ConstructorInfo).GetMethods().First(m => m.Name == nameof(ConstructorInfo.Invoke) && m.GetParameters().Length == 1);
+
+    public static readonly MethodInfo TypeGetConstructorMethod
+        = typeof(Type).GetMethods().First(m => m.Name == nameof(Type.GetConstructor) && m.GetParameters().Length == 1);
 
     public static readonly FieldInfo DecimalZeroField
         = typeof(decimal).GetField(nameof(decimal.Zero));
