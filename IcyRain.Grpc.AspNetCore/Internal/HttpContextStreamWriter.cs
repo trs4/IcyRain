@@ -19,7 +19,6 @@ internal sealed class HttpContextStreamWriter<TResponse> : IServerStreamWriter<T
 #pragma warning restore IDE0330 // Use 'System.Threading.Lock'
     private Task? _writeTask;
     private bool _completed;
-    private long _writeCount;
 
     public HttpContextStreamWriter(HttpContextServerCallContext context, Action<TResponse, SerializationContext> serializer)
     {
@@ -78,7 +77,6 @@ internal sealed class HttpContextStreamWriter<TResponse> : IServerStreamWriter<T
             }
 
             await _writeTask;
-            Interlocked.Increment(ref _writeCount);
         }
         finally
         {

@@ -16,7 +16,6 @@ internal sealed class HttpContextStreamReader<TRequest> : IAsyncStreamReader<TRe
     private readonly PipeReader _bodyReader;
     private readonly IHttpRequestLifetimeFeature _requestLifetimeFeature;
     private bool _completed;
-    private long _readCount;
 
     public HttpContextStreamReader(HttpContextServerCallContext serverCallContext, Func<DeserializationContext, TRequest> deserializer)
     {
@@ -66,7 +65,6 @@ internal sealed class HttpContextStreamReader<TRequest> : IAsyncStreamReader<TRe
         }
 
         Current = request;
-        Interlocked.Increment(ref _readCount);
         return true;
     }
 
