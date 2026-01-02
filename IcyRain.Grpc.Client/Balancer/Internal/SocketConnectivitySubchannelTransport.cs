@@ -181,14 +181,14 @@ internal sealed class SocketConnectivitySubchannelTransport : ISubchannelTranspo
             oce.CancellationToken == context.CancellationToken &&
             !context.IsConnectCanceled)
         {
-            firstConnectionError = new TimeoutException("A connection could not be established within the configured ConnectTimeout.", firstConnectionError);
+            firstConnectionError = new TimeoutException("A connection could not be established within the configured ConnectTimeout", firstConnectionError);
             result = ConnectResult.Timeout;
         }
 
         // All connections failed
         _subchannel.UpdateConnectivityState(
             ConnectivityState.TransientFailure,
-            new Status(StatusCode.Unavailable, "Error connecting to subchannel.", firstConnectionError));
+            new Status(StatusCode.Unavailable, "Error connecting to subchannel", firstConnectionError));
         lock (Lock)
         {
             if (!_disposed)
@@ -253,7 +253,7 @@ internal sealed class SocketConnectivitySubchannelTransport : ISubchannelTranspo
                     }
                 }
 
-                _subchannel.UpdateConnectivityState(ConnectivityState.Idle, new Status(StatusCode.Unavailable, "Lost connection to socket.", checkException));
+                _subchannel.UpdateConnectivityState(ConnectivityState.Idle, new Status(StatusCode.Unavailable, "Lost connection to socket", checkException));
             }
         }
         catch { }

@@ -55,7 +55,7 @@ internal sealed class PickFirstBalancer : LoadBalancer
 
         if (state.Addresses is null || state.Addresses.Count == 0)
         {
-            ResolverError(new Status(StatusCode.Unavailable, "Resolver returned no addresses."));
+            ResolverError(new Status(StatusCode.Unavailable, "Resolver returned no addresses"));
             return;
         }
 
@@ -68,7 +68,7 @@ internal sealed class PickFirstBalancer : LoadBalancer
             }
             catch (Exception ex)
             {
-                var picker = new ErrorPicker(new Status(StatusCode.Unavailable, "Error creating subchannel.", ex));
+                var picker = new ErrorPicker(new Status(StatusCode.Unavailable, "Error creating subchannel", ex));
                 _controller.UpdateState(new BalancerState(ConnectivityState.TransientFailure, picker));
                 throw;
             }

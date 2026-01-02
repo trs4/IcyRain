@@ -37,10 +37,10 @@ internal static class GrpcProtocolConstants
     internal static readonly string TEHeaderValue;
 
     internal static readonly Status DeadlineExceededStatus = new Status(StatusCode.DeadlineExceeded, string.Empty);
-    internal static readonly Status ThrottledStatus = new Status(StatusCode.Cancelled, "Retries stopped because retry throttling is active.");
+    internal static readonly Status ThrottledStatus = new Status(StatusCode.Cancelled, "Retries stopped because retry throttling is active");
 
-    internal static Status CreateClientCanceledStatus(Exception? exception) => new Status(StatusCode.Cancelled, "Call canceled by the client.", exception);
-    internal static Status CreateDisposeCanceledStatus(Exception? exception) => new Status(StatusCode.Cancelled, "gRPC call disposed.", exception);
+    internal static Status CreateClientCanceledStatus(Exception? exception) => new Status(StatusCode.Cancelled, "Call canceled by the client", exception);
+    internal static Status CreateDisposeCanceledStatus(Exception? exception) => new Status(StatusCode.Cancelled, "gRPC call disposed", exception);
 
     /// <summary>
     /// Gets key value pairs used by debugging. These are provided as an enumerator instead of a dictionary

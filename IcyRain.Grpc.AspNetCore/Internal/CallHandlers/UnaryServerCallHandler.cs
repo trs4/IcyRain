@@ -22,7 +22,7 @@ internal sealed class UnaryServerCallHandler<[DynamicallyAccessedMembers(GrpcPro
         var request = await httpContext.Request.BodyReader.ReadSingleMessageAsync(serverCallContext, MethodInvoker.Method.RequestMarshaller.ContextualDeserializer);
 
         var response = await _invoker.Invoke(httpContext, serverCallContext, request)
-            ?? throw new RpcException(new Status(StatusCode.Cancelled, "No message returned from method."));
+            ?? throw new RpcException(new Status(StatusCode.Cancelled, "No message returned from method"));
 
         // Check if deadline exceeded while method was invoked. If it has then skip trying to write
         // the response message because it will always fail.

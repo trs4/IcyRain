@@ -313,7 +313,7 @@ public sealed class Subchannel : IDisposable
                         return;
                     case ConnectResult.Timeout:
                         // Reset connectivity state back to idle so that new calls try to reconnect.
-                        UpdateConnectivityState(ConnectivityState.Idle, new Status(StatusCode.Unavailable, "Timeout connecting to subchannel."));
+                        UpdateConnectivityState(ConnectivityState.Idle, new Status(StatusCode.Unavailable, "Timeout connecting to subchannel"));
                         return;
                     case ConnectResult.Failure:
                     default:
@@ -357,7 +357,7 @@ public sealed class Subchannel : IDisposable
         catch (OperationCanceledException) { }
         catch (Exception ex)
         {
-            UpdateConnectivityState(ConnectivityState.TransientFailure, new Status(StatusCode.Unavailable, "Error connecting to subchannel.", ex));
+            UpdateConnectivityState(ConnectivityState.TransientFailure, new Status(StatusCode.Unavailable, "Error connecting to subchannel", ex));
         }
         finally
         {

@@ -84,7 +84,7 @@ internal sealed partial class ServerCallHandlerFactory<[DynamicallyAccessedMembe
             var unimplementedMethod = httpContext.Request.RouteValues["unimplementedMethod"]?.ToString() ?? "<unknown>";
 
             GrpcProtocolHelpers.SetStatus(GrpcProtocolHelpers.GetTrailersDestination(httpContext.Response),
-                new Status(StatusCode.Unimplemented, "Method is unimplemented."));
+                new Status(StatusCode.Unimplemented, "Method is unimplemented"));
 
             return Task.CompletedTask;
         };
@@ -110,7 +110,7 @@ internal sealed partial class ServerCallHandlerFactory<[DynamicallyAccessedMembe
             var unimplementedService = httpContext.Request.RouteValues["unimplementedService"]?.ToString() ?? "<unknown>";
 
             GrpcProtocolHelpers.SetStatus(GrpcProtocolHelpers.GetTrailersDestination(httpContext.Response),
-                new Status(StatusCode.Unimplemented, "Service is unimplemented."));
+                new Status(StatusCode.Unimplemented, "Service is unimplemented"));
 
             return Task.CompletedTask;
         };

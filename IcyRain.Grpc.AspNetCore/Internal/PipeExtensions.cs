@@ -16,10 +16,12 @@ internal static partial class PipeExtensions
     private const int MessageDelimiterSize = 4; // how many bytes it takes to encode "Message-Length"
     private const int HeaderSize = MessageDelimiterSize + 1; // message length + compression flag
 
-    private static readonly Status MessageCancelledStatus = new Status(StatusCode.Internal, "Incoming message cancelled.");
-    private static readonly Status AdditionalDataStatus = new Status(StatusCode.Internal, "Additional data after the message received.");
-    private static readonly Status IncompleteMessageStatus = new Status(StatusCode.Internal, "Incomplete message.");
-    private static readonly Status ReceivedMessageExceedsLimitStatus = new Status(StatusCode.ResourceExhausted, "Received message exceeds the maximum configured message size.");
+    private static readonly Status MessageCancelledStatus = new Status(StatusCode.Internal, "Incoming message cancelled");
+    private static readonly Status AdditionalDataStatus = new Status(StatusCode.Internal, "Additional data after the message received");
+    private static readonly Status IncompleteMessageStatus = new Status(StatusCode.Internal, "Incomplete message");
+
+    private static readonly Status ReceivedMessageExceedsLimitStatus = new Status(StatusCode.ResourceExhausted,
+        "Received message exceeds the maximum configured message size");
 
     public static async Task WriteSingleMessageAsync<TResponse>(this PipeWriter pipeWriter, TResponse response, HttpContextServerCallContext serverCallContext,
         Action<TResponse, SerializationContext> serializer)

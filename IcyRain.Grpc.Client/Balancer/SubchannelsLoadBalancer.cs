@@ -84,7 +84,7 @@ public abstract class SubchannelsLoadBalancer : LoadBalancer
 
         if (state.Addresses is null || state.Addresses.Count == 0)
         {
-            ResolverError(new Status(StatusCode.Unavailable, "Resolver returned no addresses."));
+            ResolverError(new Status(StatusCode.Unavailable, "Resolver returned no addresses"));
             return;
         }
 
@@ -192,7 +192,7 @@ public abstract class SubchannelsLoadBalancer : LoadBalancer
                 // Pass it to the picker so that it is reported to the caller on pick.
                 var errorStatus = status.StatusCode != StatusCode.OK
                     ? status
-                    : new Status(StatusCode.Internal, "Unknown error.");
+                    : new Status(StatusCode.Internal, "Unknown error");
 
                 UpdateChannelState(ConnectivityState.TransientFailure, new ErrorPicker(errorStatus));
             }

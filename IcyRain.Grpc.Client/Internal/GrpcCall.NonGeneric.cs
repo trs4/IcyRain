@@ -135,7 +135,7 @@ internal abstract class GrpcCall
         // ALPN negotiation is sending HTTP/1.1 and HTTP/2
         // Check that the response wasn't downgraded to HTTP/1.1
         if (httpResponse.Version < GrpcProtocolConstants.Http2Version)
-            return new Status(StatusCode.Internal, $"Bad gRPC response. Response protocol downgraded to HTTP/{httpResponse.Version.ToString(2)}.");
+            return new Status(StatusCode.Internal, $"Bad gRPC response. Response protocol downgraded to HTTP/{httpResponse.Version.ToString(2)}");
 
         if (httpResponse.StatusCode != HttpStatusCode.OK)
         {
@@ -147,7 +147,7 @@ internal abstract class GrpcCall
         var contentType = HttpRequestHelpers.GetHeaderValue(httpResponse.Content?.Headers, "Content-Type");
 
         if (contentType is null)
-            return new Status(StatusCode.Cancelled, "Bad gRPC response. Response did not have a content-type header.");
+            return new Status(StatusCode.Cancelled, "Bad gRPC response. Response did not have a content-type header");
 
         if (!CommonGrpcProtocolHelpers.IsContentType(GrpcProtocolConstants.GrpcContentType, contentType))
             return new Status(StatusCode.Cancelled, "Bad gRPC response. Invalid content-type value: " + contentType);

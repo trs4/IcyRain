@@ -489,7 +489,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
                     {
                         // Change the status code if OK is returned to a more accurate status.
                         // This is consistent with Grpc.Core client behavior.
-                        status = new Status(StatusCode.Internal, "Failed to deserialize response message.");
+                        status = new Status(StatusCode.Internal, "Failed to deserialize response message");
                     }
 
                     FinishResponseAndCleanUp(status.Value);

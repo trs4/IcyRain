@@ -38,7 +38,7 @@ internal sealed class ClientStreamingServerCallHandler<[DynamicallyAccessedMembe
         if (response is null)
         {
             // This is consistent with Grpc.Core when a null value is returned
-            throw new RpcException(new Status(StatusCode.Cancelled, "No message returned from method."));
+            throw new RpcException(new Status(StatusCode.Cancelled, "No message returned from method"));
         }
 
         // Check if deadline exceeded while method was invoked. If it has then skip trying to write

@@ -10,7 +10,8 @@ namespace IcyRain.Grpc.AspNetCore.Internal;
 
 internal sealed class HttpContextSerializationContext : SerializationContext
 {
-    private static readonly Status SendingMessageExceedsLimitStatus = new Status(StatusCode.ResourceExhausted, "Sending message exceeds the maximum configured message size.");
+    private static readonly Status SendingMessageExceedsLimitStatus = new Status(StatusCode.ResourceExhausted,
+        "Sending message exceeds the maximum configured message size");
 
     private readonly HttpContextServerCallContext _serverCallContext;
     private InternalState _state;
